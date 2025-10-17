@@ -1,0 +1,325 @@
+{% load static %}
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'home' %}" style="font-size: 24.7px">
+      <span class="logo-icon"
+        ><img src="{% static 'img/genie_lamp.png' %}" alt="logo"
+      /></span>
+      TripGenie
+    </a>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#recommendations">Recommendations</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#budget">Budget Planner</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#itinerary">My Itinerary</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#wishlist">Wishlist</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#membership">Membership</a>
+        </li>
+      </ul>
+
+      {% if user.is_authenticated %}
+      <a
+        class="btn me-2 d-flex align-items-center"
+        href="{% url 'profile' %}"
+        role="button"
+        style="gap: 8px"
+      >
+        {% if request.user.userprofile.profile_picture %}
+        <img
+          src="{{ request.user.userprofile.profile_picture.url }}"
+          alt="Profile Picture"
+          style="
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid #20d0d4;
+          "
+        />
+        {% else %}
+        <span
+          style="
+            width: 50px;
+            height: 50px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #20d0d4;
+            color: #fff;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            border: 2px solid #20d0d4;
+          "
+        >
+          {{ request.user.username|slice:":2" }}
+        </span>
+        {% endif %}
+      </a>
+      <a
+        class="btn btn-link text-decoration-none me-3"
+        href="{% url 'logout' %}"
+        role="button"
+        style="color: white"
+        >Logout</a
+      >
+      {% else %}
+      <a
+        class="btn btn-link text-decoration-none me-3"
+        href="{% url 'login' %}"
+        role="button"
+        style="color: white"
+        >Login</a
+      >
+      <a class="btn btn-primary me-3" href="{% url 'register' %}" role="button"
+        >Register</a
+      >
+      {% endif %}
+
+      <!-- Language & Currency Selector -->
+      <div class="lang-currency-selector me-3">
+        <button
+          class="combined-selector"
+          type="button"
+          data-bs-toggle="modal"
+          data-bs-target="#langCurrencyModal"
+        >
+          Eng | INR
+        </button>
+      </div>
+
+      <label class="theme-switch">
+        <input type="checkbox" id="themeToggle" />
+        <span class="slider">
+          <i class="fas fa-moon moon-icon"></i>
+          <i class="fas fa-sun sun-icon"></i>
+        </span>
+      </label>
+    </div>
+  </div>
+</nav>
+
+<!-- Language & Currency Modal -->
+<div
+  class="modal fade"
+  id="langCurrencyModal"
+  tabindex="-1"
+  aria-labelledby="langCurrencyModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <ul class="nav nav-tabs" id="langCurrencyTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link active"
+              id="languages-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#languages-pane"
+              type="button"
+              role="tab"
+              style="color: black; cursor: pointer"
+            >
+              Languages
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="currency-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#currency-pane"
+              type="button"
+              role="tab"
+              style="color: black; cursor: pointer"
+            >
+              Currency
+            </button>
+          </li>
+        </ul>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="tab-content" id="langCurrencyTabContent">
+          <!-- Languages Tab -->
+          <div
+            class="tab-pane fade show active"
+            id="languages-pane"
+            role="tabpanel"
+          >
+            <h6>All Languages</h6>
+            <div class="lang-grid">
+              <div class="lang-item selected" data-lang="eng">
+                🇮🇳 <span>English (India)</span>
+              </div>
+              <div class="lang-item" data-lang="zh">
+                🇨🇳 <span>繁體中文</span>
+              </div>
+              <div class="lang-item" data-lang="jp">🇯🇵 <span>日本語</span></div>
+              <div class="lang-item" data-lang="kr">🇰🇷 <span>한국어</span></div>
+              <div class="lang-item" data-lang="th">
+                🇹🇭 <span>ภาษาไทย</span>
+              </div>
+              <div class="lang-item" data-lang="uk">
+                🇺🇦 <span>Українська</span>
+              </div>
+              <div class="lang-item" data-lang="ar">
+                AR <span>العربية</span>
+              </div>
+              <div class="lang-item" data-lang="id">
+                🇮🇩 <span>Bahasa Indonesia</span>
+              </div>
+              <div class="lang-item" data-lang="my">
+                🇲🇾 <span>Bahasa Melayu</span>
+              </div>
+              <div class="lang-item" data-lang="dk">🇩🇰 <span>Dansk</span></div>
+              <div class="lang-item" data-lang="de">
+                🇩🇪 <span>Deutsch</span>
+              </div>
+              <div class="lang-item" data-lang="en">
+                EN <span>English</span>
+              </div>
+              <div class="lang-item" data-lang="es">
+                🇪🇸 <span>Español</span>
+              </div>
+              <div class="lang-item" data-lang="fr">
+                🇫🇷 <span>Français</span>
+              </div>
+              <div class="lang-item" data-lang="it">
+                🇮🇹 <span>Italiano</span>
+              </div>
+              <div class="lang-item" data-lang="nl">
+                🇳🇱 <span>Nederlands</span>
+              </div>
+              <div class="lang-item" data-lang="pl">🇵🇱 <span>Polski</span></div>
+              <div class="lang-item" data-lang="pt">
+                🇧🇷 <span>Português (Brasil)</span>
+              </div>
+              <div class="lang-item" data-lang="fi">🇫🇮 <span>Suomi</span></div>
+              <div class="lang-item" data-lang="sv">
+                🇸🇪 <span>Svenska</span>
+              </div>
+              <div class="lang-item" data-lang="vi">
+                🇻🇳 <span>Tiếng Việt</span>
+              </div>
+              <div class="lang-item" data-lang="tr">🇹🇷 <span>Türkçe</span></div>
+              <div class="lang-item" data-lang="el">
+                🇬🇷 <span>Ελληνικά</span>
+              </div>
+              <div class="lang-item" data-lang="ru">
+                🇷🇺 <span>Русский</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Currency Tab -->
+          <div class="tab-pane fade" id="currency-pane" role="tabpanel">
+            <div class="currency-section">
+              <h6>Top currencies</h6>
+              <div class="currency-grid">
+                <div class="currency-item selected" data-currency="INR">
+                  <strong>INR</strong> - Indian Rupee
+                </div>
+                <div class="currency-item" data-currency="EUR">
+                  <strong>EUR</strong> - Euro (€)
+                </div>
+                <div class="currency-item" data-currency="USD">
+                  <strong>USD</strong> - United States Dollar ($)
+                </div>
+              </div>
+
+              <h6>All currencies</h6>
+              <div class="currency-grid">
+                <div class="currency-item" data-currency="AED">
+                  <strong>AED</strong> - United Arab Emirates Dirham
+                </div>
+                <div class="currency-item" data-currency="AUD">
+                  <strong>AUD</strong> - Australian Dollar (AU$)
+                </div>
+                <div class="currency-item" data-currency="BHD">
+                  <strong>BHD</strong> - Bahraini Dinar
+                </div>
+                <div class="currency-item" data-currency="BRL">
+                  <strong>BRL</strong> - Brazilian Real
+                </div>
+                <div class="currency-item" data-currency="CAD">
+                  <strong>CAD</strong> - Canadian Dollar
+                </div>
+                <div class="currency-item" data-currency="CHF">
+                  <strong>CHF</strong> - Swiss Franc
+                </div>
+                <div class="currency-item" data-currency="CLP">
+                  <strong>CLP</strong> - Chilean Peso
+                </div>
+                <div class="currency-item" data-currency="CNY">
+                  <strong>CNY</strong> - Chinese Yuan
+                </div>
+                <div class="currency-item" data-currency="COP">
+                  <strong>COP</strong> - Colombian Peso
+                </div>
+                <div class="currency-item" data-currency="DKK">
+                  <strong>DKK</strong> - Danish Krone
+                </div>
+                <div class="currency-item" data-currency="EUR">
+                  <strong>EUR</strong> - Euro (€)
+                </div>
+                <div class="currency-item" data-currency="GBP">
+                  <strong>GBP</strong> - British Pound (£)
+                </div>
+                <div class="currency-item" data-currency="HKD">
+                  <strong>HKD</strong> - Hong Kong Dollar (HK$)
+                </div>
+                <div class="currency-item" data-currency="IDR">
+                  <strong>IDR</strong> - Indonesian Rupiah
+                </div>
+                <div class="currency-item" data-currency="JOD">
+                  <strong>JOD</strong> - Jordanian Dinar
+                </div>
+                <div class="currency-item" data-currency="JPY">
+                  <strong>JPY</strong> - Japanese Yen
+                </div>
+                <div class="currency-item" data-currency="KRW">
+                  <strong>KRW</strong> - Korean Won (₩)
+                </div>
+                <div class="currency-item" data-currency="KWD">
+                  <strong>KWD</strong> - Kuwaiti Dinar
+                </div>
+                <div class="currency-item" data-currency="LAK">
+                  <strong>LAK</strong> - Lao Kip
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

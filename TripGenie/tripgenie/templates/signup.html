@@ -1,0 +1,121 @@
+{% extends "base.html" %} 
+{% block title %}Register{% endblock title %} 
+{% block content %}
+
+<div class="signupbody rh-signup-dark-mode">
+  {%if message %}
+  <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+    {{message}}
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  {% endif %}
+
+  <div class="signup-container">
+    <div class="signup-header">
+      <h1 class="signup-title">Create Account</h1>
+      <p class="signup-subtitle">
+        Already have an account?
+        <a href="{% url 'login' %}">Log in here</a>
+      </p>
+    </div>
+
+    <form class="signup-form" method="post">
+      {% csrf_token %}
+      <div class="signup-form-group">
+        <input
+          type="text"
+          class="signup-form-input"
+          placeholder="Username"
+          name="username"
+          required
+          autocomplete="username"
+        />
+        <div class="signup-error-message">Username is required</div>
+      </div>
+
+      <div class="signup-form-row">
+        <div class="signup-form-group">
+          <input
+            type="text"
+            class="signup-form-input"
+            placeholder="First Name"
+            name="firstname"
+            required
+            autocomplete="given-name"
+          />
+          <div class="signup-error-message">First name is required</div>
+        </div>
+
+        <div class="signup-form-group">
+          <input
+            type="text"
+            class="signup-form-input"
+            placeholder="Last Name"
+            name="lastname"
+            required
+            autocomplete="family-name"
+          />
+          <div class="signup-error-message">Last name is required</div>
+        </div>
+      </div>
+
+      <div class="signup-form-group">
+        <input
+          type="email"
+          class="signup-form-input"
+          placeholder="Email"
+          name="email"
+          required
+          autocomplete="email"
+        />
+        <div class="signup-error-message">Valid Email Address is required</div>
+      </div>
+
+      <div class="signup-form-group password-group">
+        <input
+          type="password"
+          class="signup-form-input"
+          placeholder="Password"
+          name="password"
+          required
+          autocomplete="new-password"
+          oninput="checkPasswordStrength(this)"
+        />
+
+        <div class="signup-error-message">
+          Password must be at least 8 characters
+        </div>
+      </div>
+
+      <div class="signup-form-group">
+        <input
+          type="password"
+          class="signup-form-input"
+          placeholder="Confirm Password"
+          name="confirmpassword"
+          required
+          autocomplete="new-password"
+          oninput="checkPasswordMatch()"
+        />
+        <div class="password-match" id="passwordMatch"></div>
+        <div class="signup-error-message">Passwords must match</div>
+      </div>
+
+      <button type="submit" class="signup-button" id="createButton">
+        Create
+      </button>
+    </form>
+
+    <p class="signup-captcha-notice">
+      This site is protected by reCaptcha and the reCaptcha Privacy Policy and
+      Terms of Service apply.
+    </p>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends "base.html" %} 
+{% block title %}Verify OTP{% endblock %} 
+{% block content %}
+
+<div class="signupbody rh-signup-dark-mode">
+  {% if messages %} {% for message in messages %}
+  <div
+    class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show"
+    role="alert"
+  >
+    {{ message }}
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  {% endfor %} {% endif %}
+
+  <div class="signup-container">
+    <div class="signup-header">
+      <h1 class="signup-title">Verify Email</h1>
+      <p class="signup-subtitle">Enter the 6-digit OTP sent to your email</p>
+    </div>
+
+    <form method="post" class="signup-form" autocomplete="off">
+      {% csrf_token %}
+
+      <div class="otp-inputs">
+        <input
+          type="text"
+          name="otp0"
+          maxlength="1"
+          class="signup-form-input otp-input"
+          required
+        />
+        <input
+          type="text"
+          name="otp1"
+          maxlength="1"
+          class="signup-form-input otp-input"
+          required
+        />
+        <input
+          type="text"
+          name="otp2"
+          maxlength="1"
+          class="signup-form-input otp-input"
+          required
+        />
+        <input
+          type="text"
+          name="otp3"
+          maxlength="1"
+          class="signup-form-input otp-input"
+          required
+        />
+        <input
+          type="text"
+          name="otp4"
+          maxlength="1"
+          class="signup-form-input otp-input"
+          required
+        />
+        <input
+          type="text"
+          name="otp5"
+          maxlength="1"
+          class="signup-form-input otp-input"
+          required
+        />
+      </div>
+
+      <button type="submit" class="signup-button">Verify OTP</button>
+    </form>
+
+    <p class="signup-subtitle mt-3">
+      Didn't receive it? <a href="#">Resend</a>
+    </p>
+  </div>
+</div>
+
+<style>
+  .otp-inputs {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  .otp-input {
+    width: 48px;
+    height: 48px;
+    text-align: center;
+    font-size: 1.25rem;
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const inputs = document.querySelectorAll(".otp-input");
+    inputs.forEach((input, i) => {
+      input.addEventListener("input", (e) => {
+        if (input.value.length === 1 && i < inputs.length - 1)
+          inputs[i + 1].focus();
+      });
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Backspace" && input.value === "" && i > 0)
+          inputs[i - 1].focus();
+      });
+    });
+  });
+</script>
+
+{% endblock %}
