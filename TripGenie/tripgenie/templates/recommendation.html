@@ -1,0 +1,448 @@
+{% extends "base.html" %} 
+{% block title %}Recommendation{% endblock title %} 
+{% block content %}
+
+<!-- AI Recommendations Section -->
+<section class="recommendations-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-11">
+        <h2 class="rec-section-title fade-in">
+          <span class="rec-ai-text">AI-Powered</span>
+          <span class="rec-travel-text">Travel Recommendations</span>
+        </h2>
+        <p class="rec-section-subtitle fade-in">
+          Discover your next adventure with personalized recommendations
+          tailored just for you
+        </p>
+
+        <form method="post" id="recommendationForm">
+          {% csrf_token %}
+          <div class="recommendation-form fade-in">
+            <!-- Search Input -->
+            <div class="rec-search-container">
+              <i class="fas fa-search rec-search-icon"></i>
+              <input
+                type="text"
+                class="rec-search-input"
+                placeholder="Where would you like to go?"
+                id="destinationSearch"
+              />
+            </div>
+
+            <!-- Form Grid -->
+            <div class="rec-form-grid">
+              <div class="rec-form-group">
+                <label class="rec-form-label">Budget</label>
+                <select class="rec-form-select" id="budgetSelect">
+                  <option value="">Any Budget</option>
+                  <option value="budget">Budget (Under ₹50,000)</option>
+                  <option value="mid-range">
+                    Mid-range (₹50,000 - ₹1,50,000)
+                  </option>
+                  <option value="luxury">Luxury (₹1,50,000+)</option>
+                </select>
+              </div>
+
+              <div class="rec-form-group">
+                <label class="rec-form-label">Duration</label>
+                <select class="rec-form-select" id="durationSelect">
+                  <option value="">Any Duration</option>
+                  <option value="weekend">Weekend (2-3 days)</option>
+                  <option value="week">1 Week</option>
+                  <option value="two-weeks">2 Weeks</option>
+                  <option value="month">1 Month+</option>
+                </select>
+              </div>
+
+              <div class="rec-form-group">
+                <label class="rec-form-label">Travelers</label>
+                <select class="rec-form-select" id="travelersSelect">
+                  <option value="solo">Solo</option>
+                  <option value="couple">Couple</option>
+                  <option value="family">Family</option>
+                  <option value="friends">Friends</option>
+                  <option value="group">Group (5+)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Interests Section -->
+            <div class="rec-interests-section">
+              <label class="rec-form-label">Interests</label>
+              <div class="rec-interests-grid">
+                <span class="rec-interest-tag" data-interest="adventure"
+                  >Adventure</span
+                >
+                <span class="rec-interest-tag" data-interest="culture"
+                  >Culture</span
+                >
+                <span class="rec-interest-tag" data-interest="food">Food</span>
+                <span class="rec-interest-tag" data-interest="nature"
+                  >Nature</span
+                >
+                <span class="rec-interest-tag" data-interest="history"
+                  >History</span
+                >
+                <span class="rec-interest-tag" data-interest="relaxation"
+                  >Relaxation</span
+                >
+                <span class="rec-interest-tag" data-interest="photography"
+                  >Photography</span
+                >
+                <span class="rec-interest-tag" data-interest="wildlife"
+                  >Wildlife</span
+                >
+                <span class="rec-interest-tag" data-interest="beaches"
+                  >Beaches</span
+                >
+                <span class="rec-interest-tag" data-interest="mountains"
+                  >Mountains</span
+                >
+                <span class="rec-interest-tag" data-interest="nightlife"
+                  >Nightlife</span
+                >
+                <span class="rec-interest-tag" data-interest="shopping"
+                  >Shopping</span
+                >
+              </div>
+            </div>
+
+            <!-- Get Recommendations Button -->
+            <div class="text-center mt-4">
+              <button
+                type="button"
+                class="btn-recommendations"
+                id="getRecommendations"
+              >
+                <i class="fas fa-magic"></i> Get Recommendations
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--Destinations-->
+<section class="destination-section">
+  <div class="container py-5">
+    <h5
+      class="rec-destination-h5 mb-4"
+      id="aiResultsHeader"
+      style="display: none"
+    >
+      <span id="foundCount"></span>
+      <span class="float-end">
+        <i class="fas fa-arrow-up-right"></i> Sorted by AI Recommended
+      </span>
+    </h5>
+
+    <div class="rec-container-custom">
+      <!-- Hidden input to store existing recommendations -->
+      <input
+        type="hidden"
+        id="existingRecommendations"
+        data-recommendations="{{ existing_recommendations|default:'[]'|safe }}"
+        data-has-recommendations="{{ has_recommendations|yesno:'true,false' }}"
+      />
+      <div class="row g-4" id="results">
+        <!-- Results will be inserted here by JavaScript -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+
+    const selectedInterests = [];
+    const resultsContainer = document.querySelector("#results");
+    const getRecommendationsBtn = document.getElementById("getRecommendations");
+
+    // Function to save form data to sessionStorage
+    function saveFormData() {
+      const formData = {
+        destination: document.getElementById("destinationSearch").value,
+        budget: document.getElementById("budgetSelect").value,
+        duration: document.getElementById("durationSelect").value,
+        travelers: document.getElementById("travelersSelect").value,
+        interests: selectedInterests,
+      };
+      sessionStorage.setItem(
+        "recommendationFormData",
+        JSON.stringify(formData)
+      );
+    }
+
+    // Function to restore form data from sessionStorage
+    function restoreFormData() {
+      const savedData = sessionStorage.getItem("recommendationFormData");
+      if (savedData) {
+        try {
+          const formData = JSON.parse(savedData);
+          document.getElementById("destinationSearch").value =
+            formData.destination || "";
+          document.getElementById("budgetSelect").value = formData.budget || "";
+          document.getElementById("durationSelect").value =
+            formData.duration || "";
+          document.getElementById("travelersSelect").value =
+            formData.travelers || "solo";
+
+          // Restore selected interests
+          if (formData.interests && formData.interests.length) {
+            formData.interests.forEach((interest) => {
+              const tag = document.querySelector(
+                `.rec-interest-tag[data-interest="${interest}"]`
+              );
+              if (tag) {
+                tag.classList.add("selected");
+                selectedInterests.push(interest);
+              }
+            });
+          }
+        } catch (error) {
+          console.error("Error restoring form data:", error);
+        }
+      }
+    }
+
+    // Clear data if it's a page refresh (not navigation)
+    if (performance.navigation.type === 1) {
+      // 1 indicates page refresh
+      sessionStorage.removeItem("recommendations_loaded");
+      sessionStorage.removeItem("lastRecommendations");
+      sessionStorage.removeItem("recommendationFormData");
+    } else {
+      // Restore form data if it's a navigation
+      restoreFormData();
+    }
+
+    // Function to render recommendations
+    function renderDestinations(destinations) {
+      resultsContainer.innerHTML = "";
+      destinations.forEach((dest) => {
+        // build card markup (keeps same classes to reuse CSS)
+        const col = document.createElement("div");
+        col.className = "col-lg-4 col-md-6";
+
+        // safe fallback values
+        const name = dest.name || "Unknown";
+        const country = dest.country || "";
+        const image =
+          dest.image || "https://via.placeholder.com/800x400?text=No+Image";
+        const price = dest.price || "-";
+        const durationDays = dest.duration_days || 0;
+        const description = dest.description || "";
+        const highlights = dest.highlights || [];
+        const best_time = dest.best_time || "";
+        const rating = dest.rating !== undefined ? dest.rating : 4.5;
+        const match_score = dest.match_score || 80;
+
+        col.innerHTML = `
+        <div class="rec-destination-card">
+          <div class="rec-card-image">
+            <img src="${image}" alt="${name}">
+            <div class="${dest.discount ? "discount-badge" : "trending-badge"}">
+              ${
+                dest.trending
+                  ? '<i class="fas fa-fire"></i> Trending'
+                  : dest.discount
+                  ? dest.discount
+                  : ""
+              }
+            </div>
+            <div class="rating-badge">
+              <i class="fas fa-star"></i> ${rating}
+            </div>
+            <div class="position-absolute bottom-0 start-0 m-3 bg-dark text-white px-2 py-1 rounded" style="font-size: 12px">
+              ${match_score}%
+            </div>
+          </div>
+          <div class="rec-card-content">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h3 class="rec-destination-title">${name}</h3>
+              <span class="price">${price}</span>
+            </div>
+            <div class="location"><i class="fas fa-map-marker-alt"></i> ${country}</div>
+            <div class="duration"><i class="far fa-clock"></i> ${durationDays} days</div>
+            <p class="description">${description}</p>
+            <div class="highlights">
+              <div class="highlights-title">Highlights:</div>
+              <div class="highlight-tags">
+                ${highlights
+                  .map((h) => `<span class="highlight-tag">${h}</span>`)
+                  .join("")}
+              </div>
+            </div>
+            <div class="best-time"><i class="far fa-calendar"></i> Best: ${best_time}</div>
+            <div class="ai-match"><i class="fas fa-robot"></i> ${match_score}% AI Match</div>
+            <button class="plan-btn" onclick="window.location.href='/trip/${encodeURIComponent(
+              name.toLowerCase().replace(/[^a-z0-9]+/g, "-")
+            )}/'">
+            Plan This Trip <i class="fas fa-arrow-right"></i>
+            </button>
+
+          </div>
+        </div>
+      `;
+        resultsContainer.appendChild(col);
+      });
+
+      // Show the header after rendering
+      const header = document.getElementById("aiResultsHeader");
+      const foundCount = document.getElementById("foundCount");
+      if (header && foundCount) {
+        foundCount.textContent = `Found ${destinations.length} destinations`;
+        header.style.display = "block";
+      }
+    }
+
+    // Check if this is a fresh page load or navigation
+    const isPageRefresh = !sessionStorage.getItem("recommendations_loaded");
+
+    // Load recommendations only if it's not a fresh page load
+    if (!isPageRefresh) {
+      const savedRecommendations = sessionStorage.getItem(
+        "lastRecommendations"
+      );
+      if (savedRecommendations) {
+        try {
+          const recommendations = JSON.parse(savedRecommendations);
+          if (recommendations && recommendations.length > 0) {
+            renderDestinations(recommendations);
+            const header = document.getElementById("aiResultsHeader");
+            const foundCount = document.getElementById("foundCount");
+            if (header && foundCount) {
+              foundCount.textContent = `Found ${recommendations.length} destinations`;
+              header.style.display = "block";
+            }
+          }
+        } catch (error) {
+          console.error("Error loading saved recommendations:", error);
+        }
+      }
+    }
+
+    // Mark that the page has been loaded
+    sessionStorage.setItem("recommendations_loaded", "true");
+
+    // Interest tag click handling
+    document.querySelectorAll(".rec-interest-tag").forEach((tag) => {
+      tag.addEventListener("click", function () {
+        const interest = this.dataset.interest;
+        if (this.classList.contains("selected")) {
+          this.classList.remove("selected");
+          const index = selectedInterests.indexOf(interest);
+          if (index > -1) selectedInterests.splice(index, 1);
+        } else {
+          this.classList.add("selected");
+          selectedInterests.push(interest);
+        }
+        saveFormData(); // Save form data when interests change
+      });
+    });
+
+    // Add event listeners to save form data on change
+    [
+      "destinationSearch",
+      "budgetSelect",
+      "durationSelect",
+      "travelersSelect",
+    ].forEach((id) => {
+      document.getElementById(id).addEventListener("change", saveFormData);
+    });
+    // Also save when destination input loses focus (for text input)
+    document
+      .getElementById("destinationSearch")
+      .addEventListener("blur", saveFormData);
+
+    // Helper function to get CSRF token
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === name + "=") {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+    const csrftoken = getCookie("csrftoken");
+
+    // Get recommendations button click handler
+    getRecommendationsBtn.addEventListener("click", async function () {
+      const destination = document.getElementById("destinationSearch").value;
+      const budget = document.getElementById("budgetSelect").value;
+      const duration = document.getElementById("durationSelect").value;
+      const travelers = document.getElementById("travelersSelect").value;
+
+      const formData = {
+        destination: destination || "Any destination",
+        budget: budget || "Any budget",
+        duration: duration || "Any duration",
+        travelers: travelers || "Solo",
+        interests: selectedInterests.length
+          ? selectedInterests
+          : ["No specific interests"],
+      };
+
+      // UI loading state
+      const orig = this.innerHTML;
+      this.innerHTML =
+        '<i class="fas fa-spinner fa-spin"></i> Generating Recommendations...';
+      this.disabled = true;
+
+      try {
+        console.log("Sending request:", formData); // Debug log
+        const resp = await fetch("/api/generate-recommendations/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken,
+          },
+          body: JSON.stringify(formData),
+        });
+        console.log("Response status:", resp.status); // Debug log
+
+        if (!resp.ok) {
+          const err = await resp
+            .json()
+            .catch(() => ({ error: resp.statusText }));
+          console.error("API Error:", err); // Debug log
+          throw new Error(err.error || JSON.stringify(err));
+        }
+
+        const data = await resp.json();
+        console.log("API Response:", data); // Debug log
+        if (data.destinations && data.destinations.length) {
+          renderDestinations(data.destinations);
+          // Save to sessionStorage
+          sessionStorage.setItem(
+            "lastRecommendations",
+            JSON.stringify(data.destinations)
+          );
+          // Mark as new recommendations generated
+          sessionStorage.setItem("recommendations_loaded", "true");
+        } else {
+          throw new Error("No destinations returned");
+        }
+      } catch (e) {
+        console.error("Error:", e);
+        alert(
+          "Sorry — could not generate recommendations. Error: " + e.message
+        );
+      } finally {
+        this.innerHTML = orig;
+        this.disabled = false;
+      }
+    });
+  });
+</script>
+
+{% endblock %}

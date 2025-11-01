@@ -22,16 +22,18 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mx-auto">
         <li class="nav-item">
-          <a class="nav-link" href="#recommendations">Recommendations</a>
+          <a class="nav-link" href="{% url 'recommendations' %}"
+            >Recommendations</a
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#budget">Budget Planner</a>
+          <a class="nav-link" href="{% url 'budget' %}">Budget Planner</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#itinerary">My Itinerary</a>
+          <a class="nav-link" href="{% url 'itinerary' %}">My Itinerary</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#wishlist">Wishlist</a>
+          <a class="nav-link" href="{% url 'wishlist' %}">Wishlist</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#membership">Membership</a>

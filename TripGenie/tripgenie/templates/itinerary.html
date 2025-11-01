@@ -1,0 +1,307 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% block title %}My Itineraries{% endblock %} 
+{% block content %}
+
+<div class="container py-5 fade-in">
+  <!-- Header -->
+  <div>
+    <h1 class="my-itineraries">🗺️ My Itineraries</h1>
+    <p class="my-itineraries-subtitle">
+      View and manage your saved travel plans.
+    </p>
+  </div>
+  <div class="d-flex justify-content-end mb-4">
+  <button id="newTripBtn" class="btn rounded-pill" style="background-color: #20d0d4; color: white;">
+    <i class="fa-solid fa-plus"></i> New Trip
+  </button>
+  </div>
+
+  {% if itineraries %}
+  <!-- List of Itineraries -->
+  <div class="row g-4">
+    {% for itinerary in itineraries reversed %}
+<div class="col-lg-4 col-md-6 col-sm-12">
+  <div class="rec-destination-card">
+    <div class="rec-card-image">
+      <img src="{{ itinerary.trip.image.url|default:'/static/images/default.jpg' }}" alt="{{ itinerary.trip.name }}">
+
+      {% if itinerary.trip.trending %}
+      <div class="trending-badge">
+        <i class="fas fa-fire"></i> Trending
+      </div>
+      {% elif itinerary.trip.discount %}
+      <div class="discount-badge">
+        {{ itinerary.trip.discount }}
+      </div>
+      {% endif %}
+
+      <div class="rating-badge">
+        <i class="fas fa-star"></i> {{ itinerary.trip.rating|default:"4.5" }}
+      </div>
+
+      <div class="position-absolute bottom-0 start-0 m-3 bg-dark text-white px-2 py-1 rounded" style="font-size: 12px">
+        {{ itinerary.match_score|default:"90" }}%
+      </div>
+    </div>
+
+    <div class="rec-card-content">
+      <div class="d-flex justify-content-between align-items-start mb-2">
+        <h3 class="rec-destination-title">{{ itinerary.trip.name }}</h3>
+        <span class="price">
+          {% if itinerary.trip.estimated_cost %}
+            ₹{{ itinerary.trip.estimated_cost|floatformat:2 }}
+          {% else %}
+            Price N/A
+          {% endif %}
+        </span>
+      </div>
+
+      <div class="location">
+        <i class="fas fa-map-marker-alt"></i> {{ itinerary.trip.country }}
+      </div>
+
+      <div class="duration">
+        <i class="far fa-clock"></i> {{ itinerary.total_days|default:"—" }} days
+      </div>
+
+      <p class="description">
+        {{ itinerary.trip.description|default:"No description available"|truncatechars:120 }}
+      </p>
+
+      {% if itinerary.trip.highlights %}
+<div class="highlights">
+  <div class="highlights-title">Highlights:</div>
+  <div class="highlight-tags">
+    {% for highlight in itinerary.trip.highlights %}
+      <span class="highlight-tag">{{ highlight }}</span>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+      <div class="best-time">
+        <i class="far fa-calendar"></i> Best: {{ itinerary.trip.best_time|default:"All year" }}
+      </div>
+
+      <div class="ai-match">
+        <i class="fas fa-robot"></i> {{ itinerary.match_score|default:"90" }}% AI Match
+      </div>
+
+      <button class="plan-btn">
+        <a href="{% url 'trip_details' itinerary.trip.slug %}" style="text-decoration: none; color: white;">
+        View This Trip <i class="fas fa-arrow-right"></i>
+        </a>
+      </button>
+
+      <div class="d-flex justify-content-between mt-3">
+        <button
+          class="btn btn-outline-info btn-sm rounded-pill exportBtn"
+          data-id="{{ itinerary.id }}"
+        >
+          <i class="fa-solid fa-file-export"></i> Export PDF
+        </button>
+        <button
+          class="btn btn-outline-danger btn-sm rounded-pill deleteBtn"
+          data-id="{{ itinerary.trip.id }}"
+        >
+          <i class="fa-solid fa-trash"></i> Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+    {% endfor %}
+  </div>
+
+  {% else %}
+  <div class="text-center recdetail mt-5">
+    <h3>No trips saved yet</h3>
+    <p class="recdetail">Click below to start planning your next adventure.</p>
+    <a
+      href="{% url 'recommendations' %}"
+      class="btn btn-lg btn-primary rounded-pill"
+    >
+      <i class="fa-solid fa-compass"></i> Plan a New Trip
+    </a>
+  </div>
+  {% endif %}
+</div>
+
+<!-- Modal: Add Activity -->
+<div
+  class="modal fade"
+  id="activityModal"
+  tabindex="-1"
+  aria-labelledby="activityModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-light">
+      <div class="modal-header border-secondary">
+        <h5 class="modal-title" id="activityModalLabel">Add New Activity</h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form id="addActivityForm">
+          <input type="hidden" id="itineraryIdInput" />
+          <div class="mb-3">
+            <label class="form-label">Activity Title</label>
+            <input
+              type="text"
+              id="activityTitle"
+              class="form-control"
+              placeholder="e.g. Scuba Diving"
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea
+              id="activityDesc"
+              class="form-control"
+              rows="2"
+            ></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Date</label>
+            <input type="date" id="activityDate" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Estimated Cost (₹)</label>
+            <input
+              type="number"
+              id="activityCost"
+              class="form-control"
+              value="0"
+            />
+          </div>
+          <button type="submit" class="btn btn-success w-100">
+            <i class="fa-solid fa-plus"></i> Add Activity
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const newTripBtn = document.getElementById("newTripBtn");
+    newTripBtn.addEventListener("click", () => {
+      window.location.href = "{% url 'recommendations' %}";
+    });
+
+    // Add Activity Modal
+    const addActivityBtns = document.querySelectorAll(".addActivityBtn");
+    const modal = new bootstrap.Modal(document.getElementById("activityModal"));
+    const itineraryIdInput = document.getElementById("itineraryIdInput");
+    const addActivityForm = document.getElementById("addActivityForm");
+
+    addActivityBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        itineraryIdInput.value = btn.dataset.id;
+        modal.show();
+      });
+    });
+
+    addActivityForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const payload = {
+        itinerary_id: itineraryIdInput.value,
+        title: document.getElementById("activityTitle").value,
+        description: document.getElementById("activityDesc").value,
+        date: document.getElementById("activityDate").value,
+        cost: document.getElementById("activityCost").value,
+      };
+      try {
+        const resp = await fetch("/trips/api/add-activity/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCookie("csrftoken"),
+          },
+          body: JSON.stringify(payload),
+        });
+        const data = await resp.json();
+        if (data.status === "ok") {
+          alert("Activity added successfully!");
+          modal.hide();
+          window.location.reload();
+        } else {
+          alert("Failed to add activity.");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Error adding activity.");
+      }
+    });
+
+    // Export PDF (placeholder - backend endpoint to implement later)
+    const exportBtns = document.querySelectorAll(".exportBtn");
+    exportBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const id = btn.dataset.id;
+        alert("Exporting itinerary #" + id + " to PDF (coming soon)");
+      });
+    });
+
+    // Delete Trip functionality
+    const deleteBtns = document.querySelectorAll(".deleteBtn");
+    deleteBtns.forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const id = btn.dataset.id;
+        if (
+          confirm(
+            "Are you sure you want to delete this trip? This action cannot be undone."
+          )
+        ) {
+          try {
+            const resp = await fetch(`/trips/delete/${id}/`, {
+              method: "DELETE",
+              headers: {
+                "X-CSRFToken": getCookie("csrftoken"),
+              },
+            });
+            if (resp.ok) {
+              // Remove the card column from the UI (cards use col-lg-4)
+              const col = btn.closest(".col-lg-4") || btn.closest(".col-md-6") || btn.closest(".col-sm-12");
+              if (col) col.remove();
+              // If no more trip cards, refresh so the empty state appears
+              if (document.querySelectorAll(".col-lg-4").length === 0) {
+                location.reload();
+              }
+            } else {
+              alert("Failed to delete trip.");
+            }
+          } catch (err) {
+            console.error(err);
+            alert("Error deleting trip.");
+          }
+        }
+      });
+    });
+
+    // Helper: Get CSRF token
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === name + "=") {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+  });
+</script>
+
+{% endblock %}

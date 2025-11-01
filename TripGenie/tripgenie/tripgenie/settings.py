@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -147,3 +148,13 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = "hello.tripgenie@gmail.com"
 EMAIL_HOST_PASSWORD = "rrqo uagi grof kmmz"
 EMAIL_USE_TLS = True
+
+# OpenAI API key setting
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "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")
+
+# Groq API key setting
+GROQ_API_KEY = "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"  # Get this from console.groq.com
+
+GOOGLE_CSE_API_KEY="AIzaSyCI4hJwXfs7NvF9pP63GLMN9eO34gKBfz0"
+
+GOOGLE_CSE_CX="d2f32392215454b49"

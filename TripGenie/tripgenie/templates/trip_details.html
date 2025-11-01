@@ -1,0 +1,350 @@
+{% extends "base.html" %} 
+{% block title %}{{ trip.name }} Details{% endblock title %} 
+{% block content %}
+
+<div class="container my-5 fade-in">
+  <header class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="triph3">Trip Details</h1>
+    <a
+      href="{% url 'recommendations' %}"
+      class="backtoreclink d-flex align-items-center"
+    >
+      <svg
+        class="me-1"
+        width="20"
+        height="20"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M10 19l-7-7m0 0l7-7m-7 7h18"
+        ></path>
+      </svg>
+      Back to Recommendations
+    </a>
+  </header>
+
+  <!-- Dynamic Trip Details Card -->
+  <div id="trip-card" class="card trip-detail-card border-0">
+    <!-- Hero Image Section -->
+    <div class="trip-hero-section">
+      <img
+        src="{{ trip.image }}"
+        alt="{{ trip.name }}"
+        class="card-img-top"
+        id="trip-image"
+      />
+      <div class="trip-hero-overlay"></div>
+      <div class="position-absolute bottom-0 start-0 p-4 p-md-5">
+        <h2 class="trip-detail-name display-5 fw-bold mb-1">{{ trip.name }}</h2>
+        <p class="trip-detail-country fw-semibold">{{ trip.country }}</p>
+      </div>
+    </div>
+
+    <div class="detail-card-body p-4 p-md-5">
+      <div class="row g-5">
+        <!-- Left Column -->
+        <div class="col-lg-8">
+          <!-- Quick Stats -->
+          <div class="d-flex flex-wrap gap-3 mb-4">
+            <span id="trip-duration" class="trip-detail-pill pill-emerald"
+              >{{ trip.duration_days }} Days</span
+            >
+            <span id="trip-price" class="trip-detail-pill pill-blue"
+              >Price: {{ trip.price }}</span
+            >
+            <span id="trip-best-time" class="trip-detail-pill pill-yellow"
+              >Best Time: {{ trip.best_time }}</span
+            >
+          </div>
+
+          <!-- Description -->
+          <div class="mb-5">
+            <h3 class="Overviewh4 fw-bold pb-2 border-bottom">Trip Overview</h3>
+            <p class="trip-detail-description">{{ trip.description }}</p>
+          </div>
+
+          <!-- Itinerary -->
+          <div class="mb-5">
+            <h3 class="detaileditineraryh4 pb-2 border-bottom">
+              Detailed Itinerary
+            </h3>
+            <ul class="list-unstyled space-y-4">
+              {% for day, activities in trip.itinerary.items %}
+              <li class="d-flex trip-itinerary-item py-2">
+                <div class="me-3 text-success">
+                  <svg
+                    width="24"
+                    height="24"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
+                  </svg>
+                </div>
+                <div>
+                  <strong class="trip-detail-dayact">{{ day }} :</strong>
+                  <span class="trip-detail-dayact">
+                    {% for activity in activities %}
+                    <span class="activity-item">{{ activity }}</span>
+                    {% endfor %}
+                  </span>
+                </div>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+
+          <!-- Travel Tip -->
+          <div
+            class="p-4 rounded-3 shadow-lg"
+            style="
+              background-color: rgba(255, 255, 255, 0.05);
+              border-left: 5px solid #46e580;
+            "
+          >
+            <p class="trip-tip fw-bold mb-1">💡 Travel Tip</p>
+            <p class="trip-tip">{{ trip.tips }}</p>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-lg-4 d-flex flex-column gap-5">
+          <!-- Save Button -->
+          <div class="p-4 rounded-3 shadow-lg sticky-lg trip-save-container">
+            <p class="ready fw-medium mb-3">Ready to start planning?</p>
+            <button
+              class="btn btn-lg w-100 text-white fw-bold trip-save-btn"
+              onclick="saveTrip('{{ trip.id }}')"
+            >
+              Save this Trip to my Itinerary
+            </button>
+          </div>
+
+          <!-- Inclusions -->
+          <div class="detail-card-body shadow-lg border-0 rounded-3">
+            <div class="p-4 p-md-5">
+              <h4 class="h5 fw-bold text-success d-flex align-items-center">
+                <svg
+                  class="me-2"
+                  width="20"
+                  height="20"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
+                </svg>
+                Inclusions
+              </h4>
+              <ul
+                class="list-unstyled text-secondary trip-icon-list inclusions"
+              >
+                {% for item in trip.inclusions %}
+                <li class="trip-list-item mb-1">{{ item }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+
+          <!-- Exclusions -->
+          <div class="detail-card-body shadow-lg border-0 rounded-3">
+            <div class="p-4 p-md-5">
+              <h4 class="h5 fw-bold text-danger mb-3 d-flex align-items-center">
+                <svg
+                  class="me-2"
+                  width="20"
+                  height="20"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
+                </svg>
+                Exclusions
+              </h4>
+              <ul
+                class="list-unstyled text-secondary trip-icon-list exclusions"
+              >
+                {% for item in trip.exclusions %}
+                <li class="trip-list-item mb-1">{{ item }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cost Breakdown -->
+        <div>
+          <div class="detail-card-body shadow-lg border-0 rounded-3 p-4 p-md-5">
+            <h4 class="h5 fw-bold mb-3 HeaderRecommender">
+              💰 Estimated Cost Breakdown
+            </h4>
+            {% if trip.cost_breakdown %}
+            <table class="costbreak">
+              <tbody>
+                {% for key, value in trip.cost_breakdown.items %}
+                <tr>
+                  <td class="text-capitalize">{{ key }}</td>
+                  <td>₹{{ value|floatformat:0 }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            {% else %}
+            <p class="recdetail">No cost breakdown available.</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Hotels Section -->
+        <div class="row g-4">
+          <div class="col-lg-6 d-flex flex-column gap-5">
+            <div
+              class="detail-card-body shadow-lg border-0 rounded-3 p-4 p-md-5"
+            >
+              <h4 class="h5 fw-bold mb-3 HeaderRecommender">
+                🏨 Recommended Hotels
+              </h4>
+              {% if trip.hotels %} 
+              {% for hotel in trip.hotels %}
+              <div
+                class="mb-3 p-3 rounded"
+                style="background-color: rgba(255, 255, 255, 0.05)"
+              >
+                <h5 class="mb-1 recdetail">{{ hotel.name }}</h5>
+                <p class="mb-0 small recdetail">
+                  📍 {{ hotel.location }} | ⭐ {{ hotel.rating }} | ₹{{ hotel.price_per_night }}/night
+                </p>
+                <a
+                  href="https://www.google.com/maps?q={{ hotel.name|urlencode }}+{{ hotel.location|urlencode }}"
+                  target="_blank"
+                  class="btn btn-sm mt-2 recdetail"
+                >
+                  <i class="fas fa-map-marker-alt"></i> View on Map
+                </a>
+              </div>
+              {% endfor %} {% else %}
+              <p class="recdetail">No hotel details available.</p>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Restaurants Section -->
+          <div class="col-lg-6 d-flex flex-column gap-5">
+            <div
+              class="detail-card-body shadow-lg border-0 rounded-3 p-4 p-md-5"
+            >
+              <h4 class="h5 fw-bold mb-3 HeaderRecommender">
+                🍽️ Recommended Restaurants
+              </h4>
+              {% if trip.restaurants %} 
+              {% for rest in trip.restaurants %}
+              <div
+                class="mb-3 p-3 rounded"
+                style="background-color: rgba(255, 255, 255, 0.05)"
+              >
+                <h5 class="mb-1 recdetail">{{ rest.name }}</h5>
+                <p class="mb-0 small recdetail">
+                  🍴 {{ rest.cuisine }} | 📍 {{ rest.location }} | ₹{{ rest.avg_cost }}/person
+                </p>
+                <a
+                  href="https://www.google.com/maps?q={{ rest.name|urlencode }}+{{ rest.location|urlencode }}"
+                  target="_blank"
+                  class="btn btn-sm mt-2 recdetail"
+                >
+                  <i class="fas fa-map-marker-alt"></i> View on Map
+                </a>
+              </div>
+              {% endfor %} {% else %}
+              <p class="recdetail">No restaurant data available.</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Local Transport Section -->
+        <div>
+          <div class="detail-card-body shadow-lg border-0 rounded-3 p-4 p-md-5">
+            <h4 class="h5 fw-bold mb-3 HeaderRecommender">
+              🚗 Local Transport Options
+            </h4>
+            {% if trip.local_transport %}
+            <ul class="list-unstyled">
+              {% for t in trip.local_transport %}
+              <li class="mb-2 recdetail">• {{ t.type }} — ₹{{ t.cost }}</li>
+              {% endfor %}
+            </ul>
+            {% else %}
+            <p class="recdetail">No transport data available.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  async function saveTrip(tripId) {
+    try {
+      // Disable the save button to prevent multiple clicks
+      const saveButton = document.querySelector(".trip-save-btn");
+      saveButton.disabled = true;
+      saveButton.textContent = "Saving...";
+      const response = await fetch("{% url 'save_trip_to_itinerary' %}", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]")
+            .value,
+        },
+        body: JSON.stringify({ trip_id: tripId }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.status === "ok") {
+        // Use native alert box and then redirect to itinerary page
+        window.alert(
+          "Trip saved successfully. You will be redirected to your itinerary."
+        );
+        window.location.href = data.redirect;
+      } else {
+        throw new Error(data.message || "Failed to save trip");
+      }
+    } catch (error) {
+      console.error("Error saving trip:", error);
+      // Re-enable the save button on error
+      const saveButton = document.querySelector(".trip-save-btn");
+      saveButton.disabled = false;
+      saveButton.textContent = "Save this Trip to my Itinerary";
+      // Show a simple alert box for errors
+      window.alert(
+        "Failed to save trip: " + (error.message || "Please try again.")
+      );
+    }
+  }
+</script>
+
+{% csrf_token %} {% endblock %}
