@@ -31,8 +31,10 @@ def on_user_logged_out(sender, request, user, **kwargs):
     # Force session to be saved
     request.session.save()
 
+
 # Initialize Groq client
 client = Groq(api_key=settings.GROQ_API_KEY)
+
 
 @login_required(login_url='/login')
 def recommendations(request):
@@ -63,6 +65,7 @@ def recommendations(request):
         }
         return render(request, "recommendation.html", context)
     return HttpResponseBadRequest("Method not allowed")
+
 
 
 @login_required(login_url='/login')
@@ -115,8 +118,8 @@ def generate_recommendations(request):
             - "rating": Number (4.0-5.0),
             - "match_score": AI match %,
             - "itinerary": {{
-              "Day 1": "Detailed Activity",
-              "Day 2": "Detailed Activity",
+              "Day 1": "Activity",
+              "Day 2": "Activity",
               }},
             - "inclusions": ["Accomodation", "Sightseeing", "Meals", "Transfers", "Transport"],
             - "exclusions": ["Airfare", "Personal expenses", "Shopping"],
@@ -498,6 +501,7 @@ def generate_recommendations(request):
         )
 
 
+
 @login_required(login_url='/login')
 def trip_details(request, trip_slug):
     try:
@@ -643,11 +647,14 @@ def trip_details(request, trip_slug):
         except StopIteration:
             return render(request, "error.html", {"message": "Trip not found"})
 
+
+
 @login_required(login_url='/login')
 def itinerary_page(request):
     itineraries = Itinerary.objects.filter(user=request.user).select_related("trip")
     context = {"itineraries": itineraries}
     return render(request, "itinerary.html", context)
+
 
 
 @login_required(login_url='/login')
@@ -665,20 +672,6 @@ def delete_trip(request, trip_id):
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)}, status=400)
 
-
-@login_required(login_url='/login')
-def wishlist_page(request):
-    items = Wishlist.objects.filter(user=request.user)
-    total_estimated = sum(i.estimated_cost or 0 for i in items)
-    planned_count = Itinerary.objects.filter(user=request.user).count()
-
-    context = {
-        "wishlist_items": items,
-        "wishlist_count": items.count(),
-        "planned_count": planned_count,
-        "total_estimated": total_estimated,
-    }
-    return render(request, "wishlist.html", context)
 
 
 @login_required(login_url='/login')

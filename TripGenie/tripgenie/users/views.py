@@ -27,7 +27,6 @@ def register(request):
         email = request.POST.get("email", "").strip().lower()
         password = request.POST.get("password") or ""
         confirm = request.POST.get("confirmpassword") or ""
-        phone = request.POST.get("phone") or ""
 
         # Basic validation
         if not username or not first_name or not email or not password:
@@ -46,8 +45,10 @@ def register(request):
             return render(request, "signup.html")
 
         if User.objects.filter(username=username).exists():
-            messages.error(request, "Username already exists.")
-            return render(request, "signup.html")
+            messages.error(request, "Username already exists. Please choose a different username.")
+            return render(request, "signup.html", {
+                'form_data': request.POST
+            })
 
         # Check if email already exists
         if User.objects.filter(email=email).exists():
@@ -65,20 +66,24 @@ def register(request):
                 first_name=first_name,
                 last_name=last_name
             )
-            user.is_active = False  # Ensure user starts inactive
+            # Ensure user starts inactive. Save explicitly and force update of is_active
+            user.is_active = False
             user.save()
+            # Force-write the is_active field again to avoid any possible signals/overwrites
+            try:
+                User.objects.filter(pk=user.pk).update(is_active=False)
+                user.refresh_from_db()
+            except Exception:
+                # If DB-level update fails, log but continue (we still have user saved above)
+                logger.exception("Failed to force-update is_active for user %s", user.pk)
+            logger.info("New user created (id=%s, username=%s) is_active after save: %s", user.pk, user.username, user.is_active)
         except Exception as e:
             messages.error(request, "An error occurred during registration. Please try again.")
             return render(request, "signup.html", {
                 'form_data': request.POST
             })
 
-        # Optional profile (if your model requires it)
-        try:
-            UserProfile.objects.create(user=user, phone=phone)
-        except Exception:
-            # If UserProfile is not required or fails, log but continue
-            logger.exception("Unable to create UserProfile for user %s", username)
+
 
         # Generate & save OTP in session
         otp = generate_otp()
@@ -128,6 +133,13 @@ def verify_otp(request):
                 user = User.objects.get(pk=user_id)
                 user.is_active = True
                 user.save()
+                # mark email_verified on the related UserProfile (create if missing)
+                try:
+                    profile, _ = UserProfile.objects.get_or_create(user=user)
+                    profile.email_verified = True
+                    profile.save()
+                except Exception:
+                    logger.exception("Failed to set email_verified for user %s", user.pk)
                 request.session.pop('signup_otp', None)
                 request.session.pop('signup_user_id', None)
                 messages.success(request, "User registered successfully! Please login to continue.")
@@ -155,10 +167,17 @@ def user_login(request):
 
     user = authenticate(request, username=username, password=password)
     if user is not None:
-        if user.is_active:
+        # Require both Django's is_active and our email_verified flag
+        try:
+            profile = UserProfile.objects.get(user=user)
+            email_verified = getattr(profile, 'email_verified', False)
+        except UserProfile.DoesNotExist:
+            email_verified = False
+
+        if user.is_active and email_verified:
             login(request, user)
             return redirect("home")
-        messages.error(request, "Account inactive. Verify your email first.")
+        messages.error(request, "Account inactive or email not verified. Please verify your email first.")
     else:
         messages.error(request, "Invalid username or password.")
 
@@ -188,7 +207,6 @@ def edit_profile(request):
         request.user.last_name = request.POST.get('last_name')
         request.user.save()
 
-        profile.phone = request.POST.get('phone')
         if request.FILES.get('profile_picture'):
             profile.profile_picture = request.FILES['profile_picture']
         profile.save()

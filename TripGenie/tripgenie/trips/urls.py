@@ -13,7 +13,4 @@ urlpatterns = [
     path("trips/api/save-trip/", views.save_trip_to_itinerary, name="save_trip_to_itinerary"),
     path("trips/delete/<int:trip_id>/", views.delete_trip, name="delete_trip"),
 
-    # Wishlist
-    path("wishlist/", views.wishlist_page, name="wishlist"),
-
 ]
