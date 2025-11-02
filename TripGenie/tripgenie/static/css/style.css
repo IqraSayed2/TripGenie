@@ -2138,3 +2138,262 @@
 .light-theme .my-itineraries-subtitle {
   color: black;
 }
+
+/* ================================= FAQS ==============================================*/
+
+.faq-section,
+.support-section {
+  padding: 60px 0;
+  font-family: "Inter", sans-serif;
+  line-height: 1.6;
+}
+
+/* FAQ Header */
+.faq-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.faq-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.light-theme .faq-title{
+  color: black;
+}
+
+.faq-title-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #00c8f8, #17aeb0);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+}
+
+.light-theme .faq-title-icon{
+  color: black;
+}
+
+.faq-subtitle {
+  font-size: 1.1rem;
+  color: #d4d4d4;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.light-theme .faq-subtitle{
+  color: black;
+}
+
+/* Search bar */
+.faq-search-bar {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  color: #f5f5f5;
+  padding: 12px 20px;
+  padding-left: 50px;
+  position: relative;
+  font-size: 1rem;
+}
+
+.light-theme .faq-search-bar{
+  color: black;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.faq-search-bar::placeholder {
+  color: #b5b5b5;
+}
+
+.light-theme .faq-search-bar::placeholder{
+  color: black;
+}
+
+.faq-search-bar-icon {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  color: #b5b5b5;
+}
+
+.light-theme .faq-search-bar-icon{
+  color: black;
+}
+
+/* Category buttons */
+.faq-category-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.faq-category-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 30px;
+  color: #f5f5f5;
+  padding: 8px 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.light-theme .faq-category-btn{
+  color: black;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.faq-category-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.faq-category-btn.active {
+  background: linear-gradient(135deg, #00c8f8, #17aeb0);
+  border-color: transparent;
+}
+
+/* Accordion items */
+.accordion-item {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  margin-bottom: 15px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.accordion-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.accordion-header .accordion-button {
+  background: transparent;
+  color: #f5f5f5;
+  border: none;
+  box-shadow: none;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+}
+
+.light-theme .accordion-header .accordion-button{
+  color: black;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.accordion-button:not(.collapsed) {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.accordion-button::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+  transform: rotate(0deg);
+  transition: transform 0.2s ease-in-out;
+}
+
+.accordion-button:not(.collapsed)::after {
+  transform: rotate(180deg);
+}
+
+.accordion-body {
+  color: #b5b5b5;
+  font-size: 0.95rem;
+  padding: 0 20px 20px;
+}
+
+.light-theme .accordion-body{
+  color: black;
+}
+
+/* Support Section */
+.support-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #f5f5f5;
+  text-align: center;
+}
+
+.light-theme .support-title{
+  color: black;
+}
+
+.support-subtitle {
+  font-size: 1rem;
+  color: #d4d4d4;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.light-theme .support-subtitle{
+  color: black;
+}
+
+.support-btn {
+  padding: 15px 40px;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: linear-gradient(135deg, #00c8f8, #17aeb0);
+  color: #fff;
+  border-color: transparent;
+}
+
+.support-btn i {
+  margin-right: 10px;
+}
+
+.support-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.support-tier-info {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-top: 40px;
+  font-size: 0.9rem;
+  color: #b5b5b5;
+  text-align: center;
+}
+
+.light-theme .support-tier-info{
+  color: black;
+}
+
+.tier-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tier-badge i {
+  color: #ffc000;
+}

@@ -26,6 +26,7 @@ urlpatterns = [
     path('', include('users.urls')),
     path('', include('trips.urls')),
     path('', include('budget.urls')),
+    path('faqs/',views.faqs,name="faqs")
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

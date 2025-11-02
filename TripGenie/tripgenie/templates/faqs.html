@@ -1,0 +1,538 @@
+{% extends "base.html" %} 
+{% block title %}FAQs{% endblock title %} 
+{% block content %}
+
+<!-- FAQ Section -->
+<section class="faq-section">
+  <div class="container">
+    <div class="faq-header">
+      <h1 class="faq-title">
+        <span class="faq-title-icon"
+          ><i class="fa-solid fa-question fa-xl" style="color: #ffffff"></i
+        ></span>
+        Frequently Asked Questions
+      </h1>
+      <p class="faq-subtitle">
+        Find answers to common questions about TripGenie
+      </p>
+      <div
+        class="position-relative w-100 mx-auto mt-4"
+        style="max-width: 600px"
+      >
+        <i class="fa-solid fa-magnifying-glass faq-search-bar-icon"></i>
+        <input
+          type="text"
+          class="form-control faq-search-bar"
+          placeholder="Search FAQs..."
+        />
+      </div>
+      <div class="faq-category-buttons">
+        <button class="faq-category-btn active" data-filter="general">
+          General
+        </button>
+        <button class="faq-category-btn" data-filter="trip-planning">
+          Trip Planning
+        </button>
+        <button class="faq-category-btn" data-filter="budget-pricing">
+          Budget & Pricing
+        </button>
+        <button class="faq-category-btn" data-filter="membership">
+          Membership
+        </button>
+        <button class="faq-category-btn" data-filter="support">Support</button>
+      </div>
+    </div>
+
+    <div class="accordion" id="faq-accordion">
+      <!-- General -->
+      <div class="faq-category-content" data-category="general">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseOne"
+              aria-expanded="false"
+              aria-controls="collapseOne"
+            >
+              What is TripGenie and how does it work?
+            </button>
+          </h2>
+          <div
+            id="collapseOne"
+            class="accordion-collapse collapse"
+            data-bs-parent="#faq-accordion"
+          >
+            <div class="accordion-body">
+              TripGenie is an AI-powered travel platform that creates
+              personalized trip itineraries, manages budgets, and provides
+              real-time recommendations. You simply enter your preferences, and
+              our AI does the rest.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseTwo"
+              aria-expanded="false"
+              aria-controls="collapseTwo"
+            >
+              How accurate are the AI recommendations?
+            </button>
+          </h2>
+          <div
+            id="collapseTwo"
+            class="accordion-collapse collapse"
+            data-bs-parent="#faq-accordion"
+          >
+            <div class="accordion-body">
+              Our AI is continuously learning from millions of data points to
+              provide highly accurate and relevant recommendations tailored to
+              your unique travel style.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseThree"
+              aria-expanded="false"
+              aria-controls="collapseThree"
+            >
+              How many destinations does TripGenie support?
+            </button>
+          </h2>
+          <div
+            id="collapseThree"
+            class="accordion-collapse collapse"
+            data-bs-parent="#faq-accordion"
+          >
+            <div class="accordion-body">
+              We currently support over 1,000,000 destinations worldwide, with
+              new locations being added regularly.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseFour"
+              aria-expanded="false"
+              aria-controls="collapseFour"
+            >
+              Is there a mobile app available?
+            </button>
+          </h2>
+          <div
+            id="collapseFour"
+            class="accordion-collapse collapse"
+            data-bs-parent="#faq-accordion"
+          >
+            <div class="accordion-body">
+              Currently, TripGenie does not have a mobile app. However, our
+              website is fully responsive and works smoothly on all devices.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trip Planning -->
+      <div class="faq-category-content d-none" data-category="trip-planning">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseTP1"
+              aria-expanded="false"
+              aria-controls="collapseTP1"
+            >
+              How do I create a personalized itinerary?
+            </button>
+          </h2>
+          <div
+            id="collapseTP1"
+            class="accordion-collapse collapse"
+            data-bs-parent="#faq-accordion"
+          >
+            <div class="accordion-body">
+              Our platform guides you through a series of questions about your
+              interests, budget, and travel style to generate a custom
+              itinerary. You can then edit and fine-tune it to your liking.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseTP3"
+              aria-expanded="false"
+              aria-controls="collapseTP3"
+            >
+              What if I need to make last-minute changes to my trip?
+            </button>
+          </h2>
+          <div
+            id="collapseTP3"
+            class="accordion-collapse collapse"
+            data-bs-parent="#faq-accordion"
+          >
+            <div class="accordion-body">
+              You can easily edit your itinerary at any time from the web or
+              mobile app. Our AI will automatically adjust other recommendations
+              to fit the changes.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseTP4"
+              aria-expanded="false"
+              aria-controls="collapseTP4"
+            >
+              Can I access my trip plans offline?
+            </button>
+          </h2>
+          <div
+            id="collapseTP4"
+            class="accordion-collapse collapse"
+            data-bs-parent="#faq-accordion"
+          >
+            <div class="accordion-body">
+              No, TripGenie currently does not offer offline access. You can
+              view and edit your trips online anytime through our responsive
+              website.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Budget & Pricing -->
+      <div class="faq-category-content d-none" data-category="budget-pricing">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseBP1"
+              aria-expanded="false"
+              aria-controls="collapseBP1"
+            >
+              How accurate are the budget estimates?
+            </button>
+          </h2>
+          <div
+            id="collapseBP1"
+            class="accordion-collapse collapse"
+            data-bs-parent="#faq-accordion"
+          >
+            <div class="accordion-body">
+              TripGenie provides approximate cost estimates based on available
+              travel data. Prices may vary depending on real-time availability
+              and market changes.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseBP2"
+              aria-expanded="false"
+              aria-controls="collapseBP2"
+            >
+              Are there any hidden costs or fees?
+            </button>
+          </h2>
+          <div
+            id="collapseBP2"
+            class="accordion-collapse collapse"
+            data-bs-parent="#faq-accordion"
+          >
+            <div class="accordion-body">
+              We believe in transparent pricing. All costs are clearly outlined
+              in your plan, and we do not charge any hidden fees.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseBP3"
+              aria-expanded="false"
+              aria-controls="collapseBP3"
+            >
+              How can TripGenie help me save money?
+            </button>
+          </h2>
+          <div
+            id="collapseBP3"
+            class="accordion-collapse collapse"
+            data-bs-parent="#faq-accordion"
+          >
+            <div class="accordion-body">
+              Our platform finds exclusive deals and offers on flights and
+              accommodations to help you save on your trip.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseBP4"
+              aria-expanded="false"
+              aria-controls="collapseBP4"
+            >
+              Can I track expenses during my trip?
+            </button>
+          </h2>
+          <div
+            id="collapseBP4"
+            class="accordion-collapse collapse"
+            data-bs-parent="#faq-accordion"
+          >
+            <div class="accordion-body">
+              Yes, our mobile app includes an expense tracker that allows you to
+              log all your spending and stay within your budget.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Membership -->
+      <div class="faq-category-content d-none" data-category="membership">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseM1"
+              aria-expanded="false"
+              aria-controls="collapseM1"
+            >
+              What are the different membership tiers?
+            </button>
+          </h2>
+          <div
+            id="collapseM1"
+            class="accordion-collapse collapse"
+            data-bs-parent="#faq-accordion"
+          >
+            <div class="accordion-body">
+              We offer Explorer (free), Adventurer (premium) plans to suit every
+              type of traveler.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseM2"
+              aria-expanded="false"
+              aria-controls="collapseM2"
+            >
+              Can I upgrade or downgrade my membership?
+            </button>
+          </h2>
+          <div
+            id="collapseM2"
+            class="accordion-collapse collapse"
+            data-bs-parent="#faq-accordion"
+          >
+            <div class="accordion-body">
+              You can easily change your plan at any time from your account
+              settings.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseM3"
+              aria-expanded="false"
+              aria-controls="collapseM3"
+            >
+              How do I cancel my membership?
+            </button>
+          </h2>
+          <div
+            id="collapseM3"
+            class="accordion-collapse collapse"
+            data-bs-parent="#faq-accordion"
+          >
+            <div class="accordion-body">
+              You can cancel your membership at any time from your account
+              settings without any fees.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Support -->
+      <div class="faq-category-content d-none" data-category="support">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseS1"
+              aria-expanded="false"
+              aria-controls="collapseS1"
+            >
+              What kind of customer support do you provide?
+            </button>
+          </h2>
+          <div
+            id="collapseS1"
+            class="accordion-collapse collapse"
+            data-bs-parent="#faq-accordion"
+          >
+            <div class="accordion-body">
+              We offer various levels of support: Email support for Explorer,
+              Priority support for Adventurer, and 24/7 VIP support for Jet
+              Setter members.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseS2"
+              aria-expanded="false"
+              aria-controls="collapseS2"
+            >
+              What if I need help during my trip?
+            </button>
+          </h2>
+          <div
+            id="collapseS2"
+            class="accordion-collapse collapse"
+            data-bs-parent="#faq-accordion"
+          >
+            <div class="accordion-body">
+              Our support team is available to assist you with any issues or
+              questions while you're traveling.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseS3"
+              aria-expanded="false"
+              aria-controls="collapseS3"
+            >
+              How secure is my personal and payment information?
+            </button>
+          </h2>
+          <div
+            id="collapseS3"
+            class="accordion-collapse collapse"
+            data-bs-parent="#faq-accordion"
+          >
+            <div class="accordion-body">
+              We use industry-standard encryption and security protocols to
+              protect your data. Your privacy and security are our top
+              priorities.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseS4"
+              aria-expanded="false"
+              aria-controls="collapseS4"
+            >
+              What is your refund policy?
+            </button>
+          </h2>
+          <div
+            id="collapseS4"
+            class="accordion-collapse collapse"
+            data-bs-parent="#faq-accordion"
+          >
+            <div class="accordion-body">
+              We offer a 30-day money-back guarantee for all of our paid plans.
+              If you're not satisfied, you can request a full refund within the
+              first 30 days.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Support Section -->
+<section class="support-section">
+  <div class="container text-center">
+    <h2 class="support-title">Still have questions?</h2>
+    <p class="support-subtitle">
+      Our support team is here to help you plan the perfect trip
+    </p>
+    <div class="row justify-content-center g-3">
+      <div class="col-auto">
+        <a href="#" class="btn support-btn">
+          <i class="fa-solid fa-comments"></i> Contact
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="support-tier-info">
+    <div class="tier-badge">
+      <i class="fa-solid fa-star"></i> Explorer: Email support
+    </div>
+    <div class="tier-badge">
+      <i class="fa-solid fa-bolt"></i> Adventurer: Priority support
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}

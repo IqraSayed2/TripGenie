@@ -30,7 +30,7 @@ AI_KEY_TO_CATEGORY = {
 
 CATEGORIES = [c[0] for c in Expense.CATEGORY_CHOICES]
 
-@login_required
+@login_required(login_url='/login')
 def budget_page(request):
     saved_trips = Itinerary.objects.filter(user=request.user)
     selected_trip = None
@@ -154,7 +154,7 @@ def budget_page(request):
     return render(request, "budget.html", context)
 
 
-@login_required
+@login_required(login_url='/login')
 @require_POST
 def api_add_expense(request):
     """
@@ -221,7 +221,7 @@ def api_add_expense(request):
     return JsonResponse(response)
 
 
-@login_required
+@login_required(login_url='/login')
 @require_POST
 def api_update_category_budget(request):
     """
@@ -279,7 +279,7 @@ def api_update_category_budget(request):
     })
 
 
-@login_required
+@login_required(login_url='/login')
 def api_get_recent_expenses(request, trip_id):
     """Return the latest 10 expenses for the selected trip (for AJAX updates)."""
     itinerary = get_object_or_404(Itinerary, id=trip_id, user=request.user)

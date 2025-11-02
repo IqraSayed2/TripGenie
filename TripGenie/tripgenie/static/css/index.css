@@ -440,11 +440,6 @@ body {
   .navbar .d-flex > button:not(.theme-toggle) {
     margin-bottom: 0.5rem;
   }
-
-  .lang-currency-selector {
-    margin: 0.5rem auto;
-    order: -1;
-  }
 }
 
 @media (max-width: 576px) {
@@ -498,95 +493,6 @@ body {
 .logo-icon img {
   height: 60px;
   width: 75px;
-}
-
-/* =================================
-   WHY CHOOSE TRIPGENIE SECTION
-   ================================= */
-
-.why-choose-section {
-  position: relative;
-  z-index: 2;
-  padding: 5rem 0;
-}
-
-.section-title {
-  font-size: clamp(2.5rem, 6vw, 4rem);
-  font-weight: 900;
-  background: linear-gradient(45deg, #00bcd4, #20b2aa, #ff9800);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 1.5rem;
-}
-
-.section-subtitle {
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  opacity: 0.8;
-  line-height: 1.6;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-/* Stats Cards */
-.stats-card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  padding: 2.5rem 1.5rem;
-  text-align: center;
-  transition: all 0.3s ease;
-  height: 100%;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-.light-theme .stats-card {
-  background: rgba(255, 255, 255, 0.711);
-}
-
-.stats-icon {
-  font-size: 2.5rem;
-  color: #00bcd4;
-  transition: all 0.3s ease;
-}
-
-.stats-card:hover .stats-icon {
-  transform: scale(1.1);
-  color: #20b2aa;
-}
-
-.stats-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0, 188, 212, 0.2);
-  border-color: rgba(0, 188, 212, 0.3);
-}
-
-.stats-number {
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
-  font-weight: 900;
-  color: #00bcd4;
-  margin-bottom: 0.5rem;
-  position: relative;
-  z-index: 2;
-}
-
-.stats-label {
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  color: rgba(255, 255, 255, 0.8);
-  font-weight: 500;
-  position: relative;
-  z-index: 2;
-}
-
-.light-theme .stats-label {
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  color: black;
-  font-weight: 500;
-  position: relative;
-  z-index: 2;
 }
 
 /* =================================
@@ -1016,7 +922,7 @@ body {
 }
 
 .tripgenie-description-text {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   color: rgba(255, 255, 255, 0.9);
   margin-bottom: 4rem;
   max-width: 600px;
@@ -1251,9 +1157,6 @@ body {
 
 /* Footer content grid layout */
 .tg-footer-content {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 2rem;
   max-width: 1200px;
   margin: 0 auto;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -1312,91 +1215,6 @@ body {
   color: black;
 }
 
-/* Newsletter section */
-.tg-newsletter-section {
-  text-align: center;
-  margin-top: 3rem;
-  margin-bottom: 2rem;
-}
-
-.tg-newsletter-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--tg-heading-color);
-  margin-bottom: 1rem;
-}
-
-.light-theme .tg-newsletter-title {
-  color: rgba(0, 0, 0, 0.637);
-}
-
-.tg-newsletter-subtitle {
-  font-size: 1rem;
-  color: var(--tg-subtle-text);
-  max-width: 600px;
-  margin: 0 auto 1.5rem;
-}
-
-.light-theme .tg-newsletter-subtitle {
-  color: rgba(0, 0, 0, 0.621);
-}
-
-.tg-newsletter-form {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.tg-newsletter-input {
-  padding: 0.75rem 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  color: var(--tg-text-color);
-  font-size: 1rem;
-  width: 100%;
-  max-width: 300px;
-  outline: none;
-  transition: border-color 0.3s ease;
-}
-
-.light-theme .tg-newsletter-input {
-  background: rgba(255, 255, 255, 0.711);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.tg-newsletter-input:focus {
-  border-color: var(--tg-accent-color);
-}
-
-.light-theme .tg-newsletter-input {
-  color: rgba(0, 0, 0, 0.649);
-}
-
-.tg-newsletter-input::placeholder {
-  color: var(--tg-subtle-text);
-}
-
-.tg-subscribe-btn {
-  padding: 0.75rem 1.5rem;
-  border: none;
-  background: #00bcd4;
-  color: #fff;
-  border-radius: 10px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-.tg-subscribe-btn:hover {
-  transform: scale(1.05);
-}
-
 /* Footer copyright and social media */
 .tg-footer-bottom {
   display: flex;
@@ -1404,35 +1222,17 @@ body {
   align-items: center;
   text-align: center;
   gap: 1rem;
-  padding-top: 2rem;
+  padding-top: 1rem;
+  margin-left: 8.6rem;
 }
 
 .tg-copyright {
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: var(--tg-subtle-text);
 }
 
 .light-theme .tg-copyright {
   color: rgba(0, 0, 0, 0.579);
-}
-
-.tg-footer-socials {
-  display: flex;
-  gap: 1.5rem;
-}
-
-.tg-social-icon {
-  color: var(--tg-icon-color);
-  transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.light-theme .tg-social-icon {
-  color: rgba(0, 0, 0, 0.579);
-}
-
-.tg-social-icon:hover {
-  color: var(--tg-accent-color);
-  transform: scale(1.2);
 }
 
 /* TripGenie contact info and tagline */
@@ -1624,69 +1424,6 @@ body {
   }
 }
 
-/* ======================================================================*/
-/* Language & Currency Selector */
-.lang-currency-selector .combined-selector {
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.lang-currency-selector .combined-selector:hover {
-  background: #20d0d4;
-  color: white;
-  border-color: #20d0d4;
-}
-
-/* Light theme adjustments */
-.light-theme .lang-currency-selector .combined-selector {
-  background: rgba(0, 0, 0, 0.05);
-  color: #2c3e50;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-}
-
-/* Make language & currency items look clickable */
-.lang-item,
-.currency-item {
-  cursor: pointer;
-  padding: 6px 12px;
-  border-radius: 6px;
-  background: rgba(0, 0, 0, 0.05);
-  color: #333;
-  transition: background 0.3s ease, color 0.3s ease;
-  margin: 2px 0;
-}
-
-/* Light theme hover */
-.lang-item:hover,
-.currency-item:hover {
-  background: rgba(0, 0, 0, 0.15);
-}
-
-/* Dark theme */
-.dark-theme .lang-item,
-.dark-theme .currency-item {
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-}
-
-/* Dark theme hover */
-.dark-theme .lang-item:hover,
-.dark-theme .currency-item:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-/* Selected state (works in both themes) */
-.lang-item.selected,
-.currency-item.selected {
-  background: #20d0d4;
-  color: #fff;
-}
 /* =====================================================================*/
 /* Theme Switch Container */
 .theme-switch {

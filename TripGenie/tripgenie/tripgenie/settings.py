@@ -146,15 +146,11 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "hello.tripgenie@gmail.com"
-EMAIL_HOST_PASSWORD = "rrqo uagi grof kmmz"
+EMAIL_HOST_PASSWORD = "your_password"
 EMAIL_USE_TLS = True
 
 # OpenAI API key setting
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "your_openai_api_key")
 
 # Groq API key setting
-GROQ_API_KEY = "your_goaq_api_key"  
-
-GOOGLE_CSE_API_KEY="your_google_cse_api_key"
-
-GOOGLE_CSE_CX="your google_cse_cx_key"
+GROQ_API_KEY = "your_groq_api_key"  # Get this from console.groq.com

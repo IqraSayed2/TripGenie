@@ -67,10 +67,13 @@
               <a class="nav-link" href="{% url 'itinerary' %}">My Itinerary</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'wishlist' %}">Wishlist</a>
+              <a class="nav-link" href="{% url 'faqs' %}">FAQs</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#membership">Membership</a>
+              <a class="nav-link" href="#">Travel Tools</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Membership</a>
             </li>
           </ul>
 
@@ -137,18 +140,6 @@
           >
           {% endif %}
 
-          <!-- Language & Currency Selector -->
-          <div class="lang-currency-selector me-3">
-            <button
-              class="combined-selector"
-              type="button"
-              data-bs-toggle="modal"
-              data-bs-target="#langCurrencyModal"
-            >
-              Eng | INR
-            </button>
-          </div>
-
           <label class="theme-switch">
             <input type="checkbox" id="themeToggle" />
             <span class="slider">
@@ -187,57 +178,80 @@
       </div>
     </section>
 
-    <!-- Why Choose TripGenie Section -->
-    <section class="why-choose-section py-5">
+    <!--How it works-->
+    <section class="how-it-works-section py-5">
       <div class="container">
-        <div class="row justify-content-center mb-5">
-          <div class="col-lg-8 text-center">
-            <h2 class="section-title mb-4">Why Choose TripGenie?</h2>
-            <p class="section-subtitle">
-              Powered by advanced AI to make your travel planning smarter,
-              easier, and more enjoyable
-            </p>
-          </div>
-        </div>
+        <h2 class="tripgenie-main-heading">How TripGenie Works for You</h2>
+        <p class="tripgenie-description-text">
+          Planning your perfect trip with TripGenie is simple and
+          straightforward. <br />
+          Follow these easy steps to discover amazing destinations and create
+          unforgettable memories.
+        </p>
 
-        <div class="row g-4">
-          <div class="col-lg-3 col-md-6">
-            <div class="stats-card">
-              <div class="stats-icon">
-                <i class="fas fa-globe-americas"></i>
-              </div>
-              <div class="stats-number">100+</div>
-              <div class="stats-label">Destinations</div>
+        <div class="row g-4 justify-content-center">
+          <!-- Step 1: Discover & Explore -->
+          <div class="col-lg-3 col-md-6 col-sm-10 position-relative">
+            <div class="step-card">
+              <div class="step-number-circle">01</div>
+              <div class="step-icon"><i class="fas fa-search"></i></div>
+              <h3 class="step-title">Discover & Explore</h3>
+              <p class="step-description">
+                Enter your travel preferences, interests, and budget to browse
+                our AI-curated selection of destinations tailored just for you.
+              </p>
+            </div>
+            <div class="d-none d-lg-block step-arrow">
+              <i class="fas fa-arrow-right"></i>
             </div>
           </div>
 
-          <div class="col-lg-3 col-md-6">
-            <div class="stats-card">
-              <div class="stats-icon">
-                <i class="fas fa-users"></i>
-              </div>
-              <div class="stats-number">500+</div>
-              <div class="stats-label">Happy Travelers</div>
+          <!-- Step 2: Plan & Customize -->
+          <div class="col-lg-3 col-md-6 col-sm-10 position-relative">
+            <div class="step-card">
+              <div class="step-number-circle">02</div>
+              <div class="step-icon"><i class="fas fa-calendar-check"></i></div>
+              <h3 class="step-title">Plan & Customize</h3>
+              <p class="step-description">
+                Choose your preferred destinations, customize your itinerary,
+                and set your travel dates with our intelligent planning tools.
+              </p>
+            </div>
+            <div class="d-none d-lg-block step-arrow">
+              <i class="fas fa-arrow-right"></i>
             </div>
           </div>
 
-          <div class="col-lg-3 col-md-6">
-            <div class="stats-card">
-              <div class="stats-icon">
-                <i class="fas fa-star"></i>
+          <!-- Step 3: Budget & Track -->
+          <div class="col-lg-3 col-md-6 col-sm-10 position-relative">
+            <div class="step-card">
+              <div class="step-number-circle">03</div>
+              <div class="step-icon">
+                <i class="fas fa-wallet"></i>
               </div>
-              <div class="stats-number">95%</div>
-              <div class="stats-label">Satisfaction Rate</div>
+              <h3 class="step-title">Budget & Track</h3>
+              <p class="step-description">
+                Plan your trip expenses with our smart budget planner. Get
+                approximate cost estimates and easily track your spending
+                throughout your journey.
+              </p>
+            </div>
+            <div class="d-none d-lg-block step-arrow">
+              <i class="fas fa-arrow-right"></i>
             </div>
           </div>
 
-          <div class="col-lg-3 col-md-6">
-            <div class="stats-card">
-              <div class="stats-icon">
-                <i class="fas fa-dollar-sign"></i>
-              </div>
-              <div class="stats-number">$2B+</div>
-              <div class="stats-label">Savings Generated</div>
+          <!-- Step 4: Enjoy & Reflect -->
+          <div class="col-lg-3 col-md-6 col-sm-10 position-relative">
+            <div class="step-card">
+              <div class="step-number-circle">04</div>
+              <div class="step-icon"><i class="fas fa-heart"></i></div>
+              <h3 class="step-title">Enjoy & Reflect</h3>
+              <p class="step-description">
+                Enjoy your well-planned adventure and revisit your saved
+                itineraries anytime to relive your favorite moments or plan your
+                next getaway.
+              </p>
             </div>
           </div>
         </div>
@@ -249,7 +263,7 @@
       <div class="container">
         <div class="row justify-content-center mb-5">
           <div class="col-lg-8 text-center">
-            <h2 class="section-title mb-4">Premium Features</h2>
+            <h2 class="td-header-title">Premium Features</h2>
           </div>
         </div>
         <div class="service-cards-responsive-grid">
@@ -330,7 +344,7 @@
             </p>
           </div>
 
-          <!-- Group Planning Card -->
+          <!-- Smart Insights & Tips Card -->
           <div
             class="travel-service-card-module collaborative-group-planning-section"
           >
@@ -342,14 +356,14 @@
                 <path d="M16 3.13a4 4 0 0 1 0 7.75" />
               </svg>
             </div>
-            <h3 class="service-feature-heading-text">Group Planning</h3>
+            <h3 class="service-feature-heading-text">Smart Insights & Tips</h3>
             <p class="service-benefits-description-copy">
-              Collaborate with friends and family to plan the perfect group
-              adventure.
+              Receive AI-generated travel tips, best time to visit suggestions,
+              and local do’s & don’ts tailored to your destination.
             </p>
           </div>
 
-          <!-- Travel Safety Card -->
+          <!-- Priority Support Card -->
           <div
             class="travel-service-card-module comprehensive-travel-safety-dashboard"
           >
@@ -358,10 +372,10 @@
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
               </svg>
             </div>
-            <h3 class="service-feature-heading-text">Travel Safety</h3>
+            <h3 class="service-feature-heading-text">Priority Support</h3>
             <p class="service-benefits-description-copy">
-              Get real-time safety alerts, local guidelines, and emergency
-              information.
+              Access dedicated premium support for faster assistance with your
+              trip planning needs.
             </p>
           </div>
         </div>
@@ -646,84 +660,6 @@
       </div>
     </section>
 
-    <!--How it works-->
-    <section class="how-it-works-section py-5">
-      <div class="container">
-        <h2 class="tripgenie-main-heading">How TripGenie Works for You</h2>
-        <p class="tripgenie-description-text">
-          Planning your perfect trip with TripGenie is simple and
-          straightforward. <br />
-          Follow these easy steps to discover amazing destinations and create
-          unforgettable memories.
-        </p>
-
-        <div class="row g-4 justify-content-center">
-          <!-- Step 1: Discover & Explore -->
-          <div class="col-lg-3 col-md-6 col-sm-10 position-relative">
-            <div class="step-card">
-              <div class="step-number-circle">01</div>
-              <div class="step-icon"><i class="fas fa-search"></i></div>
-              <h3 class="step-title">Discover & Explore</h3>
-              <p class="step-description">
-                Enter your travel preferences, interests, and budget to browse
-                our AI-curated selection of destinations tailored just for you.
-              </p>
-            </div>
-            <div class="d-none d-lg-block step-arrow">
-              <i class="fas fa-arrow-right"></i>
-            </div>
-          </div>
-
-          <!-- Step 2: Plan & Customize -->
-          <div class="col-lg-3 col-md-6 col-sm-10 position-relative">
-            <div class="step-card">
-              <div class="step-number-circle">02</div>
-              <div class="step-icon"><i class="fas fa-calendar-check"></i></div>
-              <h3 class="step-title">Plan & Customize</h3>
-              <p class="step-description">
-                Choose your preferred destinations, customize your itinerary,
-                and set your travel dates with our intelligent planning tools.
-              </p>
-            </div>
-            <div class="d-none d-lg-block step-arrow">
-              <i class="fas fa-arrow-right"></i>
-            </div>
-          </div>
-
-          <!-- Step 3: Book & Travel -->
-          <div class="col-lg-3 col-md-6 col-sm-10 position-relative">
-            <div class="step-card">
-              <div class="step-number-circle">03</div>
-              <div class="step-icon">
-                <i class="fas fa-plane-departure"></i>
-              </div>
-              <h3 class="step-title">Book & Travel</h3>
-              <p class="step-description">
-                Finalize your bookings with our secure payment system and embark
-                on your perfectly planned journey with confidence.
-              </p>
-            </div>
-            <div class="d-none d-lg-block step-arrow">
-              <i class="fas fa-arrow-right"></i>
-            </div>
-          </div>
-
-          <!-- Step 4: Enjoy & Remember -->
-          <div class="col-lg-3 col-md-6 col-sm-10 position-relative">
-            <div class="step-card">
-              <div class="step-number-circle">04</div>
-              <div class="step-icon"><i class="fas fa-heart"></i></div>
-              <h3 class="step-title">Enjoy & Remember</h3>
-              <p class="step-description">
-                Experience amazing adventures and create lasting memories. Share
-                your journey and help others discover their next destination.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!--What travellers says 'Review'-->
     <section class="reviews-section py-5">
       <div class="container">
@@ -808,9 +744,9 @@
     <div style="flex-grow: 1"></div>
 
     <footer class="tg-footer-container">
-      <div class="tg-footer-content">
+      <div class="tg-footer-content row">
         <!-- Company Info Section -->
-        <div class="tg-company-info">
+        <div class="tg-company-info col-lg-6 mb-6">
           <div class="tg-logo-container">
             <!-- Placeholder SVG for logo -->
             <svg
@@ -836,47 +772,10 @@
             <span class="tg-logo-text">TripGenie</span>
           </div>
           <p class="tg-tagline">
-            Your AI-powered travel companion that creates personalized
-            itineraries, manages budgets, and discovers hidden gems around the
-            world.
+            Your AI-powered travel companion that helps you plan smarter, travel
+            better, and experience more from personalized itineraries and smart
+            budget management to discovering hidden gems across the world.
           </p>
-          <div class="tg-contact-info">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path
-                d="M12 2a8.5 8.5 0 0 0-8.5 8.5c0 6.6 8.5 12.5 8.5 12.5s8.5-5.9 8.5-12.5A8.5 8.5 0 0 0 12 2z"
-              ></path>
-              <circle cx="12" cy="10" r="3"></circle>
-            </svg>
-            <span>San Francisco, CA 94102</span>
-          </div>
-          <div class="tg-contact-info">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path
-                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
-              ></path>
-            </svg>
-            <span>+1 (555) 123-4567</span>
-          </div>
           <div class="tg-contact-info">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -894,12 +793,12 @@
               ></path>
               <polyline points="22,6 12,13 2,6"></polyline>
             </svg>
-            <span>hello@tripgenie.com</span>
+            <span>hello.tripgenie@gmail.com</span>
           </div>
         </div>
 
         <!-- Quick Links Section -->
-        <div>
+        <div class="col-lg-3 mb-3">
           <h3 class="tg-footer-section-title">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -923,42 +822,12 @@
             <li><a href="#">Recommendations</a></li>
             <li><a href="#">Budget Planner</a></li>
             <li><a href="#">My Itinerary</a></li>
-            <li><a href="#">Wishlist</a></li>
+            <li><a href="#">Membership</a></li>
           </ul>
         </div>
 
-        <!-- Destinations Section -->
-        <div>
-          <h3 class="tg-footer-section-title">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path
-                d="M12 2a8.5 8.5 0 0 0-8.5 8.5c0 6.6 8.5 12.5 8.5 12.5s8.5-5.9 8.5-12.5A8.5 8.5 0 0 0 12 2z"
-              ></path>
-              <circle cx="12" cy="10" r="3"></circle>
-            </svg>
-            Destinations
-          </h3>
-          <ul class="tg-footer-links-list">
-            <li><a href="#">Europe Tours</a></li>
-            <li><a href="#">Asia Adventures</a></li>
-            <li><a href="#">Beach Holidays</a></li>
-            <li><a href="#">Mountain Escapes</a></li>
-            <li><a href="#">City Breaks</a></li>
-          </ul>
-        </div>
-
-        <!-- Company Section -->
-        <div>
+        <!-- Support Section -->
+        <div class="col-lg-3 mb-3">
           <h3 class="tg-footer-section-title">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -975,7 +844,7 @@
                 d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
               ></path>
             </svg>
-            Company
+            Support
           </h3>
           <ul class="tg-footer-links-list">
             <li><a href="#">About Us</a></li>
@@ -987,315 +856,11 @@
         </div>
       </div>
 
-      <!-- Newsletter Section -->
-      <div class="tg-newsletter-section">
-        <h2 class="tg-newsletter-title">Stay Updated with Travel Deals</h2>
-        <p class="tg-newsletter-subtitle">
-          Get exclusive offers, travel tips, and destination guides delivered to
-          your inbox.
-        </p>
-        <form class="tg-newsletter-form">
-          <input
-            type="email"
-            class="tg-newsletter-input"
-            placeholder="Enter your email"
-            required
-          />
-          <button type="submit" class="tg-subscribe-btn">Subscribe</button>
-        </form>
-      </div>
-
       <!-- Bottom copyright and social links -->
       <div class="tg-footer-bottom">
         <div class="tg-copyright">© 2025 TripGenie. All rights reserved.</div>
-        <div class="tg-footer-socials">
-          <a href="#" class="tg-social-icon" aria-label="Facebook">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path
-                d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
-              ></path>
-            </svg>
-          </a>
-          <a href="#" class="tg-social-icon" aria-label="Twitter">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path
-                d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"
-              ></path>
-            </svg>
-          </a>
-          <a href="#" class="tg-social-icon" aria-label="Instagram">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-            </svg>
-          </a>
-          <a href="#" class="tg-social-icon" aria-label="YouTube">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path
-                d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2A16.7 16.7 0 0 0 12 3.52s-6.72-.18-8.6.9A2.78 2.78 0 0 0 1.46 6.42C1 8.35 1 12 1 12s0 3.65.46 5.58a2.78 2.78 0 0 0 1.94 2 16.7 16.7 0 0 0 8.6.9 16.7 16.7 0 0 0 8.6-.9 2.78 2.78 0 0 0 1.94-2C23 15.65 23 12 23 12s0-3.65-.46-5.58z"
-              ></path>
-              <path d="M10 15.5l5.5-3.5-5.5-3.5v7z"></path>
-            </svg>
-          </a>
-        </div>
       </div>
     </footer>
-
-    <!-- Language & Currency Modal -->
-    <div
-      class="modal fade"
-      id="langCurrencyModal"
-      tabindex="-1"
-      aria-labelledby="langCurrencyModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <ul class="nav nav-tabs" id="langCurrencyTabs" role="tablist">
-              <li class="nav-item" role="presentation">
-                <button
-                  class="nav-link active"
-                  id="languages-tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#languages-pane"
-                  type="button"
-                  role="tab"
-                  style="color: black; cursor: pointer"
-                >
-                  Languages
-                </button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button
-                  class="nav-link"
-                  id="currency-tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#currency-pane"
-                  type="button"
-                  role="tab"
-                  style="color: black; cursor: pointer"
-                >
-                  Currency
-                </button>
-              </li>
-            </ul>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <div class="tab-content" id="langCurrencyTabContent">
-              <!-- Languages Tab -->
-              <div
-                class="tab-pane fade show active"
-                id="languages-pane"
-                role="tabpanel"
-              >
-                <h6>All Languages</h6>
-                <div class="lang-grid">
-                  <div class="lang-item selected" data-lang="eng">
-                    🇮🇳 <span>English (India)</span>
-                  </div>
-                  <div class="lang-item" data-lang="zh">
-                    🇨🇳 <span>繁體中文</span>
-                  </div>
-                  <div class="lang-item" data-lang="jp">
-                    🇯🇵 <span>日本語</span>
-                  </div>
-                  <div class="lang-item" data-lang="kr">
-                    🇰🇷 <span>한국어</span>
-                  </div>
-                  <div class="lang-item" data-lang="th">
-                    🇹🇭 <span>ภาษาไทย</span>
-                  </div>
-                  <div class="lang-item" data-lang="uk">
-                    🇺🇦 <span>Українська</span>
-                  </div>
-                  <div class="lang-item" data-lang="ar">
-                    AR <span>العربية</span>
-                  </div>
-                  <div class="lang-item" data-lang="id">
-                    🇮🇩 <span>Bahasa Indonesia</span>
-                  </div>
-                  <div class="lang-item" data-lang="my">
-                    🇲🇾 <span>Bahasa Melayu</span>
-                  </div>
-                  <div class="lang-item" data-lang="dk">
-                    🇩🇰 <span>Dansk</span>
-                  </div>
-                  <div class="lang-item" data-lang="de">
-                    🇩🇪 <span>Deutsch</span>
-                  </div>
-                  <div class="lang-item" data-lang="en">
-                    EN <span>English</span>
-                  </div>
-                  <div class="lang-item" data-lang="es">
-                    🇪🇸 <span>Español</span>
-                  </div>
-                  <div class="lang-item" data-lang="fr">
-                    🇫🇷 <span>Français</span>
-                  </div>
-                  <div class="lang-item" data-lang="it">
-                    🇮🇹 <span>Italiano</span>
-                  </div>
-                  <div class="lang-item" data-lang="nl">
-                    🇳🇱 <span>Nederlands</span>
-                  </div>
-                  <div class="lang-item" data-lang="pl">
-                    🇵🇱 <span>Polski</span>
-                  </div>
-                  <div class="lang-item" data-lang="pt">
-                    🇧🇷 <span>Português (Brasil)</span>
-                  </div>
-                  <div class="lang-item" data-lang="fi">
-                    🇫🇮 <span>Suomi</span>
-                  </div>
-                  <div class="lang-item" data-lang="sv">
-                    🇸🇪 <span>Svenska</span>
-                  </div>
-                  <div class="lang-item" data-lang="vi">
-                    🇻🇳 <span>Tiếng Việt</span>
-                  </div>
-                  <div class="lang-item" data-lang="tr">
-                    🇹🇷 <span>Türkçe</span>
-                  </div>
-                  <div class="lang-item" data-lang="el">
-                    🇬🇷 <span>Ελληνικά</span>
-                  </div>
-                  <div class="lang-item" data-lang="ru">
-                    🇷🇺 <span>Русский</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Currency Tab -->
-              <div class="tab-pane fade" id="currency-pane" role="tabpanel">
-                <div class="currency-section">
-                  <h6>Top currencies</h6>
-                  <div class="currency-grid">
-                    <div class="currency-item selected" data-currency="INR">
-                      <strong>INR</strong> - Indian Rupee
-                    </div>
-                    <div class="currency-item" data-currency="EUR">
-                      <strong>EUR</strong> - Euro (€)
-                    </div>
-                    <div class="currency-item" data-currency="USD">
-                      <strong>USD</strong> - United States Dollar ($)
-                    </div>
-                  </div>
-
-                  <h6>All currencies</h6>
-                  <div class="currency-grid">
-                    <div class="currency-item" data-currency="AED">
-                      <strong>AED</strong> - United Arab Emirates Dirham
-                    </div>
-                    <div class="currency-item" data-currency="AUD">
-                      <strong>AUD</strong> - Australian Dollar (AU$)
-                    </div>
-                    <div class="currency-item" data-currency="BHD">
-                      <strong>BHD</strong> - Bahraini Dinar
-                    </div>
-                    <div class="currency-item" data-currency="BRL">
-                      <strong>BRL</strong> - Brazilian Real
-                    </div>
-                    <div class="currency-item" data-currency="CAD">
-                      <strong>CAD</strong> - Canadian Dollar
-                    </div>
-                    <div class="currency-item" data-currency="CHF">
-                      <strong>CHF</strong> - Swiss Franc
-                    </div>
-                    <div class="currency-item" data-currency="CLP">
-                      <strong>CLP</strong> - Chilean Peso
-                    </div>
-                    <div class="currency-item" data-currency="CNY">
-                      <strong>CNY</strong> - Chinese Yuan
-                    </div>
-                    <div class="currency-item" data-currency="COP">
-                      <strong>COP</strong> - Colombian Peso
-                    </div>
-                    <div class="currency-item" data-currency="DKK">
-                      <strong>DKK</strong> - Danish Krone
-                    </div>
-                    <div class="currency-item" data-currency="EUR">
-                      <strong>EUR</strong> - Euro (€)
-                    </div>
-                    <div class="currency-item" data-currency="GBP">
-                      <strong>GBP</strong> - British Pound (£)
-                    </div>
-                    <div class="currency-item" data-currency="HKD">
-                      <strong>HKD</strong> - Hong Kong Dollar (HK$)
-                    </div>
-                    <div class="currency-item" data-currency="IDR">
-                      <strong>IDR</strong> - Indonesian Rupiah
-                    </div>
-                    <div class="currency-item" data-currency="JOD">
-                      <strong>JOD</strong> - Jordanian Dinar
-                    </div>
-                    <div class="currency-item" data-currency="JPY">
-                      <strong>JPY</strong> - Japanese Yen
-                    </div>
-                    <div class="currency-item" data-currency="KRW">
-                      <strong>KRW</strong> - Korean Won (₩)
-                    </div>
-                    <div class="currency-item" data-currency="KWD">
-                      <strong>KWD</strong> - Kuwaiti Dinar
-                    </div>
-                    <div class="currency-item" data-currency="LAK">
-                      <strong>LAK</strong> - Lao Kip
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </body>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
