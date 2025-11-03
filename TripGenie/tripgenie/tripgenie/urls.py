@@ -26,7 +26,8 @@ urlpatterns = [
     path('', include('users.urls')),
     path('', include('trips.urls')),
     path('', include('budget.urls')),
-    path('faqs/',views.faqs,name="faqs")
+    path('faqs/',views.faqs,name="faqs"),
+    path("contact/", views.contact, name="contact"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

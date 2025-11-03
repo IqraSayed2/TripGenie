@@ -140,17 +140,23 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 
-# EMail Settings
+
+# Email Settings
+
+# Admin email to receive contact form messages
+ADMIN_EMAIL = "hello.tripgenie@gmail.com"
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "hello.tripgenie@gmail.com"
-EMAIL_HOST_PASSWORD = "your_password"
+EMAIL_HOST_PASSWORD = "rrqo uagi grof kmmz"
 EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
 
 # OpenAI API key setting
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "your_openai_api_key")
 
 # Groq API key setting
-GROQ_API_KEY = "your_groq_api_key"  # Get this from console.groq.com
+GROQ_API_KEY = "your_groq_api_key"  

@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block title %}Contact{% endblock %}
+{% block content %}
+
+{% if messages %}
+  <div class="message-container">
+    {% for message in messages %}
+      <div class="alert alert-success" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<div class="contact-form-body">
+  <div class="contact-form-container">
+    <!-- Contact Form Card -->
+    <div class="contact-form-card contact-form-message-card">
+      <div class="contact-form-card-header">
+        <i class="fas fa-envelope-open-text contact-form-icon"></i>
+        <h2>Get in Touch</h2>
+      </div>
+
+      <form method="post" action="{% url 'contact' %}" class="contact-form-grid">
+        {% csrf_token %}
+        <div class="contact-form-input-group">
+          <label for="contact-form-name">Name</label>
+          <input
+            type="text"
+            id="contact-form-name"
+            name="contact-form-name"
+            placeholder="Your full name"
+            value="{% if request.user.is_authenticated %}{{ request.user.first_name }}{% endif %}"
+            required
+          />
+        </div>
+
+        <div class="contact-form-input-group">
+          <label for="contact-form-email">Email</label>
+          <input
+            type="email"
+            id="contact-form-email"
+            name="contact-form-email"
+            placeholder="your.email@example.com"
+            value="{% if request.user.is_authenticated %}{{ request.user.email }}{% endif %}"
+            required
+          />
+        </div>
+
+        <div class="contact-form-input-group contact-form-full-width">
+          <label for="contact-form-subject">Subject</label>
+          <select id="contact-form-subject" name="contact-form-subject" required>
+            <option value="">Select a subject</option>
+            <option value="Travel Recommendation Issue">Travel Recommendation Issue</option>
+            <option value="Budget Planner Help">Budget Planner Help</option>
+            <option value="Itinerary Assistance">Itinerary Assistance</option>
+            <option value="Account Problem">Account Problem</option>
+            <option value="Feedback or Suggestion">Feedback or Suggestion</option>
+            <option value="General Inquiry">General Inquiry</option>
+          </select>
+        </div>
+
+        <div class="contact-form-input-group contact-form-full-width">
+          <label for="contact-form-message">Message</label>
+          <textarea
+            id="contact-form-message"
+            name="contact-form-message"
+            rows="5"
+            placeholder="Write your message here..."
+            required
+          ></textarea>
+        </div>
+
+        <button type="submit" class="contact-form-submit-button contact-form-full-width">
+          <i class="fas fa-paper-plane contact-form-button-icon"></i>
+          Send Message
+        </button>
+      </form>
+    </div>
+
+    <!-- Sidebar Info -->
+    <div class="contact-form-sidebar">
+      <div class="contact-form-card contact-form-quick-contact-card">
+        <div class="contact-form-card-header">
+          <i class="fas fa-headset contact-form-icon"></i>
+          <h2>Support Info</h2>
+        </div>
+        <div class="contact-form-contact-item">
+          <i class="fas fa-envelope contact-form-green-icon"></i>
+          <div>
+            <div class="contact-form-contact-label">Email Support</div>
+            <a href="mailto:hello.tripgenie@gmail.com" class="contact-form-email-link">
+              hello.tripgenie@gmail.com
+            </a>
+            <div class="contact-form-contact-subtext">We typically respond within 2-4 business hours</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form-card contact-form-hours-card">
+        <div class="contact-form-card-header">
+          <i class="far fa-clock contact-form-icon"></i>
+          <h2>Business Hours</h2>
+        </div>
+        <div class="contact-form-hours-item">
+          <div class="contact-form-hours-label">Customer Support</div>
+          <div class="contact-form-hours-value contact-form-green-text">24/7 Available</div>
+        </div>
+        <div class="contact-form-hours-item">
+          <div class="contact-form-hours-label">Live Chat</div>
+          <div class="contact-form-hours-value contact-form-green-text">24/7 Available</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

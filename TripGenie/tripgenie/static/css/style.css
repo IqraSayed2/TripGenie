@@ -2164,7 +2164,7 @@
   justify-content: center;
 }
 
-.light-theme .faq-title{
+.light-theme .faq-title {
   color: black;
 }
 
@@ -2179,7 +2179,7 @@
   margin-right: 15px;
 }
 
-.light-theme .faq-title-icon{
+.light-theme .faq-title-icon {
   color: black;
 }
 
@@ -2190,7 +2190,7 @@
   margin: 0 auto;
 }
 
-.light-theme .faq-subtitle{
+.light-theme .faq-subtitle {
   color: black;
 }
 
@@ -2206,7 +2206,7 @@
   font-size: 1rem;
 }
 
-.light-theme .faq-search-bar{
+.light-theme .faq-search-bar {
   color: black;
   background: rgba(255, 255, 255, 0.9);
 }
@@ -2215,7 +2215,7 @@
   color: #b5b5b5;
 }
 
-.light-theme .faq-search-bar::placeholder{
+.light-theme .faq-search-bar::placeholder {
   color: black;
 }
 
@@ -2227,7 +2227,7 @@
   color: #b5b5b5;
 }
 
-.light-theme .faq-search-bar-icon{
+.light-theme .faq-search-bar-icon {
   color: black;
 }
 
@@ -2251,7 +2251,7 @@
   transition: all 0.3s ease;
 }
 
-.light-theme .faq-category-btn{
+.light-theme .faq-category-btn {
   color: black;
   background: rgba(255, 255, 255, 0.9);
 }
@@ -2286,7 +2286,7 @@
   color: #f5f5f5;
   border: none;
   box-shadow: none;
-  font-weight: 600;
+  font-weight: 400;
   font-size: 1rem;
   padding: 20px;
   display: flex;
@@ -2295,7 +2295,7 @@
   text-align: left;
 }
 
-.light-theme .accordion-header .accordion-button{
+.light-theme .accordion-header .accordion-button {
   color: black;
   background: rgba(255, 255, 255, 0.9);
 }
@@ -2320,7 +2320,7 @@
   padding: 0 20px 20px;
 }
 
-.light-theme .accordion-body{
+.light-theme .accordion-body {
   color: black;
 }
 
@@ -2332,7 +2332,7 @@
   text-align: center;
 }
 
-.light-theme .support-title{
+.light-theme .support-title {
   color: black;
 }
 
@@ -2343,7 +2343,7 @@
   margin-bottom: 40px;
 }
 
-.light-theme .support-subtitle{
+.light-theme .support-subtitle {
   color: black;
 }
 
@@ -2384,7 +2384,7 @@
   text-align: center;
 }
 
-.light-theme .support-tier-info{
+.light-theme .support-tier-info {
   color: black;
 }
 
@@ -2396,4 +2396,355 @@
 
 .tier-badge i {
   color: #ffc000;
+}
+
+/* ================================= CONTACT ==============================================*/
+
+.contact-form-body {
+  font-family: "Poppins", sans-serif;
+  color: #e6edf3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+.contact-form-container {
+  display: flex;
+  gap: 30px;
+  max-width: 1400px;
+  width: 100%;
+  align-items: flex-start;
+}
+
+/* Card Styles */
+.contact-form-card {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 35px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-form-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+}
+
+/* 60/40 Column Layout */
+.contact-form-message-card {
+  flex: 3;
+  min-width: 550px;
+}
+
+.contact-form-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  flex: 2;
+  min-width: 380px;
+}
+
+/* Card Header Styles */
+.contact-form-card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #30363d;
+}
+
+.contact-form-card-header h2 {
+  margin: 0;
+  font-size: 1.8em;
+  font-weight: 600;
+  color: #e6edf3;
+}
+
+.light-theme .contact-form-card-header h2 {
+  color: black;
+}
+
+.contact-form-icon {
+  font-size: 2em;
+  color: #20d0d4;
+  margin-right: 18px;
+  text-shadow: 0 0 8px rgba(40, 167, 165, 0.4);
+}
+
+.light-theme .contact-form-icon {
+  text-shadow: 0 0 8px rgba(40, 167, 165, 0.047);
+}
+
+/* Form Grid Styles */
+.contact-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+}
+
+.contact-form-input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-form-full-width {
+  grid-column: 1 / -1;
+}
+
+.contact-form-input-group label {
+  margin-bottom: 10px;
+  font-size: 1em;
+  font-weight: 500;
+  color: #8b949e;
+}
+
+.light-theme .contact-form-input-group label {
+  color: black;
+}
+
+.contact-form-input-group input,
+.contact-form-input-group textarea,
+.contact-form-input-group select {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 14px 18px;
+  color: #e6edf3;
+  font-size: 1.05em;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  appearance: none;
+}
+
+.light-theme .contact-form-input-group input,
+.light-theme .contact-form-input-group textarea,
+.light-theme .contact-form-input-group select {
+  color: black;
+}
+
+.contact-form-input-group input::placeholder,
+.contact-form-input-group textarea::placeholder {
+  color: #6a737d;
+}
+
+.light-theme .contact-form-input-group input::placeholder,
+.light-theme .contact-form-input-group textarea::placeholder {
+  color: black;
+}
+
+.contact-form-input-group input:focus,
+.contact-form-input-group textarea:focus,
+.contact-form-input-group select:focus {
+  border-color: #20d0d4;
+  box-shadow: 0 0 0 4px rgba(40, 167, 165, 0.4);
+  background-color: #0c1015;
+}
+
+.light-theme .contact-form-input-group input:focus,
+.light-theme .contact-form-input-group textarea:focus,
+.light-theme .contact-form-input-group select:focus {
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.contact-form-input-group select {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23e6edf3"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 18px center;
+  background-size: 14px;
+  padding-right: 50px;
+}
+
+.contact-form-input-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* Dropdown specific styles */
+.contact-form-input-group select option {
+  background-color: #161b22;
+  color: #e6edf3;
+  padding: 10px;
+}
+
+.light-theme .contact-form-input-group select option {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: black;
+}
+
+/* Submit Button */
+.contact-form-submit-button {
+  background: linear-gradient(135deg, #20d0d4, #2ac2c4);
+  border: none;
+  border-radius: 8px;
+  padding: 16px 30px;
+  color: #fff;
+  font-size: 1.2em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 4px 15px rgba(40, 167, 165, 0.4);
+}
+
+.contact-form-submit-button:hover {
+  background: linear-gradient(135deg, #20d0d4, #2ac2c4);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(40, 167, 165, 0.4);
+}
+
+.contact-form-submit-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(40, 167, 165, 0.4);
+}
+
+.contact-form-button-icon {
+  font-size: 1.1em;
+}
+
+/* Quick Contact and Business Hours Items */
+.contact-form-contact-item,
+.contact-form-hours-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+  gap: 20px;
+}
+
+.contact-form-contact-item:last-child,
+.contact-form-hours-item:last-child {
+  margin-bottom: 0;
+}
+
+.contact-form-green-icon {
+  font-size: 1.8em;
+  color: #20d0d4;
+  text-shadow: 0 0 6px rgba(40, 167, 69, 0.3);
+}
+
+.contact-form-contact-label,
+.contact-form-hours-label {
+  font-size: 0.95em;
+  color: #9aa5b1;
+  font-weight: 500;
+}
+
+.light-theme .contact-form-contact-label,
+.light-theme .contact-form-hours-label {
+  color: #0c1015;
+}
+
+.contact-form-contact-value {
+  font-weight: 600;
+  color: #e6edf3;
+  font-size: 1.15em;
+}
+
+.contact-form-email-link {
+  color: #20d0d4;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+  font-size: 17px;
+}
+
+.contact-form-email-link:hover {
+  color: #20d0d4;
+  text-decoration: underline;
+}
+
+.contact-form-contact-subtext {
+  font-size: 0.85em;
+  color: #9aa5b1;
+}
+
+.light-theme .contact-form-contact-subtext {
+  color: black;
+}
+
+.contact-form-hours-value {
+  font-weight: 600;
+  color: #e6edf3;
+  margin-left: auto;
+  font-size: 1.15em;
+}
+
+.contact-form-green-text {
+  color: #20d0d4;
+}
+
+/* Responsive Design */
+@media (max-width: 1050px) {
+  .contact-form-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .contact-form-message-card,
+  .contact-form-sidebar {
+    min-width: unset;
+    width: 100%;
+    max-width: 700px;
+  }
+}
+
+@media (max-width: 650px) {
+  .contact-form-body {
+    padding: 15px;
+  }
+
+  .contact-form-card {
+    padding: 25px;
+  }
+
+  .contact-form-card-header h2 {
+    font-size: 1.5em;
+  }
+
+  .contact-form-icon {
+    font-size: 1.7em;
+  }
+
+  .contact-form-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .contact-form-submit-button {
+    font-size: 1.05em;
+    padding: 14px 25px;
+  }
+
+  .contact-form-contact-item,
+  .contact-form-hours-item {
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .contact-form-green-icon {
+    font-size: 1.5em;
+  }
+}
+
+@media (max-width: 400px) {
+  .contact-form-card {
+    padding: 20px;
+  }
+  .contact-form-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .contact-form-card-header h2 {
+    margin-top: 10px;
+    font-size: 1.3em;
+  }
+  .contact-form-icon {
+    margin-right: 0;
+  }
 }

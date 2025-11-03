@@ -69,14 +69,7 @@ def register(request):
             # Ensure user starts inactive. Save explicitly and force update of is_active
             user.is_active = False
             user.save()
-            # Force-write the is_active field again to avoid any possible signals/overwrites
-            try:
-                User.objects.filter(pk=user.pk).update(is_active=False)
-                user.refresh_from_db()
-            except Exception:
-                # If DB-level update fails, log but continue (we still have user saved above)
-                logger.exception("Failed to force-update is_active for user %s", user.pk)
-            logger.info("New user created (id=%s, username=%s) is_active after save: %s", user.pk, user.username, user.is_active)
+
         except Exception as e:
             messages.error(request, "An error occurred during registration. Please try again.")
             return render(request, "signup.html", {
@@ -133,13 +126,6 @@ def verify_otp(request):
                 user = User.objects.get(pk=user_id)
                 user.is_active = True
                 user.save()
-                # mark email_verified on the related UserProfile (create if missing)
-                try:
-                    profile, _ = UserProfile.objects.get_or_create(user=user)
-                    profile.email_verified = True
-                    profile.save()
-                except Exception:
-                    logger.exception("Failed to set email_verified for user %s", user.pk)
                 request.session.pop('signup_otp', None)
                 request.session.pop('signup_user_id', None)
                 messages.success(request, "User registered successfully! Please login to continue.")
@@ -152,6 +138,7 @@ def verify_otp(request):
             messages.error(request, "Invalid OTP. Please try again.")
 
     return render(request, "otp.html")
+
 
 
 def user_login(request):
@@ -167,17 +154,11 @@ def user_login(request):
 
     user = authenticate(request, username=username, password=password)
     if user is not None:
-        # Require both Django's is_active and our email_verified flag
-        try:
-            profile = UserProfile.objects.get(user=user)
-            email_verified = getattr(profile, 'email_verified', False)
-        except UserProfile.DoesNotExist:
-            email_verified = False
-
-        if user.is_active and email_verified:
+        
+        if user.is_active:
             login(request, user)
             return redirect("home")
-        messages.error(request, "Account inactive or email not verified. Please verify your email first.")
+        messages.error(request, "Account inactive. Please verify your email first.")
     else:
         messages.error(request, "Invalid username or password.")
 
