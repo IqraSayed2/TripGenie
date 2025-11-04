@@ -1,4 +1,4 @@
-/* ============================================ SIGNUP PAGE ============================================================== */
+/* =================================== SIGNUP PAGE =========================================== */
 
 .signupbody {
   min-height: 80vh;
@@ -276,7 +276,7 @@
   display: block;
 }
 
-/* ============================================ LOGIN PAGE ============================================================== */
+/* ================================== LOGIN PAGE ============================================ */
 
 .login-container {
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
@@ -2746,5 +2746,231 @@
   }
   .contact-form-icon {
     margin-right: 0;
+  }
+}
+
+/* ====================================== ABOUT US =========================================*/
+
+.about-section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 20px;
+}
+
+.about-section-title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #20d0d4;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.about-section-subtitle {
+  font-size: 1.15rem;
+  color: #b0b0b0;
+  margin-bottom: 60px;
+  text-align: center;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+.about-content-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+.about-section-text {
+  padding-right: 20px;
+}
+
+.about-title-heading {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #20d0d4;
+  text-align: left;
+}
+
+.about-intro-text {
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+  color: #e0e0e0;
+}
+
+.about-description-text {
+  font-size: 1rem;
+  margin-bottom: 40px;
+  color: #c0c0c0;
+}
+
+.about-values-list {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.about-value-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.about-value-icon {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #20d0d4, #3ae3e6);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 15px rgba(40, 167, 165, 0.4);
+}
+
+.about-value-icon svg {
+  width: 24px;
+  height: 24px;
+  fill: white;
+}
+
+.about-value-content {
+  flex: 1;
+}
+
+.about-value-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #ffffff;
+}
+
+.about-value-description {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #b0b0b0;
+}
+
+.about-achievements-section {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.about-achievements-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 35px;
+  text-align: center;
+  color: #20d0d4;
+}
+
+.about-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 20px;
+}
+
+.about-stat-card {
+  text-align: center;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 15px;
+  border: 1px solid rgba(40, 167, 165, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.about-stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(40, 167, 165, 0.4);
+}
+
+.about-stat-icon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #20d0d4, #38cdcf);
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 15px;
+  box-shadow: 0 4px 15px rgba(40, 167, 165, 0.4);
+}
+
+.about-stat-icon svg {
+  width: 30px;
+  height: 30px;
+  fill: white;
+}
+
+.about-stat-label {
+  font-size: 0.95rem;
+  color: #b0b0b0;
+  font-weight: 500;
+}
+
+.light-theme .about-section-title,
+.light-theme .about-section-subtitle,
+.light-theme .about-intro-text,
+.light-theme .about-description-text,
+.light-theme .about-value-title,
+.light-theme .about-value-description,
+.light-theme .about-stat-label {
+  color: black;
+}
+
+@media (max-width: 992px) {
+  .about-content-wrapper {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .about-section-text {
+    padding-right: 0;
+  }
+  .about-title-heading {
+    text-align: center;
+  }
+  .about-intro-text,
+  .about-description-text {
+    text-align: center;
+  }
+  .about-values-list {
+    align-items: center;
+  }
+  .about-value-item {
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-section-title {
+    font-size: 2.2rem;
+  }
+
+  .about-section-subtitle {
+    font-size: 1rem;
+    margin-bottom: 40px;
+  }
+
+  .about-section-container {
+    padding: 40px 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-section-title {
+    font-size: 2rem;
+  }
+  .about-title-heading {
+    font-size: 2rem;
+  }
+  .about-intro-text,
+  .about-description-text {
+    font-size: 1rem;
   }
 }

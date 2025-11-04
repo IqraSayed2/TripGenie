@@ -159,4 +159,4 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "your_openai_api_key")
 
 # Groq API key setting
-GROQ_API_KEY = "your_groq_api_key"  
+GROQ_API_KEY = "your_groq_api_key"  # Get this from console.groq.com
