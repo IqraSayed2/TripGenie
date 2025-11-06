@@ -1,0 +1,1524 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% block title %}Travel Tools{% endblock %} 
+{% block content %}
+
+<main class="utilities-main-content">
+  <!-- Tabs -->
+  <div class="utilities-tabs">
+    <button
+      class="utilities-tab active"
+      onclick="switchUtilityTab('currency', event)"
+      style="box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28)"
+    >
+      <i class="fas fa-coins"></i> Currency Converter
+    </button>
+    <button
+      class="utilities-tab"
+      onclick="switchUtilityTab('weather', event)"
+      style="box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28)"
+    >
+      <i class="fas fa-cloud-sun"></i> Weather Forecast
+    </button>
+    <button
+      class="utilities-tab"
+      onclick="switchUtilityTab('timezone', event)"
+      style="box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28)"
+    >
+      <i class="fas fa-globe"></i> World Clock
+    </button>
+  </div>
+
+  <!-- Currency Converter -->
+  <div class="utilities-content-section active" id="currency">
+    <div class="utilities-card">
+      <div class="utilities-card-header">
+        <div class="utilities-card-icon">
+          <i class="fas fa-coins"></i>
+        </div>
+        <div class="utilities-card-title">
+          <h3>Currency Converter</h3>
+          <p>Convert between different currencies instantly.</p>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label>Amount</label>
+        <input
+          type="number"
+          id="fromAmount"
+          class="form-control toolinput"
+          value="1"
+        />
+      </div>
+
+      <div class="row">
+        <div class="mb-3 col">
+          <label>From Currency</label>
+          <select id="fromCurrency" class="form-select toolinput">
+            <!-- Expanded currency list (ISO codes with country names) -->
+            <option value="AED">AED - United Arab Emirates</option>
+            <option value="AFN">AFN - Afghanistan</option>
+            <option value="ALL">ALL - Albania</option>
+            <option value="AMD">AMD - Armenia</option>
+            <option value="ANG">ANG - Curaçao / Caribbean</option>
+            <option value="AOA">AOA - Angola</option>
+            <option value="ARS">ARS - Argentina</option>
+            <option value="AUD">AUD - Australia</option>
+            <option value="AWG">AWG - Aruba</option>
+            <option value="AZN">AZN - Azerbaijan</option>
+            <option value="BAM">BAM - Bosnia and Herzegovina</option>
+            <option value="BBD">BBD - Barbados</option>
+            <option value="BDT">BDT - Bangladesh</option>
+            <option value="BGN">BGN - Bulgaria</option>
+            <option value="BHD">BHD - Bahrain</option>
+            <option value="BIF">BIF - Burundi</option>
+            <option value="BMD">BMD - Bermuda</option>
+            <option value="BND">BND - Brunei</option>
+            <option value="BOB">BOB - Bolivia</option>
+            <option value="BRL">BRL - Brazil</option>
+            <option value="BSD">BSD - Bahamas</option>
+            <option value="BWP">BWP - Botswana</option>
+            <option value="BYN">BYN - Belarus</option>
+            <option value="BZD">BZD - Belize</option>
+            <option value="CAD">CAD - Canada</option>
+            <option value="CDF">CDF - Democratic Republic of the Congo</option>
+            <option value="CHF">CHF - Switzerland</option>
+            <option value="CLP">CLP - Chile</option>
+            <option value="CNY">CNY - China</option>
+            <option value="COP">COP - Colombia</option>
+            <option value="CRC">CRC - Costa Rica</option>
+            <option value="CZK">CZK - Czech Republic</option>
+            <option value="DKK">DKK - Denmark</option>
+            <option value="DOP">DOP - Dominican Republic</option>
+            <option value="DZD">DZD - Algeria</option>
+            <option value="EGP">EGP - Egypt</option>
+            <option value="EUR">EUR - Eurozone</option>
+            <option value="FJD">FJD - Fiji</option>
+            <option value="GBP">GBP - United Kingdom</option>
+            <option value="GEL">GEL - Georgia</option>
+            <option value="GHS">GHS - Ghana</option>
+            <option value="GIP">GIP - Gibraltar</option>
+            <option value="GTQ">GTQ - Guatemala</option>
+            <option value="HKD">HKD - Hong Kong</option>
+            <option value="HNL">HNL - Honduras</option>
+            <option value="HRK">HRK - Croatia</option>
+            <option value="HTG">HTG - Haiti</option>
+            <option value="HUF">HUF - Hungary</option>
+            <option value="IDR">IDR - Indonesia</option>
+            <option value="ILS">ILS - Israel</option>
+            <option value="INR" selected>INR - India</option>
+            <option value="IQD">IQD - Iraq</option>
+            <option value="IRR">IRR - Iran</option>
+            <option value="ISK">ISK - Iceland</option>
+            <option value="JMD">JMD - Jamaica</option>
+            <option value="JOD">JOD - Jordan</option>
+            <option value="JPY">JPY - Japan</option>
+            <option value="KES">KES - Kenya</option>
+            <option value="KGS">KGS - Kyrgyzstan</option>
+            <option value="KHR">KHR - Cambodia</option>
+            <option value="KWD">KWD - Kuwait</option>
+            <option value="KYD">KYD - Cayman Islands</option>
+            <option value="KZT">KZT - Kazakhstan</option>
+            <option value="LAK">LAK - Laos</option>
+            <option value="LBP">LBP - Lebanon</option>
+            <option value="LKR">LKR - Sri Lanka</option>
+            <option value="LRD">LRD - Liberia</option>
+            <option value="LSL">LSL - Lesotho</option>
+            <option value="MAD">MAD - Morocco</option>
+            <option value="MDL">MDL - Moldova</option>
+            <option value="MKD">MKD - North Macedonia</option>
+            <option value="MMK">MMK - Myanmar</option>
+            <option value="MNT">MNT - Mongolia</option>
+            <option value="MOP">MOP - Macau</option>
+            <option value="MRU">MRU - Mauritania</option>
+            <option value="MUR">MUR - Mauritius</option>
+            <option value="MVR">MVR - Maldives</option>
+            <option value="MWK">MWK - Malawi</option>
+            <option value="MXN">MXN - Mexico</option>
+            <option value="MYR">MYR - Malaysia</option>
+            <option value="MZN">MZN - Mozambique</option>
+            <option value="NAD">NAD - Namibia</option>
+            <option value="NGN">NGN - Nigeria</option>
+            <option value="NIO">NIO - Nicaragua</option>
+            <option value="NOK">NOK - Norway</option>
+            <option value="NPR">NPR - Nepal</option>
+            <option value="NZD">NZD - New Zealand</option>
+            <option value="OMR">OMR - Oman</option>
+            <option value="PAB">PAB - Panama</option>
+            <option value="PEN">PEN - Peru</option>
+            <option value="PGK">PGK - Papua New Guinea</option>
+            <option value="PHP">PHP - Philippines</option>
+            <option value="PKR">PKR - Pakistan</option>
+            <option value="PLN">PLN - Poland</option>
+            <option value="PYG">PYG - Paraguay</option>
+            <option value="QAR">QAR - Qatar</option>
+            <option value="RON">RON - Romania</option>
+            <option value="RSD">RSD - Serbia</option>
+            <option value="RUB">RUB - Russia</option>
+            <option value="RWF">RWF - Rwanda</option>
+            <option value="SAR">SAR - Saudi Arabia</option>
+            <option value="SEK">SEK - Sweden</option>
+            <option value="SGD">SGD - Singapore</option>
+            <option value="SHP">SHP - St. Helena</option>
+            <option value="SLL">SLL - Sierra Leone</option>
+            <option value="SOS">SOS - Somalia</option>
+            <option value="SRD">SRD - Suriname</option>
+            <option value="SSP">SSP - South Sudan</option>
+            <option value="STN">STN - São Tomé and Príncipe</option>
+            <option value="SVC">SVC - El Salvador</option>
+            <option value="SYP">SYP - Syria</option>
+            <option value="THB">THB - Thailand</option>
+            <option value="TJS">TJS - Tajikistan</option>
+            <option value="TMT">TMT - Turkmenistan</option>
+            <option value="TND">TND - Tunisia</option>
+            <option value="TOP">TOP - Tonga</option>
+            <option value="TRY">TRY - Turkey</option>
+            <option value="TTD">TTD - Trinidad and Tobago</option>
+            <option value="TWD">TWD - Taiwan</option>
+            <option value="TZS">TZS - Tanzania</option>
+            <option value="UAH">UAH - Ukraine</option>
+            <option value="UGX">UGX - Uganda</option>
+            <option value="USD">USD - United States</option>
+            <option value="UYU">UYU - Uruguay</option>
+            <option value="UZS">UZS - Uzbekistan</option>
+            <option value="VND">VND - Vietnam</option>
+            <option value="VUV">VUV - Vanuatu</option>
+            <option value="WST">WST - Samoa</option>
+            <option value="XAF">XAF - Central African CFA</option>
+            <option value="XCD">XCD - East Caribbean Dollar</option>
+            <option value="XOF">XOF - West African CFA</option>
+            <option value="XPF">XPF - CFP Franc</option>
+            <option value="YER">YER - Yemen</option>
+            <option value="ZAR">ZAR - South Africa</option>
+            <option value="ZMW">ZMW - Zambia</option>
+            <option value="ZWL">ZWL - Zimbabwe</option>
+          </select>
+        </div>
+
+        <div class="mb-3 col">
+          <label>To Currency</label>
+          <select id="toCurrency" class="form-select toolinput">
+            <!-- same list as fromCurrency, keep INR selected by default -->
+            <option value="AED">AED - United Arab Emirates</option>
+            <option value="AFN">AFN - Afghanistan</option>
+            <option value="ALL">ALL - Albania</option>
+            <option value="AMD">AMD - Armenia</option>
+            <option value="ANG">ANG - Curaçao / Caribbean</option>
+            <option value="AOA">AOA - Angola</option>
+            <option value="ARS">ARS - Argentina</option>
+            <option value="AUD">AUD - Australia</option>
+            <option value="AWG">AWG - Aruba</option>
+            <option value="AZN">AZN - Azerbaijan</option>
+            <option value="BAM">BAM - Bosnia and Herzegovina</option>
+            <option value="BBD">BBD - Barbados</option>
+            <option value="BDT">BDT - Bangladesh</option>
+            <option value="BGN">BGN - Bulgaria</option>
+            <option value="BHD">BHD - Bahrain</option>
+            <option value="BIF">BIF - Burundi</option>
+            <option value="BMD">BMD - Bermuda</option>
+            <option value="BND">BND - Brunei</option>
+            <option value="BOB">BOB - Bolivia</option>
+            <option value="BRL">BRL - Brazil</option>
+            <option value="BSD">BSD - Bahamas</option>
+            <option value="BWP">BWP - Botswana</option>
+            <option value="BYN">BYN - Belarus</option>
+            <option value="BZD">BZD - Belize</option>
+            <option value="CAD">CAD - Canada</option>
+            <option value="CDF">CDF - Democratic Republic of the Congo</option>
+            <option value="CHF">CHF - Switzerland</option>
+            <option value="CLP">CLP - Chile</option>
+            <option value="CNY">CNY - China</option>
+            <option value="COP">COP - Colombia</option>
+            <option value="CRC">CRC - Costa Rica</option>
+            <option value="CZK">CZK - Czech Republic</option>
+            <option value="DKK">DKK - Denmark</option>
+            <option value="DOP">DOP - Dominican Republic</option>
+            <option value="DZD">DZD - Algeria</option>
+            <option value="EGP">EGP - Egypt</option>
+            <option value="EUR" selected>EUR - Eurozone</option>
+            <option value="FJD">FJD - Fiji</option>
+            <option value="GBP">GBP - United Kingdom</option>
+            <option value="GEL">GEL - Georgia</option>
+            <option value="GHS">GHS - Ghana</option>
+            <option value="GIP">GIP - Gibraltar</option>
+            <option value="GTQ">GTQ - Guatemala</option>
+            <option value="HKD">HKD - Hong Kong</option>
+            <option value="HNL">HNL - Honduras</option>
+            <option value="HRK">HRK - Croatia</option>
+            <option value="HTG">HTG - Haiti</option>
+            <option value="HUF">HUF - Hungary</option>
+            <option value="IDR">IDR - Indonesia</option>
+            <option value="ILS">ILS - Israel</option>
+            <option value="INR">INR - India</option>
+            <option value="IQD">IQD - Iraq</option>
+            <option value="IRR">IRR - Iran</option>
+            <option value="ISK">ISK - Iceland</option>
+            <option value="JMD">JMD - Jamaica</option>
+            <option value="JOD">JOD - Jordan</option>
+            <option value="JPY">JPY - Japan</option>
+            <option value="KES">KES - Kenya</option>
+            <option value="KGS">KGS - Kyrgyzstan</option>
+            <option value="KHR">KHR - Cambodia</option>
+            <option value="KWD">KWD - Kuwait</option>
+            <option value="KYD">KYD - Cayman Islands</option>
+            <option value="KZT">KZT - Kazakhstan</option>
+            <option value="LAK">LAK - Laos</option>
+            <option value="LBP">LBP - Lebanon</option>
+            <option value="LKR">LKR - Sri Lanka</option>
+            <option value="LRD">LRD - Liberia</option>
+            <option value="LSL">LSL - Lesotho</option>
+            <option value="MAD">MAD - Morocco</option>
+            <option value="MDL">MDL - Moldova</option>
+            <option value="MKD">MKD - North Macedonia</option>
+            <option value="MMK">MMK - Myanmar</option>
+            <option value="MNT">MNT - Mongolia</option>
+            <option value="MOP">MOP - Macau</option>
+            <option value="MRU">MRU - Mauritania</option>
+            <option value="MUR">MUR - Mauritius</option>
+            <option value="MVR">MVR - Maldives</option>
+            <option value="MWK">MWK - Malawi</option>
+            <option value="MXN">MXN - Mexico</option>
+            <option value="MYR">MYR - Malaysia</option>
+            <option value="MZN">MZN - Mozambique</option>
+            <option value="NAD">NAD - Namibia</option>
+            <option value="NGN">NGN - Nigeria</option>
+            <option value="NIO">NIO - Nicaragua</option>
+            <option value="NOK">NOK - Norway</option>
+            <option value="NPR">NPR - Nepal</option>
+            <option value="NZD">NZD - New Zealand</option>
+            <option value="OMR">OMR - Oman</option>
+            <option value="PAB">PAB - Panama</option>
+            <option value="PEN">PEN - Peru</option>
+            <option value="PGK">PGK - Papua New Guinea</option>
+            <option value="PHP">PHP - Philippines</option>
+            <option value="PKR">PKR - Pakistan</option>
+            <option value="PLN">PLN - Poland</option>
+            <option value="PYG">PYG - Paraguay</option>
+            <option value="QAR">QAR - Qatar</option>
+            <option value="RON">RON - Romania</option>
+            <option value="RSD">RSD - Serbia</option>
+            <option value="RUB">RUB - Russia</option>
+            <option value="RWF">RWF - Rwanda</option>
+            <option value="SAR">SAR - Saudi Arabia</option>
+            <option value="SEK">SEK - Sweden</option>
+            <option value="SGD">SGD - Singapore</option>
+            <option value="SHP">SHP - St. Helena</option>
+            <option value="SLL">SLL - Sierra Leone</option>
+            <option value="SOS">SOS - Somalia</option>
+            <option value="SRD">SRD - Suriname</option>
+            <option value="SSP">SSP - South Sudan</option>
+            <option value="STN">STN - São Tomé and Príncipe</option>
+            <option value="SVC">SVC - El Salvador</option>
+            <option value="SYP">SYP - Syria</option>
+            <option value="THB">THB - Thailand</option>
+            <option value="TJS">TJS - Tajikistan</option>
+            <option value="TMT">TMT - Turkmenistan</option>
+            <option value="TND">TND - Tunisia</option>
+            <option value="TOP">TOP - Tonga</option>
+            <option value="TRY">TRY - Turkey</option>
+            <option value="TTD">TTD - Trinidad and Tobago</option>
+            <option value="TWD">TWD - Taiwan</option>
+            <option value="TZS">TZS - Tanzania</option>
+            <option value="UAH">UAH - Ukraine</option>
+            <option value="UGX">UGX - Uganda</option>
+            <option value="USD">USD - United States</option>
+            <option value="UYU">UYU - Uruguay</option>
+            <option value="UZS">UZS - Uzbekistan</option>
+            <option value="VND">VND - Vietnam</option>
+            <option value="VUV">VUV - Vanuatu</option>
+            <option value="WST">WST - Samoa</option>
+            <option value="XAF">XAF - Central African CFA</option>
+            <option value="XCD">XCD - East Caribbean Dollar</option>
+            <option value="XOF">XOF - West African CFA</option>
+            <option value="XPF">XPF - CFP Franc</option>
+            <option value="YER">YER - Yemen</option>
+            <option value="ZAR">ZAR - South Africa</option>
+            <option value="ZMW">ZMW - Zambia</option>
+            <option value="ZWL">ZWL - Zimbabwe</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="utilities-convert-btn" onclick="convertCurrency()">
+        <i class="fas fa-calculator"></i> Convert
+      </button>
+
+      <div class="utilities-result-box" id="currencyResult">
+        <div class="utilities-result-label">Conversion Result</div>
+        <div class="utilities-result-value">--</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Weather -->
+  <div class="utilities-content-section" id="weather">
+    <div class="utilities-card">
+      <div class="utilities-card-header">
+        <div class="utilities-card-icon">
+          <i class="fas fa-cloud-sun"></i>
+        </div>
+        <div class="utilities-card-title">
+          <h3>Weather Forecast</h3>
+          <p>Convert between different currencies instantly.</p>
+        </div>
+      </div>
+
+      <div class="search-container">
+        <div class="input-wrapper">
+          <input
+            type="text"
+            id="locationInput"
+            placeholder="Search for any city..."
+          />
+        </div>
+        <button id="searchBtn"><i class="fas fa-search"></i> Search</button>
+      </div>
+
+      <div id="loading" class="loading">
+        <div class="spinner"></div>
+        Fetching weather data...
+      </div>
+
+      <div id="weatherCard" class="weather-card">
+        <div class="weather-header">
+          <i class="fas fa-map-marker-alt location-icon"></i>
+          <div id="location" class="location"></div>
+        </div>
+
+        <div class="main-weather">
+          <div id="temperature" class="temperature"></div>
+          <i id="weatherIcon" class="weather-icon"></i>
+        </div>
+
+        <div id="condition" class="condition"></div>
+        <div id="timeDisplay" class="time-display"></div>
+
+        <div class="weather-details">
+          <div class="detail-item">
+            <i class="fas fa-thermometer-half detail-icon"></i>
+            <div class="detail-label">Feels Like</div>
+            <div id="feelsLike" class="detail-value"></div>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-tint detail-icon"></i>
+            <div class="detail-label">Humidity</div>
+            <div id="humidity" class="detail-value"></div>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-wind detail-icon"></i>
+            <div class="detail-label">Wind Speed</div>
+            <div id="windSpeed" class="detail-value"></div>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-sun detail-icon"></i>
+            <div class="detail-label">UV Index</div>
+            <div id="uvIndex" class="detail-value"></div>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-eye detail-icon"></i>
+            <div class="detail-label">Visibility</div>
+            <div id="visibility" class="detail-value"></div>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-leaf detail-icon"></i>
+            <div class="detail-label">Air Quality</div>
+            <div id="airQuality" class="detail-value"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="error" class="error">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span id="errorMessage"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Timezone -->
+  <div class="utilities-content-section" id="timezone">
+    <div class="utilities-card">
+      <div class="utilities-card-header">
+        <div class="utilities-card-icon">
+          <i class="fas fa-globe"></i>
+        </div>
+        <div class="utilities-card-title">
+          <h3>World Clock & Time Zone Converter</h3>
+          <p>See the current time in any timezone.</p>
+        </div>
+      </div>
+
+      <div class="utilities-clock-grid" id="clockGrid">
+        <div
+          class="utilities-clock-card default-clock"
+          id="mumbai_clock"
+          data-timezone="Asia/Kolkata"
+          style="background: linear-gradient(135deg, #19a5a8b2, #1eb1b393)"
+        >
+          <button
+            class="clock-delete-btn"
+            onclick="deleteClock('mumbai_clock')"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+          <div class="utilities-clock-city">🇮🇳 Mumbai</div>
+          <div class="utilities-clock-time" id="mumbaiTime">--:--:--</div>
+          <div class="utilities-clock-date" id="mumbaiDate">Loading...</div>
+        </div>
+
+        <div
+          class="utilities-clock-card default-clock"
+          id="newyork_clock"
+          data-timezone="America/New_York"
+          style="background: linear-gradient(135deg, #19a5a8b2, #1eb1b393)"
+        >
+          <button
+            class="clock-delete-btn"
+            onclick="deleteClock('newyork_clock')"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+          <div class="utilities-clock-city">🇺🇸 New York</div>
+          <div class="utilities-clock-time" id="newYorkTime">--:--:--</div>
+          <div class="utilities-clock-date" id="newYorkDate">Loading...</div>
+        </div>
+
+        <div
+          class="utilities-clock-card default-clock"
+          id="london_clock"
+          data-timezone="Europe/London"
+          style="background: linear-gradient(135deg, #19a5a8b2, #1eb1b393)"
+        >
+          <button
+            class="clock-delete-btn"
+            onclick="deleteClock('london_clock')"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+          <div class="utilities-clock-city">🇬🇧 London</div>
+          <div class="utilities-clock-time" id="londonTime">--:--:--</div>
+          <div class="utilities-clock-date" id="londonDate">Loading...</div>
+        </div>
+
+        <div
+          class="utilities-clock-card default-clock"
+          id="tokyo_clock"
+          data-timezone="Asia/Tokyo"
+          style="background: linear-gradient(135deg, #19a5a8b2, #1eb1b393)"
+        >
+          <button class="clock-delete-btn" onclick="deleteClock('tokyo_clock')">
+            <i class="fas fa-times"></i>
+          </button>
+          <div class="utilities-clock-city">🇯🇵 Tokyo</div>
+          <div class="utilities-clock-time" id="tokyoTime">--:--:--</div>
+          <div class="utilities-clock-date" id="tokyoDate">Loading...</div>
+        </div>
+
+        <button class="utilities-add-clock-btn" onclick="showTimezoneDialog()">
+          <i class="fas fa-plus-circle" style="font-size: 2rem"></i>
+          Add Time Zone
+        </button>
+      </div>
+
+      <h4 class="timezoneh4">Time Zone Converter</h4>
+
+      <div class="utilities-form-row">
+        <div class="utilities-form-group">
+          <label class="utilities-form-label">From Time Zone</label>
+          <select class="utilities-form-select" id="fromTimezone">
+            <option value="Africa/Cairo">Africa - Cairo (UTC+2)</option>
+            <option value="Africa/Johannesburg">
+              Africa - Johannesburg (UTC+2)
+            </option>
+            <option value="Africa/Lagos">Africa - Lagos (UTC+1)</option>
+            <option value="Africa/Nairobi">Africa - Nairobi (UTC+3)</option>
+            <option value="America/Bogota">America - Bogota (UTC-5)</option>
+            <option value="America/Chicago">America - Chicago (UTC-6)</option>
+            <option value="America/Los_Angeles">
+              America - Los Angeles (UTC-8)
+            </option>
+            <option value="America/Mexico_City">
+              America - Mexico City (UTC-6)
+            </option>
+            <option value="America/New_York">America - New York (UTC-5)</option>
+            <option value="America/Sao_Paulo">
+              America - São Paulo (UTC-3)
+            </option>
+            <option value="America/Toronto">America - Toronto (UTC-5)</option>
+            <option value="America/Vancouver">
+              America - Vancouver (UTC-8)
+            </option>
+            <option value="Asia/Bangkok">Asia - Bangkok (UTC+7)</option>
+            <option value="Asia/Dubai">Asia - Dubai (UTC+4)</option>
+            <option value="Asia/Hong_Kong">Asia - Hong Kong (UTC+8)</option>
+            <option value="Asia/Istanbul">Asia - Istanbul (UTC+3)</option>
+            <option value="Asia/Jerusalem">Asia - Jerusalem (UTC+2)</option>
+            <option value="Asia/Kolkata" selected>
+              Asia - Mumbai/Delhi (UTC+5:30)
+            </option>
+            <option value="Asia/Seoul">Asia - Seoul (UTC+9)</option>
+            <option value="Asia/Shanghai">Asia - Shanghai (UTC+8)</option>
+            <option value="Asia/Singapore">Asia - Singapore (UTC+8)</option>
+            <option value="Asia/Tokyo">Asia - Tokyo (UTC+9)</option>
+            <option value="Australia/Adelaide">
+              Australia - Adelaide (UTC+9:30)
+            </option>
+            <option value="Australia/Brisbane">
+              Australia - Brisbane (UTC+10)
+            </option>
+            <option value="Australia/Melbourne">
+              Australia - Melbourne (UTC+10)
+            </option>
+            <option value="Australia/Perth">Australia - Perth (UTC+8)</option>
+            <option value="Australia/Sydney">
+              Australia - Sydney (UTC+10)
+            </option>
+            <option value="Europe/Amsterdam">Europe - Amsterdam (UTC+1)</option>
+            <option value="Europe/Athens">Europe - Athens (UTC+2)</option>
+            <option value="Europe/Berlin">Europe - Berlin (UTC+1)</option>
+            <option value="Europe/London">Europe - London (UTC+0)</option>
+            <option value="Europe/Madrid">Europe - Madrid (UTC+1)</option>
+            <option value="Europe/Moscow">Europe - Moscow (UTC+3)</option>
+            <option value="Europe/Paris">Europe - Paris (UTC+1)</option>
+            <option value="Europe/Rome">Europe - Rome (UTC+1)</option>
+            <option value="Europe/Stockholm">Europe - Stockholm (UTC+1)</option>
+            <option value="Pacific/Auckland">
+              Pacific - Auckland (UTC+12)
+            </option>
+            <option value="Pacific/Honolulu">
+              Pacific - Honolulu (UTC-10)
+            </option>
+            <option value="Pacific/Noumea">Pacific - Noumea (UTC+11)</option>
+          </select>
+          <input
+            type="time"
+            class="utilities-form-input"
+            id="fromTime"
+            value="14:30"
+            style="margin-top: 0.75rem"
+          />
+        </div>
+
+        <button class="utilities-swap-btn" onclick="swapTimezones()">
+          <i class="fas fa-exchange-alt"></i>
+        </button>
+
+        <div class="utilities-form-group">
+          <label class="utilities-form-label">To Time Zone</label>
+          <select class="utilities-form-select" id="toTimezone">
+            <option value="Africa/Cairo">Africa - Cairo (UTC+2)</option>
+            <option value="Africa/Johannesburg">
+              Africa - Johannesburg (UTC+2)
+            </option>
+            <option value="Africa/Lagos">Africa - Lagos (UTC+1)</option>
+            <option value="Africa/Nairobi">Africa - Nairobi (UTC+3)</option>
+            <option value="America/Bogota">America - Bogota (UTC-5)</option>
+            <option value="America/Chicago">America - Chicago (UTC-6)</option>
+            <option value="America/Los_Angeles">
+              America - Los Angeles (UTC-8)
+            </option>
+            <option value="America/Mexico_City">
+              America - Mexico City (UTC-6)
+            </option>
+            <option value="America/New_York" selected>
+              America - New York (UTC-5)
+            </option>
+            <option value="America/Sao_Paulo">
+              America - São Paulo (UTC-3)
+            </option>
+            <option value="America/Toronto">America - Toronto (UTC-5)</option>
+            <option value="America/Vancouver">
+              America - Vancouver (UTC-8)
+            </option>
+            <option value="Asia/Bangkok">Asia - Bangkok (UTC+7)</option>
+            <option value="Asia/Dubai">Asia - Dubai (UTC+4)</option>
+            <option value="Asia/Hong_Kong">Asia - Hong Kong (UTC+8)</option>
+            <option value="Asia/Istanbul">Asia - Istanbul (UTC+3)</option>
+            <option value="Asia/Jerusalem">Asia - Jerusalem (UTC+2)</option>
+            <option value="Asia/Kolkata">Asia - Mumbai/Delhi (UTC+5:30)</option>
+            <option value="Asia/Seoul">Asia - Seoul (UTC+9)</option>
+            <option value="Asia/Shanghai">Asia - Shanghai (UTC+8)</option>
+            <option value="Asia/Singapore">Asia - Singapore (UTC+8)</option>
+            <option value="Asia/Tokyo">Asia - Tokyo (UTC+9)</option>
+            <option value="Australia/Adelaide">
+              Australia - Adelaide (UTC+9:30)
+            </option>
+            <option value="Australia/Brisbane">
+              Australia - Brisbane (UTC+10)
+            </option>
+            <option value="Australia/Melbourne">
+              Australia - Melbourne (UTC+10)
+            </option>
+            <option value="Australia/Perth">Australia - Perth (UTC+8)</option>
+            <option value="Australia/Sydney">
+              Australia - Sydney (UTC+10)
+            </option>
+            <option value="Europe/Amsterdam">Europe - Amsterdam (UTC+1)</option>
+            <option value="Europe/Athens">Europe - Athens (UTC+2)</option>
+            <option value="Europe/Berlin">Europe - Berlin (UTC+1)</option>
+            <option value="Europe/London">Europe - London (UTC+0)</option>
+            <option value="Europe/Madrid">Europe - Madrid (UTC+1)</option>
+            <option value="Europe/Moscow">Europe - Moscow (UTC+3)</option>
+            <option value="Europe/Paris">Europe - Paris (UTC+1)</option>
+            <option value="Europe/Rome">Europe - Rome (UTC+1)</option>
+            <option value="Europe/Stockholm">Europe - Stockholm (UTC+1)</option>
+            <option value="Pacific/Auckland">
+              Pacific - Auckland (UTC+12)
+            </option>
+            <option value="Pacific/Honolulu">
+              Pacific - Honolulu (UTC-10)
+            </option>
+            <option value="Pacific/Noumea">Pacific - Noumea (UTC+11)</option>
+          </select>
+          <input
+            type="text"
+            class="utilities-form-input"
+            id="toTime"
+            value="04:00"
+            readonly
+            style="margin-top: 0.75rem"
+          />
+        </div>
+      </div>
+
+      <button class="utilities-convert-btn" onclick="convertTimezone()">
+        <i class="fas fa-clock"></i> Convert Time
+      </button>
+    </div>
+  </div>
+</main>
+
+<!-- JavaScript -->
+<script>
+  // WeatherLux JavaScript
+  const API_KEY = "8e8b40212ade4e6fb4b112149250511";
+  const API_URL = "https://api.weatherapi.com/v1/current.json";
+
+  function switchUtilityTab(tab, event) {
+    document
+      .querySelectorAll(".utilities-tab")
+      .forEach((t) => t.classList.remove("active"));
+    event.target.closest(".utilities-tab").classList.add("active");
+    document
+      .querySelectorAll(".utilities-content-section")
+      .forEach((s) => s.classList.remove("active"));
+    document.getElementById(tab).classList.add("active");
+
+    // Initialize weather if switching to weather tab
+    if (tab === "weather") {
+      initializeWeather();
+    }
+  }
+
+  // Weather functionality
+  function initializeWeather() {
+    const searchBtn = document.getElementById("searchBtn");
+    const locationInput = document.getElementById("locationInput");
+    const weatherCard = document.getElementById("weatherCard");
+    const loading = document.getElementById("loading");
+    const error = document.getElementById("error");
+
+    if (searchBtn && locationInput) {
+      // Add click event listener to search button
+      searchBtn.addEventListener("click", () => searchWeather());
+
+      // Add enter key event listener to input
+      locationInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          searchWeather();
+        }
+      });
+
+      // Initial search for London
+      locationInput.value = "London";
+      setTimeout(() => searchWeather(), 500);
+    }
+  }
+
+  async function searchWeather() {
+    const locationInput = document.getElementById("locationInput");
+    const location = locationInput.value.trim();
+
+    if (!location) {
+      showError("Please enter a city name");
+      return;
+    }
+
+    hideError();
+    showLoading();
+
+    try {
+      const response = await fetch(
+        `/tools/api/get-weather/?city=${encodeURIComponent(location)}`,
+        {
+          method: "GET",
+          credentials: "same-origin",
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to fetch weather data");
+      }
+
+      displayWeatherData(data);
+      document.getElementById("weatherCard").classList.add("show");
+    } catch (err) {
+      showError(err.message);
+    } finally {
+      hideLoading();
+    }
+  }
+
+  function displayWeatherData(data) {
+    const weatherCard = document.getElementById("weatherCard");
+    const locationEl = document.getElementById("location");
+    const temperatureEl = document.getElementById("temperature");
+    const conditionEl = document.getElementById("condition");
+    const weatherIconEl = document.getElementById("weatherIcon");
+    const timeDisplayEl = document.getElementById("timeDisplay");
+    const feelsLikeEl = document.getElementById("feelsLike");
+    const humidityEl = document.getElementById("humidity");
+    const windSpeedEl = document.getElementById("windSpeed");
+    const uvIndexEl = document.getElementById("uvIndex");
+    const visibilityEl = document.getElementById("visibility");
+    const airQualityEl = document.getElementById("airQuality");
+
+    // Update elements with weather data
+    locationEl.textContent = data.city;
+    temperatureEl.textContent = `${Math.round(data.temperature)}°C`;
+    conditionEl.textContent = data.description;
+
+    // Set weather icon based on condition
+    const iconClass = getWeatherIcon(data.description);
+    weatherIconEl.className = `weather-icon ${iconClass}`;
+
+    // Display local time
+    const localTime = new Date(data.localtime);
+    timeDisplayEl.textContent = `Local time: ${localTime.toLocaleString()}`;
+
+    // Update weather details
+    feelsLikeEl.textContent = `${Math.round(data.feels_like)}°C`;
+    humidityEl.textContent = `${data.humidity}%`;
+    windSpeedEl.textContent = `${data.wind_speed} km/h`;
+    uvIndexEl.textContent = data.uv;
+    visibilityEl.textContent = `${data.visibility} km`;
+
+    // Air quality index mapping
+    const aqiLabels = {
+      1: "Good",
+      2: "Moderate",
+      3: "Unhealthy for Sensitive",
+      4: "Unhealthy",
+      5: "Very Unhealthy",
+      6: "Hazardous",
+    };
+    airQualityEl.textContent = aqiLabels[data.air_quality] || "N/A";
+
+    // Update card background based on temperature
+    const temp = data.temperature;
+    let gradient;
+
+    if (temp >= 30) {
+      gradient =
+        "linear-gradient(135deg, rgba(255, 118, 117, 0.2), rgba(214, 48, 49, 0.2))"; // Hot
+    } else if (temp >= 20) {
+      gradient =
+        "linear-gradient(135deg, rgba(253, 203, 110, 0.2), rgba(225, 112, 85, 0.2))"; // Warm
+    } else if (temp >= 10) {
+      gradient =
+        "linear-gradient(135deg, rgba(0, 184, 148, 0.2), rgba(0, 160, 133, 0.2))"; // Mild
+    } else {
+      gradient =
+        "linear-gradient(135deg, rgba(116, 185, 255, 0.2), rgba(9, 132, 227, 0.2))"; // Cold
+    }
+
+    weatherCard.style.background = gradient;
+    weatherCard.style.backdropFilter = "blur(20px)";
+  }
+
+  function showError(message) {
+    const error = document.getElementById("error");
+    const errorMessage = document.getElementById("errorMessage");
+    const weatherCard = document.getElementById("weatherCard");
+
+    errorMessage.textContent = message;
+    error.classList.add("show");
+    weatherCard.classList.remove("show");
+  }
+
+  function hideError() {
+    const error = document.getElementById("error");
+    error.classList.remove("show");
+  }
+
+  function showLoading() {
+    const loading = document.getElementById("loading");
+    const searchBtn = document.getElementById("searchBtn");
+
+    loading.classList.add("show");
+    searchBtn.disabled = true;
+    searchBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Searching...';
+  }
+
+  function hideLoading() {
+    const loading = document.getElementById("loading");
+    const searchBtn = document.getElementById("searchBtn");
+
+    loading.classList.remove("show");
+    searchBtn.disabled = false;
+    searchBtn.innerHTML = '<i class="fas fa-search"></i> Search';
+  }
+
+  function getWeatherIcon(condition) {
+    const conditionLower = condition.toLowerCase();
+    const weatherIcons = {
+      sunny: "fas fa-sun",
+      clear: "fas fa-moon",
+      "partly cloudy": "fas fa-cloud-sun",
+      cloudy: "fas fa-cloud",
+      overcast: "fas fa-cloud",
+      mist: "fas fa-smog",
+      fog: "fas fa-smog",
+      rain: "fas fa-cloud-rain",
+      drizzle: "fas fa-cloud-rain",
+      thunderstorm: "fas fa-bolt",
+      snow: "fas fa-snowflake",
+      blizzard: "fas fa-snowflake",
+      freezing: "fas fa-icicles",
+    };
+
+    for (const key in weatherIcons) {
+      if (conditionLower.includes(key)) {
+        return weatherIcons[key];
+      }
+    }
+    return "fas fa-cloud"; // default icon
+  }
+
+  // 🌍 Currency Converter
+  async function convertCurrency() {
+    const from = document.getElementById("fromCurrency").value;
+    const to = document.getElementById("toCurrency").value;
+    const amount = document.getElementById("fromAmount").value;
+    const box = document.getElementById("currencyResult");
+    try {
+      const url = `/tools/api/convert-currency/?from=${encodeURIComponent(
+        from
+      )}&to=${encodeURIComponent(to)}&amount=${encodeURIComponent(amount)}`;
+      const res = await fetch(url, { credentials: "same-origin" });
+
+      // Prefer showing backend-provided message when available
+      const data = await res
+        .json()
+        .catch(() => ({ error: "Invalid response from server." }));
+
+      if (!res.ok) {
+        const msg =
+          data && data.error ? data.error : `Server returned ${res.status}`;
+        box.innerHTML = `<p class='text-danger'>${msg}</p>`;
+        return;
+      }
+
+      if (data.error) {
+        box.innerHTML = `<p class='text-danger'>${data.error}</p>`;
+      } else {
+        box.innerHTML = `
+            <div class="utilities-result-label">Conversion Result</div>
+            <div class="utilities-result-value">${amount} ${from} = ${
+          data.converted
+        } ${to}</div>
+            <p style="utilities-result-label">Exchange Rate: 1 ${from} = ${Number(
+          data.rate
+        ).toFixed(4)} ${to}</p>
+          `;
+      }
+    } catch (err) {
+      box.innerHTML = `<p class='text-danger'>Network error: ${err.message}</p>`;
+    }
+  }
+
+  // 🌦 Weather Forecast
+
+  function getCSRFToken() {
+    return document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("csrftoken="))
+      ?.split("=")[1];
+  }
+
+  async function getWeather() {
+    const city = document.getElementById("weatherLocation").value;
+    const box = document.getElementById("weatherBox");
+    box.innerHTML = `<p>Loading weather for <strong>${city}</strong>…</p>`;
+    try {
+      const res = await fetch(`/tools/api/get-weather/?city=${city}`, {
+        method: "GET",
+        headers: { "X-CSRFToken": getCSRFToken() },
+        credentials: "same-origin",
+      });
+
+      // Try to parse JSON (backend returns helpful error messages)
+      const data = await res.json().catch(() => null);
+
+      if (!res.ok) {
+        // If backend returned a message, show it. Otherwise show status.
+        const msg =
+          data && data.error ? data.error : `Server returned ${res.status}`;
+        // Special suggestion for API key issues
+        if (res.status === 401) {
+          box.innerHTML = `<p class='text-danger'>${msg} — check OPENWEATHER_API_KEY on the server.</p>`;
+        } else {
+          box.innerHTML = `<p class='text-danger'>${msg}</p>`;
+        }
+        return;
+      }
+
+      if (!data) {
+        box.innerHTML = `<p class='text-danger'>Invalid response from server.</p>`;
+        return;
+      }
+
+      if (data.error) {
+        box.innerHTML = `<p class='text-danger'>${data.error}</p>`;
+      } else {
+        box.innerHTML = `
+            <div class="utilities-weather-icon"><img src="https://openweathermap.org/img/wn/${data.icon}@2x.png"></div>
+            <div class="utilities-result-value" style="color:#2563eb">${data.temperature}°C</div>
+            <div class="utilities-result-label">${data.description}</div>
+            <p style="color:#64748b">${data.city}</p>
+            <div class="mt-3">💧 Humidity: ${data.humidity}% | 🌬 Wind: ${data.wind_speed} m/s</div>
+          `;
+      }
+    } catch (err) {
+      box.innerHTML = `<p class='text-danger'>Network error: ${err.message}</p>`;
+    }
+  }
+
+  // ⏰ Timezone
+  // World Clock Functions
+  function updateClocks() {
+    // Update default clocks
+    const defaultClocks = document.querySelectorAll(".default-clock");
+    defaultClocks.forEach((clock) => {
+      const timezone = clock.getAttribute("data-timezone");
+      if (timezone) {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString("en-US", {
+          timeZone: timezone,
+          hour12: true,
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        });
+        const dateString = now.toLocaleDateString("en-US", {
+          timeZone: timezone,
+          weekday: "long",
+          month: "short",
+          day: "numeric",
+        });
+
+        const timeEl = clock.querySelector('[id$="Time"]');
+        const dateEl = clock.querySelector('[id$="Date"]');
+
+        if (timeEl && dateEl) {
+          timeEl.textContent = timeString;
+          dateEl.textContent = dateString;
+        }
+      }
+    });
+  }
+
+  function convertTimezone() {
+    const fromTimezone = document.getElementById("fromTimezone").value;
+    const toTimezone = document.getElementById("toTimezone").value;
+
+    try {
+      // Always use current time for the source timezone
+      const now = new Date();
+
+      // Get current time in source timezone
+      const fromTime = now.toLocaleTimeString("en-US", {
+        timeZone: fromTimezone,
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      });
+
+      // Update the from time input
+      document.getElementById("fromTime").value = fromTime;
+
+      // Convert to target timezone
+      const toTime = now.toLocaleTimeString("en-US", {
+        timeZone: toTimezone,
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      });
+
+      document.getElementById("toTime").value = toTime;
+    } catch (error) {
+      alert("Error converting time. Please check your timezone selections.");
+    }
+  }
+
+  // Auto-update source time every minute
+  setInterval(() => {
+    if (document.getElementById("timezone").classList.contains("active")) {
+      convertTimezone();
+    }
+  }, 60000);
+
+  function deleteClock(clockId) {
+    const clockCard = document.getElementById(clockId);
+    if (clockCard) {
+      // Clear the update interval if it exists
+      if (clockIntervals.has(clockId)) {
+        clearInterval(clockIntervals.get(clockId));
+        clockIntervals.delete(clockId);
+      }
+      clockCard.remove();
+    }
+  }
+
+  function swapTimezones() {
+    const fromTimezone = document.getElementById("fromTimezone");
+    const toTimezone = document.getElementById("toTimezone");
+    const fromTime = document.getElementById("fromTime");
+    const toTime = document.getElementById("toTime");
+
+    // Swap timezone selections
+    const tempTz = fromTimezone.value;
+    fromTimezone.value = toTimezone.value;
+    toTimezone.value = tempTz;
+
+    // Swap times
+    const tempTime = fromTime.value;
+    fromTime.value = toTime.value;
+    toTime.value = tempTime;
+
+    // Update conversion
+    convertTimezone();
+  }
+
+  // Object to store timezone dialog elements
+  let timezoneDialog = null;
+
+  function showTimezoneDialog() {
+    // Create dialog if it doesn't exist
+    if (!timezoneDialog) {
+      timezoneDialog = document.createElement("div");
+      timezoneDialog.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        z-index: 1000;
+        max-width: 90%;
+        width: 500px;
+        max-height: 80vh;
+        display: flex;
+        flex-direction: column;
+      `;
+
+      // Add a search input
+      const searchInput = document.createElement("input");
+      searchInput.type = "text";
+      searchInput.placeholder = "Search timezones...";
+      searchInput.className = "utilities-form-input";
+      searchInput.style.marginBottom = "1rem";
+
+      // Create a container for timezone options
+      const optionsContainer = document.createElement("div");
+      optionsContainer.style.cssText = `
+        overflow-y: auto;
+        max-height: 60vh;
+        display: grid;
+        gap: 0.5rem;
+      `;
+
+      // Get all timezone options (expanded list)
+      const timezones = [
+        { value: "Etc/UTC", label: "UTC (Coordinated Universal Time)" },
+        { value: "Europe/London", label: "Europe - London" },
+        { value: "Europe/Dublin", label: "Europe - Dublin" },
+        { value: "Europe/Lisbon", label: "Europe - Lisbon" },
+        { value: "Europe/Amsterdam", label: "Europe - Amsterdam" },
+        { value: "Europe/Paris", label: "Europe - Paris" },
+        { value: "Europe/Berlin", label: "Europe - Berlin" },
+        { value: "Europe/Rome", label: "Europe - Rome" },
+        { value: "Europe/Madrid", label: "Europe - Madrid" },
+        { value: "Europe/Zurich", label: "Europe - Zurich" },
+        { value: "Europe/Prague", label: "Europe - Prague" },
+        { value: "Europe/Warsaw", label: "Europe - Warsaw" },
+        { value: "Europe/Vienna", label: "Europe - Vienna" },
+        { value: "Europe/Stockholm", label: "Europe - Stockholm" },
+        { value: "Europe/Helsinki", label: "Europe - Helsinki" },
+        { value: "Europe/Athens", label: "Europe - Athens" },
+        { value: "Europe/Istanbul", label: "Europe - Istanbul" },
+
+        { value: "Africa/Cairo", label: "Africa - Cairo" },
+        { value: "Africa/Johannesburg", label: "Africa - Johannesburg" },
+        { value: "Africa/Lagos", label: "Africa - Lagos" },
+        { value: "Africa/Nairobi", label: "Africa - Nairobi" },
+        { value: "Africa/Accra", label: "Africa - Accra" },
+        { value: "Africa/Casablanca", label: "Africa - Casablanca" },
+        { value: "Africa/Algiers", label: "Africa - Algiers" },
+        { value: "Africa/Dakar", label: "Africa - Dakar" },
+
+        {
+          value: "America/St_Johns",
+          label: "America - St. Johns (Newfoundland)",
+        },
+        { value: "America/Halifax", label: "America - Halifax" },
+        { value: "America/Toronto", label: "America - Toronto" },
+        { value: "America/New_York", label: "America - New York" },
+        { value: "America/Chicago", label: "America - Chicago" },
+        { value: "America/Denver", label: "America - Denver" },
+        { value: "America/Los_Angeles", label: "America - Los Angeles" },
+        { value: "America/Anchorage", label: "America - Anchorage" },
+        { value: "Pacific/Honolulu", label: "Pacific - Honolulu" },
+        { value: "America/Mexico_City", label: "America - Mexico City" },
+        { value: "America/Bogota", label: "America - Bogota" },
+        { value: "America/Lima", label: "America - Lima" },
+        { value: "America/Sao_Paulo", label: "America - São Paulo" },
+        { value: "America/Buenos_Aires", label: "America - Buenos Aires" },
+        { value: "America/Caracas", label: "America - Caracas" },
+        { value: "America/La_Paz", label: "America - La Paz" },
+        { value: "America/Montevideo", label: "America - Montevideo" },
+        { value: "America/Santiago", label: "America - Santiago" },
+
+        { value: "Asia/Tokyo", label: "Asia - Tokyo" },
+        { value: "Asia/Seoul", label: "Asia - Seoul" },
+        { value: "Asia/Shanghai", label: "Asia - Shanghai" },
+        { value: "Asia/Hong_Kong", label: "Asia - Hong Kong" },
+        { value: "Asia/Taipei", label: "Asia - Taipei" },
+        { value: "Asia/Singapore", label: "Asia - Singapore" },
+        { value: "Asia/Kuala_Lumpur", label: "Asia - Kuala Lumpur" },
+        { value: "Asia/Jakarta", label: "Asia - Jakarta" },
+        { value: "Asia/Bangkok", label: "Asia - Bangkok" },
+        { value: "Asia/Ho_Chi_Minh", label: "Asia - Ho Chi Minh City" },
+        { value: "Asia/Kolkata", label: "Asia - Kolkata / Mumbai / Delhi" },
+        { value: "Asia/Colombo", label: "Asia - Colombo" },
+        { value: "Asia/Manila", label: "Asia - Manila" },
+        { value: "Asia/Dubai", label: "Asia - Dubai" },
+        { value: "Asia/Jerusalem", label: "Asia - Jerusalem" },
+        { value: "Asia/Amman", label: "Asia - Amman" },
+        { value: "Asia/Beirut", label: "Asia - Beirut" },
+
+        { value: "Australia/Sydney", label: "Australia - Sydney" },
+        { value: "Australia/Melbourne", label: "Australia - Melbourne" },
+        { value: "Australia/Brisbane", label: "Australia - Brisbane" },
+        { value: "Australia/Adelaide", label: "Australia - Adelaide" },
+        { value: "Australia/Perth", label: "Australia - Perth" },
+        { value: "Pacific/Auckland", label: "Pacific - Auckland" },
+        { value: "Pacific/Fiji", label: "Pacific - Fiji" },
+        { value: "Pacific/Tahiti", label: "Pacific - Tahiti" },
+
+        { value: "Indian/Maldives", label: "Indian - Maldives" },
+
+        { value: "Europe/Moscow", label: "Europe - Moscow" },
+        { value: "Europe/Kiev", label: "Europe - Kyiv" },
+        { value: "Europe/Paris", label: "Europe - Paris" },
+
+        { value: "Atlantic/Reykjavik", label: "Atlantic - Reykjavik" },
+        { value: "Atlantic/Cape_Verde", label: "Atlantic - Cape Verde" },
+
+        // Smaller / regional zones
+        { value: "America/Montevideo", label: "America - Montevideo" },
+        { value: "America/Guatemala", label: "America - Guatemala City" },
+        { value: "America/El_Salvador", label: "America - El Salvador" },
+        { value: "America/Havana", label: "America - Havana" },
+        { value: "America/Port-au-Prince", label: "America - Port-au-Prince" },
+
+        // Add more common zones
+        { value: "Europe/Bucharest", label: "Europe - Bucharest" },
+        { value: "Europe/Budapest", label: "Europe - Budapest" },
+        { value: "Europe/Belgrade", label: "Europe - Belgrade" },
+        { value: "Europe/Brussels", label: "Europe - Brussels" },
+
+        { value: "Asia/Yangon", label: "Asia - Yangon (Myanmar)" },
+        { value: "Asia/Almaty", label: "Asia - Almaty" },
+        { value: "Asia/Tashkent", label: "Asia - Tashkent" },
+
+        { value: "Africa/Addis_Ababa", label: "Africa - Addis Ababa" },
+        { value: "Africa/Khartoum", label: "Africa - Khartoum" },
+
+        // Fallback: include generic city/timezones for broad coverage
+        {
+          value: "America/Indiana/Indianapolis",
+          label: "America - Indianapolis",
+        },
+        { value: "America/Indiana/Knox", label: "America - Knox (Indiana)" },
+        {
+          value: "America/Indiana/Marengo",
+          label: "America - Marengo (Indiana)",
+        },
+      ];
+
+      function renderTimezoneOptions(filter = "") {
+        optionsContainer.innerHTML = "";
+        const filteredTimezones = timezones.filter((tz) =>
+          tz.label.toLowerCase().includes(filter.toLowerCase())
+        );
+
+        filteredTimezones.forEach((tz) => {
+          const btn = document.createElement("button");
+          btn.className = "utilities-tab";
+          btn.style.cssText = `
+            width: 100%;
+            text-align: left;
+            margin: 0;
+            padding: 0.75rem 1rem;
+          `;
+          btn.textContent = tz.label;
+          btn.onclick = () => {
+            addNewClock(tz.value, tz.label);
+            closeTimezoneDialog();
+          };
+          optionsContainer.appendChild(btn);
+        });
+      }
+
+      searchInput.oninput = (e) => renderTimezoneOptions(e.target.value);
+
+      // Add close button
+      const closeButton = document.createElement("button");
+      closeButton.innerHTML = "&times;";
+      closeButton.style.cssText = `
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #64748b;
+      `;
+      closeButton.onclick = closeTimezoneDialog;
+
+      // Add overlay
+      const overlay = document.createElement("div");
+      overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 999;
+      `;
+      overlay.onclick = closeTimezoneDialog;
+
+      timezoneDialog.appendChild(closeButton);
+      timezoneDialog.appendChild(searchInput);
+      timezoneDialog.appendChild(optionsContainer);
+
+      // Initial render
+      renderTimezoneOptions();
+
+      // Store overlay reference
+      timezoneDialog.overlay = overlay;
+    }
+
+    // Show dialog and overlay
+    document.body.appendChild(timezoneDialog.overlay);
+    document.body.appendChild(timezoneDialog);
+    timezoneDialog.querySelector("input").focus();
+  }
+
+  function closeTimezoneDialog() {
+    if (timezoneDialog) {
+      timezoneDialog.overlay.remove();
+      timezoneDialog.remove();
+    }
+  }
+
+  // duplicate addNewClock (older/removed) was here — using the later addNewClock(timezone,label, existingId)
+
+  function updateClock(clockId, timezone) {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString("en-US", {
+      timeZone: timezone,
+      hour12: true,
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+    const dateString = now.toLocaleDateString("en-US", {
+      timeZone: timezone,
+      weekday: "long",
+      month: "short",
+      day: "numeric",
+    });
+
+    const timeEl = document.getElementById(`${clockId}_time`);
+    const dateEl = document.getElementById(`${clockId}_date`);
+
+    if (timeEl && dateEl) {
+      timeEl.textContent = timeString;
+      dateEl.textContent = dateString;
+    }
+  }
+
+  // Store active clock intervals to clean them up when clocks are deleted
+  const clockIntervals = new Map();
+
+  // Save clock to localStorage
+  function saveClocks() {
+    const clocks = [];
+    document.querySelectorAll(".utilities-clock-card").forEach((clock) => {
+      if (!clock.classList.contains("default-clock")) {
+        const cityEl = clock.querySelector(".utilities-clock-city");
+        if (cityEl) {
+          clocks.push({
+            id: clock.id,
+            timezone: clock.getAttribute("data-timezone"),
+            label: cityEl.textContent,
+          });
+        }
+      }
+    });
+    localStorage.setItem("savedClocks", JSON.stringify(clocks));
+  }
+
+  // Load saved clocks from localStorage
+  function loadSavedClocks() {
+    const savedClocks = localStorage.getItem("savedClocks");
+    if (savedClocks) {
+      try {
+        const clocks = JSON.parse(savedClocks);
+        clocks.forEach((clock) => {
+          if (clock.timezone && clock.label) {
+            addNewClock(clock.timezone, clock.label, clock.id);
+          }
+        });
+      } catch (e) {
+        console.error("Error loading saved clocks:", e);
+      }
+    }
+  }
+
+  // Modified deleteClock function to also update localStorage
+  function markDefaultRemoved(clockId) {
+    try {
+      const removed = JSON.parse(
+        localStorage.getItem("removedDefaultClocks") || "[]"
+      );
+      if (!removed.includes(clockId)) {
+        removed.push(clockId);
+        localStorage.setItem("removedDefaultClocks", JSON.stringify(removed));
+      }
+    } catch (e) {
+      console.error("Could not mark default clock removed", e);
+    }
+  }
+
+  function loadRemovedDefaults() {
+    try {
+      const removed = JSON.parse(
+        localStorage.getItem("removedDefaultClocks") || "[]"
+      );
+      removed.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.remove();
+      });
+    } catch (e) {
+      console.error("Could not load removed default clocks", e);
+    }
+  }
+
+  function deleteClock(clockId) {
+    const clockCard = document.getElementById(clockId);
+    if (clockCard) {
+      // Clear the update interval if it exists
+      if (clockIntervals.has(clockId)) {
+        clearInterval(clockIntervals.get(clockId));
+        clockIntervals.delete(clockId);
+      }
+
+      // If this is a default clock, remember the user's preference
+      if (clockCard.classList.contains("default-clock")) {
+        markDefaultRemoved(clockId);
+      }
+
+      clockCard.remove();
+
+      // Update localStorage after deletion (custom clocks)
+      saveClocks();
+    }
+  }
+
+  // Modified addNewClock function to include optional id parameter and save to localStorage
+  function addNewClock(timezone, label, existingId = null) {
+    const clockGrid = document.getElementById("clockGrid");
+
+    const gradients = ["linear-gradient(135deg, #20d1d4b2, #1eb1b393)"];
+    const randomGradient =
+      gradients[Math.floor(Math.random() * gradients.length)];
+
+    // Use existing ID if provided, otherwise generate new one
+    const clockId = existingId || "clock_" + Date.now();
+
+    const clockCard = document.createElement("div");
+    clockCard.className = "utilities-clock-card";
+    clockCard.id = clockId;
+    clockCard.setAttribute("data-timezone", timezone);
+    clockCard.style.background = randomGradient;
+    clockCard.innerHTML = `
+      <button class="clock-delete-btn" onclick="deleteClock('${clockId}')">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="utilities-clock-city">${label}</div>
+      <div class="utilities-clock-time" id="${clockId}_time">--:--:--</div>
+      <div class="utilities-clock-date" id="${clockId}_date">Loading...</div>
+    `;
+
+    // Insert the new clock before the "Add Time Zone" button
+    const addButton = document.querySelector(".utilities-add-clock-btn");
+    clockGrid.insertBefore(clockCard, addButton);
+
+    // Set up the interval for this clock
+    updateClock(clockId, timezone);
+    const intervalId = setInterval(() => updateClock(clockId, timezone), 1000);
+    clockIntervals.set(clockId, intervalId);
+
+    // Save to localStorage if this is a new clock (not being loaded from storage)
+    if (!existingId) {
+      saveClocks();
+    }
+  }
+
+  // Initialize clocks and load saved ones
+  // First remove any default clocks the user previously deleted
+  loadRemovedDefaults();
+  updateClocks();
+  setInterval(updateClocks, 1000);
+  loadSavedClocks();
+
+  // Auto-convert currency when amount changes
+  document
+    .getElementById("fromAmount")
+    .addEventListener("input", convertCurrency);
+
+  // Initialize with default conversion
+  convertCurrency();
+
+  // Initialize weather functionality on page load
+  document.addEventListener("DOMContentLoaded", () => {
+    // Initialize weather if weather tab is active
+    if (
+      document
+        .querySelector(".utilities-tab.active")
+        .textContent.includes("Weather")
+    ) {
+      initializeWeather();
+    }
+  });
+</script>
+{% endblock %}
