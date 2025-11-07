@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'membership',
     'review',
     'traveltools',
+    'assistant',
 ]
 
 MIDDLEWARE = [
