@@ -76,7 +76,7 @@ def generate_recommendations(request):
         payload = json.loads(request.body.decode("utf-8"))
         
         prompt = f"""
-            You are an expert travel planner AI.
+            You are TripGenie, an AI travel planner that designs *complete, realistic* trip packages.
 
             Based on the user's preferences:
             - Destination: {payload.get('destination', 'Any')}
@@ -85,23 +85,18 @@ def generate_recommendations(request):
             - Travelers: {payload.get('travelers', 'Solo')}
             - Interests: {', '.join(payload.get('interests', []))}
 
+            Your task:
             Now generate 9-12 *unique and diverse* travel packages that match the user’s style.
+            Each package must be **completely distinct** — destinations, activities, cost, and itinerary details should NOT repeat across trips.
 
-            If the user selects **Luxury** budget:
-            - Focus on premium 5-star resorts, exclusive experiences, private tours, fine dining, and high-end comfort.
-            - Price should start from ₹5,00,000+ depending on duration.
-
-            If the duration is **2 weeks or more**:
-            - Create multi-city or multi-country tours, with detailed day-wise plans.
-            - Ensure variety in activities (relaxation + adventure + culture).
-
-            If travelers are **group (5+)**:
-            - Add group-friendly stays (villas, resorts, large suites).
-            - Include shared experiences like group sightseeing, bonfire nights, team games, or private transportation.
-            - Mention group discounts or packages that scale well.
-
-            If it's a **solo traveler**:
-            - Include safe destinations, social hostels, and cultural immersion experiences.
+            For each trip:
+            - Personalize it to match the traveler type and budget.
+            - The duration (number of days) must reflect what the user selected.
+                Example:
+                "Weekend" → 2-3 days
+                "1 Week" → 6-8 days
+                "2 Weeks" → 12-15 days
+                "1 Month+" → 28-32 days
 
             Generate 9-12 travel *packages*.
             Each package must be detailed and complete, following this structure exactly (JSON array only): 
@@ -110,7 +105,7 @@ def generate_recommendations(request):
             - "name": Short unique package name,
             - "country": Country name,
             - "image": A relevant direct image URL (preferably from Google Images / Google Custom Search). If a direct image link cannot be provided, include a separate field "google_query" with short search terms so the server can fetch an image. Example: {{"image": "https://example.com/paris.jpg", "google_query": "paris travel sunset"}},
-            - "price": Approx total package cost in ₹,
+            - "price": integer (Approx total package cost in ₹),
             - "duration_days": Integer,
             - "description": Short overview (2-3 sentences),
             - "highlights": Top experiences (list of 3-5),
@@ -120,10 +115,12 @@ def generate_recommendations(request):
             - "itinerary": {{
               "Day 1": "Activity",
               "Day 2": "Activity",
+              ...
+              (One unique entry for each day, according to duration_days)
               }},
             - "inclusions": ["Accomodation", "Sightseeing", "Meals", "Transfers", "Transport"],
             - "exclusions": ["Airfare", "Personal expenses", "Shopping"],
-            - "tips": Short 3-line travel tip
+            - "tips": 3-line useful travel tip
             - "cost_breakdown": {{
                 "hotels": 40000,
                 "meals": 12000,
@@ -148,7 +145,12 @@ def generate_recommendations(request):
                 ],
             }}
 
-            Return a complete, valid JSON array of trip objects. Do not truncate or summarize the output. Only return JSON.
+            📋 Rules:
+            - Always generate one unique itinerary per trip (no duplicate days).
+            - Ensure total cost ≈ sum of cost_breakdown values.
+            - Match traveler type (family-friendly, romantic, group-oriented, etc.).
+            - Use INR for all costs.
+            - Return a complete, valid JSON array of trip objects. Do not truncate or summarize the output. Only return JSON.(no explanation or text outside the array)
         """
 
 
@@ -336,6 +338,18 @@ def generate_recommendations(request):
 
                 trip["id"] = str(i + 1)
                 valid_destinations.append(trip)
+
+                # --- Normalize duration and fill missing days if needed ---
+                for trip in valid_destinations:
+                    duration = trip.get("duration_days", 0)
+                    if duration and "itinerary" in trip:
+                        itin = trip["itinerary"]
+                        # if AI produced fewer days, auto-fill missing
+                        if len(itin) < duration:
+                            for d in range(len(itin) + 1, duration + 1):
+                                itin[f"Day {d}"] = f"Free exploration or leisure day in {trip.get('country', 'destination')}"
+                        trip["itinerary"] = itin
+
                 
             except Exception as e:
                 print(f"⚠️ Error processing destination {i + 1}: {str(e)}")
