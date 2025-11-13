@@ -164,7 +164,7 @@ OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "google_api_key")
 GROQ_API_KEY = "groq_api_key" 
 
 # Weather API key
-OPENWEATHER_API_KEY = "weather_api_key"
+OPENWEATHER_API_KEY = "weather_api_key" 
 
 # Currency Converter 
 EXCHANGE_API_URL = "https://api.exchangerate-api.com/v4/latest/"
