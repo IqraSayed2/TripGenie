@@ -1625,6 +1625,15 @@
   color: var(--text-primary);
 }
 
+.budget-btn-export a{
+  text-decoration: none; 
+  color: white;
+}
+
+.light-theme .budget-btn-export a{
+  color: black;
+}
+
 .budget-action-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
@@ -1791,6 +1800,89 @@
 
 .light-theme .noexpencetext {
   color: black;
+}
+
+/* Calc Popup background */
+.calculator-popup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Calculator box */
+.calculator {
+  background: linear-gradient(45deg, #00bcd4, #20b2aa, #ff9800);
+  padding: 15px;
+  border-radius: 12px;
+  width: 300px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Header */
+.calculator-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Display */
+#calcDisplay {
+  width: 100%;
+  padding: 10px;
+  font-size: 1.2rem;
+  text-align: right;
+}
+
+/* Buttons */
+.calc-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.btn-calc,
+#calcClear,
+#calcEqual,
+#calcDelete {
+  padding: 10px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  background: #f1f1f1;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-calc:hover,
+#calcClear:hover,
+#calcEqual:hover,
+#calcDelete:hover {
+  background: #ddd;
+}
+
+.equal-btn {
+  grid-column: span 2;
+  background: #007bff;
+  color: black;
+}
+
+#calcClear {
+  grid-column: span 2;
 }
 
 /* ================================= TRIP DETAIL PAGE ==============================================*/

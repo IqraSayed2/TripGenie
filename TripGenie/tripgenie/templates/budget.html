@@ -4,8 +4,6 @@
 {% block title %}Budget Planner{% endblock %} 
 {% block content %}
 
-
-
 <div class="container-fluid p-5">
   <!-- Header -->
   <div class="budget-header-section">
@@ -28,11 +26,11 @@
       >
         <div class="col-lg-6">
           <label class="form-label mb-2">Select Trip</label>
-          <select name="trip_id" id="tripSelect" class="budget-trip-select">
+          <select name="trip_name" id="tripSelect" class="budget-trip-select">
             <option value="">-- Choose a saved trip --</option>
             {% for trip in saved_trips %}
-            {# Use the numeric trip.id as the option value; backend expects an ID number #}
-            <option value="{{ trip.id }}" {% if selected_trip and selected_trip.id == trip.id %} selected {% endif %}>{{ trip.title }} - {{ trip.destination }}</option>
+            {# Use the trip title as the option value so the URL shows ?trip_name=... #}
+            <option value="{{ trip.title }}" {% if selected_trip and selected_trip.id == trip.id %} selected {% endif %}>{{ trip.title }} - {{ trip.destination }}</option>
             {% endfor %}
           </select>
         </div>
@@ -61,7 +59,7 @@
               <i class="fas fa-dollar-sign" style="font-size: 24px"></i>
             </span>
           </h3>
-          <h2>₹{{ budget.total_budget|floatformat:2 }}</h2>
+          <h2>₹{{ budget.total_budget|floatformat:0 }}</h2>
         </div>
 
         <!-- Total Spent -->
@@ -72,7 +70,7 @@
               <i class="fas fa-money-check" style="font-size: 24px"></i>
             </span>
           </h3>
-          <h2>₹{{ budget.total_spent|floatformat:2 }}</h2>
+          <h2>₹{{ budget.total_spent|floatformat:0 }}</h2>
         </div>
 
         <!-- Remaining -->
@@ -83,7 +81,7 @@
               <i class="fas fa-chart-line" style="font-size: 24px"></i>
             </span>
           </h3>
-          <h2>₹{{ budget.remaining|floatformat:2 }}</h2>
+          <h2>₹{{ budget.remaining|floatformat:0 }}</h2>
         </div>
 
         <!-- Progress Bar -->
@@ -100,7 +98,7 @@
                   class="progress-bar bg-success"
                   role="progressbar"
                   style="width: {{ percent|floatformat:0 }}%;"
-                  aria-valuenow="{{ percent|floatformat:2 }}"
+                  aria-valuenow="{{ percent|floatformat:0 }}"
                   aria-valuemin="0"
                   aria-valuemax="100"
                 >
@@ -112,7 +110,7 @@
             <div class="budget-progress-info">
               <span>Progress</span>
               {% with percent=budget.total_spent|div:budget.total_budget %}
-              <span>{{ percent|floatformat:2 }}%</span>
+              <span>{{ percent|floatformat:0 }}%</span>
               {% endwith %}
             </div>
           </div>
@@ -132,16 +130,55 @@
           </button>
 
           <!-- Budget Calculator -->
-          <button class="budget-action-btn budget-btn-calculator" id="openCalculator">
-            <i class="fas fa-calculator"></i> Budget Calculator
+          <button
+            class="budget-action-btn budget-btn-calculator"
+            id="openCalculatorBtn"
+          >
+            <i class="fas fa-calculator"></i> Calculator
           </button>
 
           <!-- Export Report -->
-          <form method="GET" class="d-inline">
             <button type="submit" class="budget-action-btn budget-btn-export">
-              <i class="fas fa-download"></i> Export Report
-            </button>
-          </form>
+          <a href="{% url 'export_budget_pdf' budget.id %}" target="_blank" class="d-inline">
+            <i class="fas fa-download"></i> Export Report
+          </a>
+          </button>
+        </div>
+      </div>
+
+      <!-- Calculator Popup -->
+      <div id="calculatorPopup" class="calculator-popup">
+        <div class="calculator">
+          <div class="calculator-header">
+            <span>Calculator</span>
+            <button id="closeCalculatorBtn" class="close-btn">&times;</button>
+          </div>
+          <input type="text" id="calcDisplay" disabled />
+
+          <div class="calc-buttons">
+            <button id="calcClear">C</button>
+            <button id="calcDelete">DEL</button>
+            <button class="btn-calc">/</button>
+
+            <button class="btn-calc">7</button>
+            <button class="btn-calc">8</button>
+            <button class="btn-calc">9</button>
+            <button class="btn-calc">*</button>
+
+            <button class="btn-calc">4</button>
+            <button class="btn-calc">5</button>
+            <button class="btn-calc">6</button>
+            <button class="btn-calc">-</button>
+
+            <button class="btn-calc">1</button>
+            <button class="btn-calc">2</button>
+            <button class="btn-calc">3</button>
+            <button class="btn-calc">+</button>
+
+            <button class="btn-calc">0</button>
+            <button class="btn-calc">.</button>
+            <button id="calcEqual" class="equal-btn">=</button>
+          </div>
         </div>
       </div>
 
@@ -183,22 +220,29 @@
                     <small class="text-secondary">
                       {% if percent > 90 %}
                       <span class="text-danger"
-                        ><i class="fa-solid fa-triangle-exclamation"></i> {{ percent|floatformat:0 }}% used</span
+                        ><i class="fa-solid fa-triangle-exclamation"></i> 
+                        {{ percent|floatformat:0 }}% used</span
                       >
                       {% elif percent > 60 %}
                       <span class="text-warning"
-                        ><i class="fa-solid fa-circle-exclamation"></i> {{ percent|floatformat:0 }}% used</span
+                        ><i class="fa-solid fa-circle-exclamation"></i> 
+                        {{ percent|floatformat:0 }}% used</span
                       >
                       {% else %}
                       <span class="text-success"
-                        ><i class="fa-solid fa-check-circle"></i> {{ percent|floatformat:0 }}% used</span
+                        ><i class="fa-solid fa-check-circle"></i> 
+                        {{ percent|floatformat:0 }}% used</span
                       >
                       {% endif %}
                     </small>
                     {% endwith %}
                   </div>
                 </div>
-                <button class="budget-category-edit btn" data-action="edit" data-category="{{ cat }}">
+                <button
+                  class="budget-category-edit btn"
+                  data-action="edit"
+                  data-category="{{ cat }}"
+                >
                   <i class="fas fa-edit"></i>
                 </button>
               </div>
@@ -225,13 +269,22 @@
 
                 {% with percent=data.spent|div:data.budget %}
                 <div class="budget-category-progress">
-                  <div class="progress" style="height:10px;background:#f1f1f1;border-radius:6px">
                   <div
+                    class="progress"
+                    style="
+                      height: 10px;
+                      background: #f1f1f1;
+                      border-radius: 6px;
+                    "
+                  >
+                    <div
                       class="progress-bar {% if percent > 90 %}bg-danger{% elif percent > 60 %}bg-warning{% else %}bg-success{% endif %}"
-                    role="progressbar"
-                    style="width: {{ percent|floatformat:0 }}%;"
-                    aria-valuenow="{{ percent|floatformat:2 }}" aria-valuemin="0" aria-valuemax="100"
-                  ></div>
+                      role="progressbar"
+                      style="width: {{ percent|floatformat:0 }}%;"
+                      aria-valuenow="{{ percent|floatformat:2 }}"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+           0        ></div>
                   </div>
                 </div>
                 {% endwith %}
@@ -239,7 +292,8 @@
             </div>
             {% empty %}
             <p class="text-center">
-              No category data yet. Add categories to start tracking your spending.
+              No category data yet. Add categories to start tracking your
+              spending.
             </p>
             {% endfor %}
           </div>
@@ -247,11 +301,12 @@
       </div>
 
       <!-- Recent Expenses -->
-      <div class="budget-main-content mt-4">
+      <div class="budget-main-content mt-4" id="recentExpensesWrapper">
         <div class="budget-expenses-header">
           <h6 class="budget-recent-expenses">Recent Expenses</h6>
         </div>
 
+        <div id="recentExpensesList">
         {% if expenses %} 
         {% for e in expenses %}
         <div class="budget-expense-item">
@@ -260,7 +315,9 @@
           </div>
           <div class="budget-expense-details">
             <div class="budget-expense-name">{{ e.title }}</div>
-            <div class="budget-expense-meta">{{ e.category }} • {{ e.date }}</div>
+            <div class="budget-expense-meta">
+              {{ e.category }} • {{ e.date }}
+            </div>
           </div>
           <div class="budget-expense-amount-section">
             <div class="budget-expense-amount">₹{{ e.amount }}</div>
@@ -271,204 +328,289 @@
         <p class="noexpencetext text-center">No expenses added yet.</p>
         {% endif %}
       </div>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- Category Modal -->
-<div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="categoryModal"
+  tabindex="-1"
+  aria-labelledby="categoryModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog">
     <form id="categoryForm" class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="categoryModalLabel" style="color: black;">Edit Category Budget</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title" id="categoryModalLabel" style="color: black">
+          Edit Category Budget
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
-          <input type="hidden" id="cat_trip_id" name="trip_id" value="{% if selected_trip %}{{ selected_trip.id }}{% endif %}">
+        <input
+          type="hidden"
+          id="cat_trip_id"
+          name="trip_id"
+          value="{% if selected_trip %}{{ selected_trip.id }}{% endif %}"
+        />
         <div class="mb-3">
-          <label for="cat_name" class="form-label" style="color: black;">Category</label>
-          <input type="text" id="cat_name" name="category" class="form-control" readonly>
+          <label for="cat_name" class="form-label" style="color: black"
+            >Category</label
+          >
+          <input
+            type="text"
+            id="cat_name"
+            name="category"
+            class="form-control"
+            readonly
+          />
         </div>
         <div class="mb-3">
-          <label for="cat_budget" class="form-label" style="color: black;">Budgeted amount (₹)</label>
-          <input type="number" step="0.01" id="cat_budget" name="budgeted_amount" class="form-control" required>
+          <label for="cat_budget" class="form-label" style="color: black"
+            >Budgeted amount (₹)</label
+          >
+          <input
+            type="number"
+            step="1"
+            id="cat_budget"
+            name="budgeted_amount"
+            class="form-control"
+            required
+          />
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
         <button type="submit" class="btn btn-primary">Save</button>
       </div>
     </form>
   </div>
 </div>
 
-
 <!-- Add Expense Modal -->
-<div class="modal fade" id="addExpenseModal" tabindex="-1" aria-labelledby="addExpenseModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="addExpenseModal"
+  tabindex="-1"
+  aria-labelledby="addExpenseModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog">
     <form id="addExpenseForm" class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="addExpenseModalLabel">Add Expense</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
-        <input type="hidden" name="trip_id" id="expense_trip_id" value="{% if selected_trip %}{{ selected_trip.id }}{% endif %}">
+        <input
+          type="hidden"
+          name="trip_id"
+          id="expense_trip_id"
+          value="{% if selected_trip %}{{ selected_trip.id }}{% endif %}"
+        />
         <div class="mb-3">
-          <label for="expense_title" class="form-label" style="color: black;">Title</label>
-          <input type="text" id="expense_title" name="title" class="form-control" required>
+          <label for="expense_title" class="form-label" style="color: black"
+            >Title</label
+          >
+          <input
+            type="text"
+            id="expense_title"
+            name="title"
+            class="form-control"
+            required
+          />
         </div>
         <div class="mb-3">
-          <label for="expense_category" class="form-label" style="color: black;">Category</label>
+          <label for="expense_category" class="form-label" style="color: black"
+            >Category</label
+          >
           <select id="expense_category" name="category" class="form-control">
             {% for c in categories %}
-            <option value="{{ c }}" style="color: black;">{{ c }}</option>
+            <option value="{{ c }}" style="color: black">{{ c }}</option>
             {% endfor %}
           </select>
         </div>
         <div class="mb-3">
-          <label for="expense_amount" class="form-label" style="color: black;">Amount (₹)</label>
-          <input type="number" step="0.01" id="expense_amount" name="amount" class="form-control" required>
+          <label for="expense_amount" class="form-label" style="color: black"
+            >Amount (₹)</label
+          >
+          <input
+            type="number"
+            step="1"
+            id="expense_amount"
+            name="amount"
+            class="form-control"
+            required
+          />
         </div>
         <div class="mb-3">
-          <label for="expense_date" class="form-label" style="color: black;">Date</label>
-          <input type="date" id="expense_date" name="date" class="form-control">
+          <label for="expense_date" class="form-label" style="color: black"
+            >Date</label
+          >
+          <input
+            type="date"
+            id="expense_date"
+            name="date"
+            class="form-control"
+          />
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
         <button type="submit" class="btn btn-primary">Add Expense</button>
       </div>
     </form>
   </div>
 </div>
 
-
-
 {% endif %}
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  // helper to get CSRF token
-  function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== "") {
-      const cookies = document.cookie.split(";");
-      for (let cookie of cookies) {
-        cookie = cookie.trim();
-        if (cookie.startsWith(name + "=")) {
-          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-          break;
+  document.addEventListener("DOMContentLoaded", function () {
+    // helper to get CSRF token
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let cookie of cookies) {
+          cookie = cookie.trim();
+          if (cookie.startsWith(name + "=")) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
         }
       }
+      return cookieValue;
     }
-    return cookieValue;
-  }
-  const csrftoken = getCookie("csrftoken");
+    const csrftoken = getCookie("csrftoken");
 
-  // --- Trip selector: already posts trip_name param. Optional: decode selected option so backend finds by title ---
-  // Note: We set values to urlencoded title; backend expects trip_name and will decode automatically.
+    // --- Trip selector: already posts trip_name param. Optional: decode selected option so backend finds by title ---
+    // Note: We set values to urlencoded title; backend expects trip_name and will decode automatically.
 
-  // --- Category edit handler ---
-  const categoryModalEl = document.getElementById("categoryModal");
-  const categoryForm = document.getElementById("categoryForm");
-  const catNameInput = document.getElementById("cat_name");
-  const catBudgetInput = document.getElementById("cat_budget");
-  const catTripInput = document.getElementById("cat_trip_id");
+    // --- Category edit handler ---
+    const categoryModalEl = document.getElementById("categoryModal");
+    const categoryForm = document.getElementById("categoryForm");
+    const catNameInput = document.getElementById("cat_name");
+    const catBudgetInput = document.getElementById("cat_budget");
+    const catTripInput = document.getElementById("cat_trip_id");
 
-  // attach click handlers to edit buttons (present on cards)
-  document.querySelectorAll(".budget-category-edit").forEach(btn => {
-    btn.addEventListener("click", function (ev) {
-      ev.preventDefault();
-      const cat = this.dataset.category;
-      // find displayed budget amount in card for initial value
-      const card = this.closest(".budget-category-card");
-      const budgetValEl = card.querySelector(".budget-amount-value");
-      const displayed = budgetValEl ? budgetValEl.textContent.replace(/[^\d\.]/g, "") : "0";
-      catNameInput.value = cat;
-      catBudgetInput.value = parseFloat(displayed || 0);
-      if (catTripInput && "{{ selected_trip }}" !== "") {
-        catTripInput.value = "{{ selected_trip.id }}";
-      }
-      // show bootstrap modal
-      const modal = new bootstrap.Modal(categoryModalEl);
-      modal.show();
+    // attach click handlers to edit buttons (present on cards)
+    document.querySelectorAll(".budget-category-edit").forEach((btn) => {
+      btn.addEventListener("click", function (ev) {
+        ev.preventDefault();
+        const cat = this.dataset.category;
+        // find displayed budget amount in card for initial value
+        const card = this.closest(".budget-category-card");
+        const budgetValEl = card.querySelector(".budget-amount-value");
+        const displayed = budgetValEl
+          ? budgetValEl.textContent.replace(/[^\d\.]/g, "")
+          : "0";
+        catNameInput.value = cat;
+        catBudgetInput.value = parseFloat(displayed || 0);
+        if (catTripInput && "{{ selected_trip }}" !== "") {
+          catTripInput.value = "{{ selected_trip.id }}";
+        }
+        // show bootstrap modal
+        const modal = new bootstrap.Modal(categoryModalEl);
+        modal.show();
+      });
     });
-  });
 
-  // submit category form
-  categoryForm?.addEventListener("submit", async function (e) {
-    e.preventDefault();
-    const tripId = document.getElementById("cat_trip_id").value;
-    const category = catNameInput.value;
-    const budgeted_amount = catBudgetInput.value || 0;
+    // submit category form
+    categoryForm?.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const tripId = document.getElementById("cat_trip_id").value;
+      const category = catNameInput.value;
+      const budgeted_amount = catBudgetInput.value || 0;
 
-    try {
-      const resp = await fetch("{% url 'api_update_category_budget' %}", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrftoken
-        },
-        body: JSON.stringify({ trip_id: tripId, category: category, budgeted_amount: parseFloat(budgeted_amount) })
-      });
-      const data = await resp.json();
-      if (data.status === "ok") {
-        // update UI: update totals and category cards
-        updateTotalsAndCategories(data.totals, data.category_summary);
-        bootstrap.Modal.getInstance(categoryModalEl).hide();
-      } else {
-        alert("Could not save category budget.");
+      try {
+        const resp = await fetch("{% url 'api_update_category_budget' %}", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken,
+          },
+          body: JSON.stringify({
+            trip_id: tripId,
+            category: category,
+            budgeted_amount: parseFloat(budgeted_amount),
+          }),
+        });
+        const data = await resp.json();
+        if (data.status === "ok") {
+          // update UI: update totals and category cards
+          updateTotalsAndCategories(data.totals, data.category_summary);
+          bootstrap.Modal.getInstance(categoryModalEl).hide();
+        } else {
+          alert("Could not save category budget.");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Error updating category budget.");
       }
-    } catch (err) {
-      console.error(err);
-      alert("Error updating category budget.");
-    }
-  });
+    });
 
-  // --- Add Expense flow ---
-  const addExpenseForm = document.getElementById("addExpenseForm");
-  const addExpenseModalEl = document.getElementById("addExpenseModal");
+    // --- Add Expense flow ---
+    const addExpenseForm = document.getElementById("addExpenseForm");
+    const addExpenseModalEl = document.getElementById("addExpenseModal");
 
-  addExpenseForm?.addEventListener("submit", async function (e) {
-    e.preventDefault();
-    const form = new FormData(addExpenseForm);
-    // If backend accepts JSON, better to build JSON payload
-    const payload = {};
-    for (const [k, v] of form.entries()) payload[k] = v;
+    addExpenseForm?.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const form = new FormData(addExpenseForm);
+      // If backend accepts JSON, better to build JSON payload
+      const payload = {};
+      for (const [k, v] of form.entries()) payload[k] = v;
 
-    try {
-      const resp = await fetch("{% url 'api_add_expense' %}", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrftoken
-        },
-        body: JSON.stringify(payload)
-      });
-      const data = await resp.json();
-      if (data.status === "ok") {
-        // update recent expenses
-        renderRecentExpenses(data.expenses);
-        // update totals and categories
-        updateTotalsAndCategories(data.totals, data.category_summary);
-        bootstrap.Modal.getInstance(addExpenseModalEl).hide();
-        addExpenseForm.reset();
-      } else {
+      try {
+        const resp = await fetch("{% url 'api_add_expense' %}", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken,
+          },
+          body: JSON.stringify(payload),
+        });
+        const data = await resp.json();
+        if (data.status === "ok") {
+          // update recent expenses
+          renderRecentExpenses(data.expenses);
+          // update totals and categories
+          updateTotalsAndCategories(data.totals, data.category_summary);
+          bootstrap.Modal.getInstance(addExpenseModalEl).hide();
+          addExpenseForm.reset();
+        } else {
+          alert("Error adding expense");
+        }
+      } catch (err) {
+        console.error(err);
         alert("Error adding expense");
       }
-    } catch (err) {
-      console.error(err);
-      alert("Error adding expense");
-    }
-  });
+    });
 
-  // helper to render recent expenses into the ".budget-main-content.mt-4" container
-  function renderRecentExpenses(expenses) {
-    const container = document.querySelector(".budget-main-content.mt-4");
-    if (!container) return;
-    let html = `<div class="budget-expenses-header"><h6 class="budget-recent-expenses">Recent Expenses</h6></div>`;
-    expenses.forEach((e) => {
-      html += `
+    // helper to render recent expenses into the ".budget-main-content.mt-4" container
+    function renderRecentExpenses(expenses) {
+      const container = document.querySelector(".budget-main-content.mt-4");
+      if (!container) return;
+      let html = `<div class="budget-expenses-header"><h6 class="budget-recent-expenses">Recent Expenses</h6></div>`;
+      expenses.forEach((e) => {
+        html += `
       <div class="budget-expense-item">
         <div class="budget-expense-icon ${e.category.toLowerCase()}"><i class="fas fa-wallet"></i></div>
         <div class="budget-expense-details">
@@ -479,84 +621,161 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="budget-expense-amount">₹${parseFloat(e.amount)}</div>
         </div>
       </div>`;
-    });
-    container.innerHTML = html;
-  }
-
-  // helper to update sidebar totals and category cards after an API response
-  function updateTotalsAndCategories(totals, category_summary) {
-    // update sidebar values
-    document.querySelectorAll(".budget-sidebar-card h2").forEach(el => {
-      // crude approach: update by matching labels
-      const parent = el.closest(".budget-sidebar-card");
-      if (!parent) return;
-      if (parent.querySelector("h3") && parent.querySelector("h3").textContent.includes("Total Budget")) {
-        el.textContent = `₹${parseFloat(totals.total_budget).toFixed(2)}`;
-      } else if (parent.querySelector("h3") && parent.querySelector("h3").textContent.includes("Total Spent")) {
-        el.textContent = `₹${parseFloat(totals.total_spent).toFixed(2)}`;
-      } else if (parent.querySelector("h3") && parent.querySelector("h3").textContent.includes("Remaining")) {
-        el.textContent = `₹${parseFloat(totals.remaining).toFixed(2)}`;
-      }
-    });
-
-    // progress bar (top)
-    const percentVal = totals.total_budget > 0 ? (totals.total_spent / totals.total_budget) * 100 : 0;
-    const progressBar = document.querySelector(".budget-progress-bar-container .progress-bar");
-    if (progressBar) {
-      progressBar.style.width = `${Math.round(percentVal)}%`;
-      progressBar.setAttribute("aria-valuenow", Math.round(percentVal));
-      progressBar.textContent = `${Math.round(percentVal)}%`;
+      });
+      container.innerHTML = html;
     }
-    const progressInfo = document.querySelector(".budget-progress-info span:last-child");
-    if (progressInfo) progressInfo.textContent = `${Math.round(percentVal)}%`;
 
-    // update category cards
-    Object.keys(category_summary).forEach(cat => {
-      const card = document.querySelector(`.budget-category-card[data-category="${cat}"]`);
-      if (!card) return;
-      const data = category_summary[cat];
-      const amounts = card.querySelectorAll(".budget-amount-value");
-      if (amounts && amounts.length >= 3) {
-        amounts[0].textContent = `₹${parseFloat(data.budget).toFixed(0)}`;
-        amounts[1].textContent = `₹${parseFloat(data.spent).toFixed(0)}`;
-        amounts[2].textContent = `₹${parseFloat(data.remaining).toFixed(0)}`;
-      }
-      // update progress bar inside card
-      const pb = card.querySelector(".progress-bar");
-      const pct = data.budget > 0 ? Math.round((data.spent / data.budget) * 100) : 0;
-      if (pb) {
-        pb.style.width = `${pct}%`;
-        pb.classList.remove("bg-danger", "bg-warning", "bg-success");
-        if (pct > 90) pb.classList.add("bg-danger");
-        else if (pct > 60) pb.classList.add("bg-warning");
-        else pb.classList.add("bg-success");
-      }
-      // update the small status text in the card header (so UI reflects changes without full refresh)
-      const statusSmall = card.querySelector('.budget-category-details small');
-      if (statusSmall) {
-        let statusHtml = '';
-        if (pct > 90) {
-          statusHtml = `<span class="text-danger"><i class="fa-solid fa-triangle-exclamation"></i> ${pct}% used</span>`;
-        } else if (pct > 60) {
-          statusHtml = `<span class="text-warning"><i class="fa-solid fa-circle-exclamation"></i> ${pct}% used</span>`;
-        } else {
-          statusHtml = `<span class="text-success"><i class="fa-solid fa-check-circle"></i> ${pct}% used</span>`;
+    // helper to update sidebar totals and category cards after an API response
+    function updateTotalsAndCategories(totals, category_summary) {
+      // update sidebar values
+      document.querySelectorAll(".budget-sidebar-card h2").forEach((el) => {
+        // crude approach: update by matching labels
+        const parent = el.closest(".budget-sidebar-card");
+        if (!parent) return;
+        if (
+          parent.querySelector("h3") &&
+          parent.querySelector("h3").textContent.includes("Total Budget")
+        ) {
+          el.textContent = `₹${parseFloat(totals.total_budget).toFixed(2)}`;
+        } else if (
+          parent.querySelector("h3") &&
+          parent.querySelector("h3").textContent.includes("Total Spent")
+        ) {
+          el.textContent = `₹${parseFloat(totals.total_spent).toFixed(2)}`;
+        } else if (
+          parent.querySelector("h3") &&
+          parent.querySelector("h3").textContent.includes("Remaining")
+        ) {
+          el.textContent = `₹${parseFloat(totals.remaining).toFixed(2)}`;
         }
-        statusSmall.innerHTML = statusHtml;
+      });
+
+      // progress bar (top)
+      const percentVal =
+        totals.total_budget > 0
+          ? (totals.total_spent / totals.total_budget) * 100
+          : 0;
+      const progressBar = document.querySelector(
+        ".budget-progress-bar-container .progress-bar"
+      );
+      if (progressBar) {
+        progressBar.style.width = `${Math.round(percentVal)}%`;
+        progressBar.setAttribute("aria-valuenow", Math.round(percentVal));
+        progressBar.textContent = `${Math.round(percentVal)}%`;
       }
+      const progressInfo = document.querySelector(
+        ".budget-progress-info span:last-child"
+      );
+      if (progressInfo) progressInfo.textContent = `${Math.round(percentVal)}%`;
+
+      // update category cards
+      Object.keys(category_summary).forEach((cat) => {
+        const card = document.querySelector(
+          `.budget-category-card[data-category="${cat}"]`
+        );
+        if (!card) return;
+        const data = category_summary[cat];
+        const amounts = card.querySelectorAll(".budget-amount-value");
+        if (amounts && amounts.length >= 3) {
+          amounts[0].textContent = `₹${parseFloat(data.budget).toFixed(0)}`;
+          amounts[1].textContent = `₹${parseFloat(data.spent).toFixed(0)}`;
+          amounts[2].textContent = `₹${parseFloat(data.remaining).toFixed(0)}`;
+        }
+        // update progress bar inside card
+        const pb = card.querySelector(".progress-bar");
+        const pct =
+          data.budget > 0 ? Math.round((data.spent / data.budget) * 100) : 0;
+        if (pb) {
+          pb.style.width = `${pct}%`;
+          pb.classList.remove("bg-danger", "bg-warning", "bg-success");
+          if (pct > 90) pb.classList.add("bg-danger");
+          else if (pct > 60) pb.classList.add("bg-warning");
+          else pb.classList.add("bg-success");
+        }
+        // update the small status text in the card header (so UI reflects changes without full refresh)
+        const statusSmall = card.querySelector(
+          ".budget-category-details small"
+        );
+        if (statusSmall) {
+          let statusHtml = "";
+          if (pct > 90) {
+            statusHtml = `<span class="text-danger"><i class="fa-solid fa-triangle-exclamation"></i> ${pct}% used</span>`;
+          } else if (pct > 60) {
+            statusHtml = `<span class="text-warning"><i class="fa-solid fa-circle-exclamation"></i> ${pct}% used</span>`;
+          } else {
+            statusHtml = `<span class="text-success"><i class="fa-solid fa-check-circle"></i> ${pct}% used</span>`;
+          }
+          statusSmall.innerHTML = statusHtml;
+        }
+      });
+    }
+
+    // If page loaded with a selected trip, ensure modals have trip id values set
+    const tripId = "{{ selected_trip.id|default_if_none:''|default:'' }}";
+    if (tripId) {
+      const expenseTripInput = document.getElementById("expense_trip_id");
+      const catTripInput = document.getElementById("cat_trip_id");
+      if (expenseTripInput) expenseTripInput.value = tripId;
+      if (catTripInput) catTripInput.value = tripId;
+    }
+  });
+
+  // Calculator initialization: guard against missing elements (page may not include calculator)
+  (function initCalculator() {
+    const openBtn = document.getElementById("openCalculatorBtn");
+    const popup = document.getElementById("calculatorPopup");
+    const closeBtn = document.getElementById("closeCalculatorBtn");
+    const display = document.getElementById("calcDisplay");
+    const buttons = document.querySelectorAll(".btn-calc");
+    const clearBtn = document.getElementById("calcClear");
+    const equalBtn = document.getElementById("calcEqual");
+    const deleteBtn = document.getElementById("calcDelete");
+
+    // if required elements are missing, skip binding handlers
+    if (!openBtn || !popup || !display) return;
+
+    openBtn.addEventListener("click", () => {
+      popup.style.display = "flex";
     });
-  }
 
-  // If page loaded with a selected trip, ensure modals have trip id values set
-  const tripId = "{{ selected_trip.id|default_if_none:''|default:'' }}";
-  if (tripId) {
-    const expenseTripInput = document.getElementById("expense_trip_id");
-    const catTripInput = document.getElementById("cat_trip_id");
-    if (expenseTripInput) expenseTripInput.value = tripId;
-    if (catTripInput) catTripInput.value = tripId;
-  }
-});
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => {
+        popup.style.display = "none";
+      });
+    }
+
+    // DEL button handler
+    if (deleteBtn) {
+      deleteBtn.addEventListener("click", () => {
+        display.value = display.value.slice(0, -1);
+      });
+    }
+
+    // number/operator buttons
+    if (buttons && buttons.length) {
+      buttons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          display.value += btn.textContent;
+        });
+      });
+    }
+
+    if (clearBtn) {
+      clearBtn.addEventListener("click", () => {
+        display.value = "";
+      });
+    }
+
+    if (equalBtn) {
+      equalBtn.addEventListener("click", () => {
+        try {
+          display.value = eval(display.value);
+        } catch {
+          display.value = "Error";
+        }
+      });
+    }
+  })();
 </script>
-
 
 {% endblock %}

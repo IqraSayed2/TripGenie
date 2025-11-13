@@ -56,7 +56,7 @@ def convert_currency(request):
 @login_required(login_url='/login')
 def get_weather(request):
     city = request.GET.get("city")
-    api_key = "your_weather_api_key"  # WeatherAPI.com key
+    api_key = "8e8b40212ade4e6fb4b112149250511"  # WeatherAPI.com key
 
     try:
         url = f"https://api.weatherapi.com/v1/current.json?key={api_key}&q={city}&aqi=yes"

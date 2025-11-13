@@ -1,12 +1,16 @@
 import json
 from django.shortcuts import render, get_object_or_404
-from django.http import JsonResponse, HttpResponseBadRequest
+from django.http import JsonResponse, HttpResponseBadRequest, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from trips.models import Itinerary
 from .models import Budget, Expense
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.dateparse import parse_date
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from io import BytesIO
+from django.utils.text import slugify
 
 # mapping from possible AI breakdown keys (or trip detail keys) to your categories
 AI_KEY_TO_CATEGORY = {
@@ -159,7 +163,7 @@ def budget_page(request):
 def api_add_expense(request):
     """
     Accept either JSON or form-encoded (FormData) requests to create an Expense.
-    Returns updated recent expenses (latest 10) and the updated category summary & totals.
+    Returns updated recent expenses and the updated category summary & totals.
     """
     # support both JSON and form posts
     if request.content_type and "application/json" in request.content_type:
@@ -184,6 +188,13 @@ def api_add_expense(request):
         parsed = parse_date(date_str)
         if parsed:
             expense = Expense.objects.create(budget=budget, title=title, category=category, amount=amount, date=parsed)
+            # Some models set `auto_now` on the date field which overrides
+            # passed-in dates during save(); update via QuerySet to ensure
+            # the chosen date is persisted in the DB.
+            try:
+                Expense.objects.filter(pk=expense.pk).update(date=parsed)
+            except Exception:
+                pass
         else:
             expense = Expense.objects.create(budget=budget, title=title, category=category, amount=amount)
     else:
@@ -302,3 +313,36 @@ def api_get_recent_expenses(request, trip_id):
         for e in expenses
     ]
     return JsonResponse({"status": "ok", "expenses": expense_list})
+
+
+@login_required
+def export_budget_pdf(request, budget_id):
+    # Budget doesn't have a direct `user` field; it belongs to an Itinerary.
+    # Restrict by the related itinerary's user to ensure owners only can export.
+    budget = get_object_or_404(Budget, id=budget_id, itinerary__user=request.user)
+    expenses = Expense.objects.filter(budget=budget).order_by("-date")
+    recent_expenses = expenses
+
+    # Render HTML template with context
+    template = get_template("budget_pdf_template.html")
+    html = template.render({
+        "budget": budget,
+        "expenses": expenses,
+        "recent_expenses": recent_expenses,
+        "user": request.user
+    })
+
+    # Create PDF response
+    response = HttpResponse(content_type="application/pdf")
+    # Budget model doesn't have a title; use related itinerary title if available
+    itin_title = getattr(getattr(budget, 'itinerary', None), 'title', None)
+    filename_base = slugify(itin_title) if itin_title else f"budget-{budget.id}"
+    response['Content-Disposition'] = f'attachment; filename="{filename_base}_report.pdf"'
+
+    # Generate PDF
+    pisa_status = pisa.CreatePDF(BytesIO(html.encode("UTF-8")), dest=response, encoding='UTF-8')
+
+    if pisa_status.err:
+        return HttpResponse("Error generating PDF", status=500)
+
+    return response
