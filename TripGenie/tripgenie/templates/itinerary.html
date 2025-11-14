@@ -241,12 +241,32 @@
       }
     });
 
-    // Export PDF (placeholder - backend endpoint to implement later)
+    // Export PDF — navigate to backend export endpoint (downloads PDF)
     const exportBtns = document.querySelectorAll(".exportBtn");
     exportBtns.forEach((btn) => {
-      btn.addEventListener("click", () => {
+      btn.addEventListener("click", (e) => {
         const id = btn.dataset.id;
-        alert("Exporting itinerary #" + id + " to PDF (coming soon)");
+        if (!id) return;
+
+        // Give immediate UI feedback
+        btn.disabled = true;
+        const prevHtml = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Exporting...';
+
+        // Navigate to the export endpoint which returns the PDF
+        // This will trigger the browser download.
+        // Use a short timeout so the UI update is visible before navigation.
+        setTimeout(() => {
+          window.location.href = `/trips/export/${id}/`;
+        }, 120);
+
+        // In case navigation is prevented, restore button after 5s
+        setTimeout(() => {
+          try {
+            btn.disabled = false;
+            btn.innerHTML = prevHtml;
+          } catch (err) {}
+        }, 5000);
       });
     });
 
