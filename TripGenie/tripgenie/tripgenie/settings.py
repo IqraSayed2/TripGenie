@@ -158,13 +158,13 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
 # OpenAI API key
-OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "google_api_key")
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "your_openai_api_key")
 
 # Groq API key
-GROQ_API_KEY = "groq_api_key" 
+GROQ_API_KEY = "your_groq_api_key" 
 
 # Weather API key
-OPENWEATHER_API_KEY = "weather_api_key" 
+OPENWEATHER_API_KEY = "your_weather_api_key"
 
 # Currency Converter 
 EXCHANGE_API_URL = "https://api.exchangerate-api.com/v4/latest/"

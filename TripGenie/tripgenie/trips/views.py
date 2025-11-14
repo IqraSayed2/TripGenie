@@ -13,6 +13,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.signals import user_logged_out
 from django.dispatch import receiver
 from budget.models import Budget, Expense
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from io import BytesIO
+
 
 @receiver(user_logged_out)
 def on_user_logged_out(sender, request, user, **kwargs):
@@ -582,7 +586,13 @@ def trip_details(request, trip_slug):
 
         # Store the current trip in session for back navigation
         request.session['current_trip'] = trip
-        return render(request, "trip_details.html", {"trip": trip})
+        # Provide flags so the template can show Export vs Save button
+        context = {
+            "trip": trip,
+            "is_saved": bool(itinerary),
+            "saved_itinerary_id": itinerary.id if itinerary else None,
+        }
+        return render(request, "trip_details.html", context)
         
     except Trip.DoesNotExist:
         # If the trip isn't in the DB, look in session-generated AI trips and
@@ -655,8 +665,8 @@ def trip_details(request, trip_slug):
 
             # Render the trip details WITHOUT creating DB entries. Saving must
             # be done explicitly via the Save button which calls
-            # `save_trip_to_itinerary`.
-            return render(request, "trip_details.html", {"trip": trip, "is_saved": False})
+            # `save_trip_to_itinerary`. Provide explicit saved_itinerary_id=None
+            return render(request, "trip_details.html", {"trip": trip, "is_saved": False, "saved_itinerary_id": None})
 
         except StopIteration:
             return render(request, "error.html", {"message": "Trip not found"})
@@ -821,3 +831,61 @@ def save_trip_to_itinerary(request):
         "status": "ok",
         "redirect": reverse("itinerary")  # Redirect to itinerary page instead
     })
+
+
+@login_required(login_url='/login')
+def export_trip_pdf(request, trip_id):
+    itinerary = get_object_or_404(Itinerary, id=trip_id, user=request.user)
+    trip = itinerary.trip
+    template = get_template("export_trip_pdf.html")
+
+    # Build itinerary structure from ItineraryDay and Activity records (best-effort)
+    itinerary_dict = {}
+    try:
+        days = ItineraryDay.objects.filter(itinerary=itinerary).order_by('day_index')
+        for day in days:
+            # collect activity text from common fields, fall back to string()
+            acts = []
+            activities = Activity.objects.filter(itinerary_day=day).order_by('id')
+            for a in activities:
+                text = getattr(a, 'description', None) or getattr(a, 'activity', None) or getattr(a, 'name', None) or str(a)
+                acts.append(text)
+            key = f"Day {getattr(day, 'day_index', None) or getattr(day, 'id', '')}"
+            itinerary_dict[key] = acts
+    except Exception:
+        itinerary_dict = {}
+
+    # Compose a rich trip mapping for the template
+    trip_map = {
+        "name": trip.name,
+        "country": trip.country,
+        "duration_days": getattr(trip, 'duration', None) or getattr(trip, 'duration_days', None) or '',
+        "estimated_cost": getattr(trip, 'estimated_cost', None) or getattr(trip, 'price', None) or 0,
+        "category": getattr(trip, 'category', '') or '',
+        "description": trip.description or '',
+        "inclusions": getattr(trip, 'inclusions', []) or [],
+        "exclusions": getattr(trip, 'exclusions', []) or [],
+        "highlights": getattr(trip, 'highlights', []) or [],
+        "best_time": getattr(trip, 'best_time', '') or '',
+        "travel_tips": getattr(trip, 'travel_tips', '') or '',
+        "hotels": getattr(trip, 'hotels', []) or [],
+        "restaurants": getattr(trip, 'restaurants', []) or [],
+        "local_transport": getattr(trip, 'local_transport', []) or [],
+        "cost_breakdown": getattr(trip, 'cost_breakdown', {}) or {},
+        "itinerary": itinerary_dict,
+    }
+
+    html = template.render({"trip": trip_map})
+
+    response = BytesIO()
+    pisa_status = pisa.CreatePDF(html, dest=response)
+    if pisa_status.err:
+        return HttpResponse("Error generating PDF", status=500)
+
+    response.seek(0)
+    pdf = response.read()
+
+    from django.http import HttpResponse
+    resp = HttpResponse(pdf, content_type="application/pdf")
+    resp["Content-Disposition"] = f"attachment; filename={trip.name}.pdf"
+    return resp

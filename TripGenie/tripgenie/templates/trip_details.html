@@ -3,6 +3,13 @@
 {% block content %}
 
 <div class="container my-5 fade-in">
+  <div
+    id="messageBox"
+    class="alert alert-success text-center fade"
+    role="alert"
+    style="display: none"
+  ></div>
+
   <header class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="triph3">Trip Details</h1>
     <a
@@ -123,12 +130,31 @@
           <!-- Save Button -->
           <div class="p-4 rounded-3 shadow-lg sticky-lg trip-save-container">
             <p class="ready fw-medium mb-3">Ready to start planning?</p>
+            {% if is_saved %} {% if saved_itinerary_id %}
+            <a
+              href="{% url 'export_trip_pdf' saved_itinerary_id %}"
+              class="btn btn-lg w-100 text-white fw-bold trip-save-btn"
+              role="button"
+            >
+              <i class="fa-solid fa-file-export"></i> Export PDF
+            </a>
+            {% else %} {# Fallback: go to itinerary page where user can export #}
+            <a
+              href="{% url 'itinerary' %}"
+              class="btn btn-lg w-100 text-white fw-bold trip-save-btn"
+              role="button"
+            >
+              <i class="fa-solid fa-file-export"></i> Export PDF
+            </a>
+            {% endif %} {% else %}
             <button
+              id="saveTripBtn"
               class="btn btn-lg w-100 text-white fw-bold trip-save-btn"
               onclick="saveTrip('{{ trip.id }}')"
             >
               Save this Trip to my Itinerary
             </button>
+            {% endif %}
           </div>
 
           <!-- Inclusions -->
@@ -258,8 +284,7 @@
               <h4 class="h5 fw-bold mb-3 HeaderRecommender">
                 🍽️ Recommended Restaurants
               </h4>
-              {% if trip.restaurants %} 
-              {% for rest in trip.restaurants %}
+              {% if trip.restaurants %} {% for rest in trip.restaurants %}
               <div
                 class="mb-3 p-3 rounded"
                 style="background-color: rgba(255, 255, 255, 0.05)"
@@ -308,10 +333,21 @@
 <script>
   async function saveTrip(tripId) {
     try {
-      // Disable the save button to prevent multiple clicks
-      const saveButton = document.querySelector(".trip-save-btn");
-      saveButton.disabled = true;
-      saveButton.textContent = "Saving...";
+      // UI: show inline message and disable the save button to prevent multiple clicks
+      const messageBox = document.getElementById("messageBox");
+      const saveButton =
+        document.getElementById("saveTripBtn") ||
+        document.querySelector(".trip-save-btn");
+      if (messageBox) {
+        messageBox.className = "alert alert-info text-center";
+        messageBox.textContent = "Saving trip to your itinerary...";
+        messageBox.style.display = "block";
+      }
+      if (saveButton) {
+        saveButton.disabled = true;
+        saveButton.textContent = "Saving...";
+      }
+
       const response = await fetch("{% url 'save_trip_to_itinerary' %}", {
         method: "POST",
         headers: {
@@ -325,24 +361,40 @@
       const data = await response.json();
 
       if (response.ok && data.status === "ok") {
-        // Use native alert box and then redirect to itinerary page
-        window.alert(
-          "Trip saved successfully. You will be redirected to your itinerary."
-        );
-        window.location.href = data.redirect;
+        if (messageBox) {
+          messageBox.className = "alert alert-success text-center";
+          messageBox.textContent =
+            "Trip saved successfully. Redirecting to your itinerary...";
+          messageBox.style.display = "block";
+        }
+        // Short delay so the user sees the message, then redirect
+        setTimeout(() => {
+          window.location.href = data.redirect;
+        }, 900);
       } else {
         throw new Error(data.message || "Failed to save trip");
       }
     } catch (error) {
       console.error("Error saving trip:", error);
       // Re-enable the save button on error
-      const saveButton = document.querySelector(".trip-save-btn");
-      saveButton.disabled = false;
-      saveButton.textContent = "Save this Trip to my Itinerary";
-      // Show a simple alert box for errors
-      window.alert(
-        "Failed to save trip: " + (error.message || "Please try again.")
-      );
+      const saveButton =
+        document.getElementById("saveTripBtn") ||
+        document.querySelector(".trip-save-btn");
+      if (saveButton) {
+        saveButton.disabled = false;
+        saveButton.textContent = "Save this Trip to my Itinerary";
+      }
+      const messageBox = document.getElementById("messageBox");
+      if (messageBox) {
+        messageBox.className = "alert alert-danger text-center";
+        messageBox.textContent =
+          "Failed to save trip: " + (error.message || "Please try again.");
+        messageBox.style.display = "block";
+      } else {
+        window.alert(
+          "Failed to save trip: " + (error.message || "Please try again.")
+        );
+      }
     }
   }
 </script>

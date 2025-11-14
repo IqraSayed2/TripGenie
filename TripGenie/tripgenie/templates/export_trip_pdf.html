@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>{{ trip.name }} - Trip PDF</title>
+    <style>
+      body {
+        font-family: DejaVu Sans, Arial, sans-serif;
+        margin: 25px;
+        color: #2c3e50;
+        font-size: 13px;
+      }
+
+      h1,
+      h2,
+      h3 {
+        color: #2c3e50;
+        margin-bottom: 2px;
+      }
+
+      h1 {
+        font-size: 28px;
+        border-bottom: 2px solid #2c3e50;
+        padding-bottom: 4px;
+        margin-bottom: 10px;
+      }
+
+      h2 {
+        font-size: 18px;
+      }
+
+      h3 {
+        font-size: 15px;
+        margin-top: 10px;
+        color: #2c3e50;
+      }
+
+      p,
+      li {
+        color: #333;
+      }
+
+      /* --- Meta Section --- */
+      .meta {
+        padding: 10px;
+        margin-bottom: 16px;
+      }
+
+      .meta-item {
+        margin-bottom: 2px;
+      }
+
+      .meta strong {
+        color: #2c3e50;
+      }
+
+      /* --- Table Styling --- */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 8px;
+      }
+
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 6px 8px;
+        vertical-align: top;
+      }
+
+      th {
+        color: #2c3e50;
+      }
+
+      /* --- Lists --- */
+      ul {
+        margin: 6px 0 10px 16px;
+      }
+
+      .list-inline {
+        list-style: none;
+        padding: 0;
+        margin: 4px 0;
+      }
+
+      .list-inline li {
+        padding: 3px;
+        margin: 2px;
+        color: #2c3e50;
+        font-size: 12px;
+      }
+
+      .small {
+        font-size: 12px;
+        color: #666;
+      }
+
+      .section {
+        padding: 10px 12px;
+      }
+
+      .two-col {
+        width: 100%;
+      }
+      .col {
+        width: 49%;
+        display: inline-block;
+        vertical-align: top;
+      }
+
+      .footer {
+        text-align: center;
+        font-size: 11px;
+        color: #999;
+        margin-top: 30px;
+        border-top: 1px solid #ddd;
+        padding-top: 6px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>{{ trip.name }}</h1>
+
+    <div class="meta">
+      <div class="meta-item"><strong>Country:</strong> {{ trip.country }}</div>
+      <div class="meta-item">
+        <strong>Duration:</strong> {{ trip.duration_days }} days
+      </div>
+      <div class="meta-item">
+        <strong>Estimated Cost:</strong> {{ trip.estimated_cost }} Rs.
+      </div>
+      <div class="meta-item">
+        <strong>Best Time to Visit:</strong> {{ trip.best_time }}
+      </div>
+
+      <div class="meta-item">
+        <strong>Highlights:</strong>
+        {% if trip.highlights %}
+        <ul class="list-inline">
+          {% for h in trip.highlights %}
+          <li>{{ h }}</li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <span class="small">No highlights available</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Overview</h2>
+      <p>{{ trip.description }}</p>
+    </div>
+
+    <div class="two-col">
+      <div class="col">
+        <div class="section">
+          <h3>Inclusions</h3>
+          {% if trip.inclusions %}
+          <ul>
+            {% for inc in trip.inclusions %}
+            <li>{{ inc }}</li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          <p class="small">None listed</p>
+          {% endif %}
+
+          <h3>Exclusions</h3>
+          {% if trip.exclusions %}
+          <ul>
+            {% for exc in trip.exclusions %}
+            <li>{{ exc }}</li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          <p class="small">None listed</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="section">
+          <h3>Travel Tips</h3>
+          <p>{{ trip.travel_tips|default:"No tips available" }}</p>
+
+          <h3>Cost Breakdown</h3>
+          {% if trip.cost_breakdown %}
+          <table>
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Amount (Rs.)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for k, v in trip.cost_breakdown.items %}
+              <tr>
+                <td>{{ k }}</td>
+                <td>{{ v }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% else %}
+          <p class="small">No cost details available</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Itinerary</h2>
+      {% if trip.itinerary %}
+      <ul>
+        {% for day, acts in trip.itinerary.items %}
+        <li>
+          <strong>{{ day }}</strong>: {% if acts %}{{ acts|join:", " }} {% else %}<span class="small">No details</span>{% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="small">No itinerary details available</p>
+      {% endif %}
+    </div>
+
+    <div class="section">
+      <h2>Accommodation</h2>
+      {% if trip.hotels %}
+      <table>
+        <thead>
+          <tr>
+            <th>Hotel</th>
+            <th>Location</th>
+            <th>Price / Night</th>
+            <th>Rating</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for h in trip.hotels %}
+          <tr>
+            <td>{{ h.name|default:h }}</td>
+            <td>{{ h.location|default:"-" }}</td>
+            <td>{{ h.price_per_night|default:"-" }}</td>
+            <td>{{ h.rating|default:"-" }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p class="small">No accommodation details</p>
+      {% endif %}
+    </div>
+
+    <div class="section">
+      <h2>Restaurants</h2>
+      {% if trip.restaurants %}
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Cuisine</th>
+            <th>Avg Cost</th>
+            <th>Location</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in trip.restaurants %}
+          <tr>
+            <td>{{ r.name|default:r }}</td>
+            <td>{{ r.cuisine|default:"-" }}</td>
+            <td>{{ r.avg_cost|default:"-" }}</td>
+            <td>{{ r.location|default:"-" }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p class="small">No restaurant information</p>
+      {% endif %}
+    </div>
+
+    <div class="section">
+      <h2>Local Transport</h2>
+      {% if trip.local_transport %}
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Provider</th>
+            <th>Cost</th>
+            <th>Mode</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for t in trip.local_transport %}
+          <tr>
+            <td>{{ t.type|default:t }}</td>
+            <td>{{ t.provider|default:"-" }}</td>
+            <td>{{ t.cost|default:"-" }}</td>
+            <td>{{ t.mode|default:"-" }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p class="small">No transport details</p>
+      {% endif %}
+    </div>
+
+    <div class="footer">
+      <em>Generated by TripGenie • {{ trip.name }} • {{ trip.country }}</em>
+    </div>
+  </body>
+</html>
