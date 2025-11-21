@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment Status</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{% static 'css/index.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+    <script>
+      // Apply theme class early to avoid a flash of the wrong theme.
+      (function () {
+        try {
+          const saved = localStorage.getItem("theme");
+          const doc = document.documentElement;
+          if (saved === "dark") doc.classList.add("dark-theme");
+          else if (saved === "light") doc.classList.add("light-theme");
+          else if (doc.classList.contains("dark"))
+            doc.classList.add("dark-theme");
+          else if (
+            window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches
+          )
+            doc.classList.add("dark-theme");
+          else doc.classList.add("light-theme");
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+
+  <body class="payment-status-body">
+    <!-- Floating Bubbles -->
+    <div class="bubble-bg">
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+    </div>
+
+    <!-- SUCCESS -->
+    {% if status == "success" %}
+    <div class="tg-card">
+      <i class="fas fa-check-circle tg-success-icon"></i>
+      <h2 class="tg-success-title">Payment Successful!</h2>
+      <p class="tg-success-msg">
+        Your membership has been activated successfully. A confirmation email
+        has been sent to your inbox.
+      </p>
+
+      <button class="tg-success-btn" onclick="window.location.href='/'">
+        Go to Home Page
+      </button>
+    </div>
+    {% endif %}
+
+    <!-- FAILED -->
+    {% if status == "failed" %}
+    <div class="tg-card">
+      <i class="fas fa-times-circle tg-fail-icon"></i>
+      <h2 class="tg-fail-title">Payment Failed!</h2>
+      <p class="tg-fail-msg">
+        Unfortunately, your payment could not be processed. Please try again.
+      </p>
+
+      <button class="tg-fail-btn" onclick="window.location.href='/membership/'">
+        Try Again
+      </button>
+    </div>
+    {% endif %}
+  </body>
+</html>

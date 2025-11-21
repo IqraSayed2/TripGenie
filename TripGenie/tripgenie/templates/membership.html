@@ -1,0 +1,202 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% block title %}Pricing & Plans{% endblock %} 
+{% block content %}
+
+<!-- Banner Section -->
+<section class="membership-banner-section">
+  <div class="d-flex align-items-center mb-4">
+    <i class="material-icons" style="font-size: 50px">card_membership</i>
+
+    <div class="text-start">
+      <h1 class="membership-banner-title">Choose Your Adventure</h1>
+      <p class="membership-banner-subtitle">
+        Unlock the full power of TripGenie
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing Section -->
+<section class="membership-section-padding pt-0">
+  <div class="container">
+    <!-- Toggle -->
+    <div class="membership-toggle-container">
+      <span id="monthly-text" class="membership-toggle-text active"
+        >Monthly</span
+      >
+      <label class="membership-toggle-switch">
+        <input type="checkbox" id="pricing-toggle" />
+        <span class="membership-slider"></span>
+      </label>
+      <span id="yearly-text" class="membership-toggle-text">Yearly</span>
+      <span class="membership-save-label">Save up to 38%</span>
+    </div>
+
+    <div class="row g-4">
+      {% for plan in plans %}
+      <div class="col-md-6">
+        <div class="membership-pricing-card">
+          <div class="mb-3">
+            <i class="{{ plan.icon_class }} fa-2x planicon"></i>
+          </div>
+
+          {% if plan.name == "Adventurer" %}
+          <span class="membership-most-popular-badge">Most Popular</span>
+          {% endif %}
+
+          <h5 class="membership-plan-title">{{ plan.name }}</h5>
+          <p class="membership-plan-subtitle">{{ plan.description }}</p>
+
+          <h2 class="membership-plan-price">
+            <span class="monthly-price">{{ plan.monthly_price }}₹</span>
+            <span class="yearly-price d-none">{{ plan.yearly_price }}₹</span>
+            <span class="plan-period">/month</span>
+          </h2>
+
+          {% if plan.yearly_savings_text %}
+          <p class="plan-save yearly-savings d-none" style="color: #1da0a2">
+            {{ plan.yearly_savings_text }}
+          </p>
+          {% endif %}
+
+          <ul class="membership-plan-features">
+            <!-- INCLUDED FEATURES -->
+            {% for f in plan.features %}
+            <li>
+              <i
+                class="fa-solid fa-check membership-feature-icon membership-icon-check"
+              ></i>
+              {{ f }}
+            </li>
+            {% endfor %}
+
+            <!-- EXCLUDED FEATURES -->
+            {% for f in plan.features_excluded %}
+            <li class="membership-excludedfeature">
+              <i class="fa-solid fa-xmark membership-feature-icon icon-x"></i>
+              {{ f }}
+            </li>
+            {% endfor %}
+          </ul>
+
+          {% if user_plan == plan.id %}
+          <button class="membership-plan-button disabled">
+            Current Plan 
+            {% if user_period %} 
+              {% if user_period == 'both' %} 
+              {% else %} ({{ user_period|capfirst }}) 
+              {% endif %} 
+            {% endif %}
+          </button>
+          {% else %}
+          <button
+            data-monthly="{{ plan.monthly_price }}"
+            data-yearly="{{ plan.yearly_price }}"
+            onclick="startPayment({{ plan.id }})"
+            class="membership-plan-button choose"
+          >
+            Upgrade Now
+          </button>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Razorpay Script -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+  function startPayment(planId) {
+    const yearly = document.getElementById("pricing-toggle").checked;
+    const price = yearly
+      ? parseInt(
+          document.querySelector(`[onclick="startPayment(${planId})"]`).dataset
+            .yearly
+        )
+      : parseInt(
+          document.querySelector(`[onclick="startPayment(${planId})"]`).dataset
+            .monthly
+        );
+
+    let fd = new FormData();
+    fd.append("csrfmiddlewaretoken", "{{ csrf_token }}");
+    fd.append("price", price);
+
+    fetch(`/membership/create-order/${planId}/`, {
+      method: "POST",
+      body: fd,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        var options = {
+          key: "{{ razorpay_key }}",
+          amount: data.amount,
+          currency: "INR",
+          name: "TripGenie Membership",
+          description: data.plan_name,
+          order_id: data.order_id,
+
+          handler: function (response) {
+            // include selected billing period so server knows monthly vs yearly
+            let selectedPeriod = yearly ? "yearly" : "monthly";
+            let sd = new FormData();
+            sd.append("plan_id", planId);
+            sd.append("order_id", data.order_id);
+            sd.append("payment_id", response.razorpay_payment_id);
+            sd.append("period", selectedPeriod);
+
+            fetch("/membership/payment-success/", {
+              method: "POST",
+              headers: { "X-CSRFToken": "{{ csrf_token }}" },
+              body: sd,
+            })
+              .then((r) => r.json())
+              .then((obj) => {
+                window.location.href = obj.redirect;
+              });
+          },
+
+          modal: {
+            ondismiss: function () {
+              window.location.href =
+                "/membership/payment-status/?status=failed";
+            },
+          },
+
+          theme: { color: "#6a1a78" },
+        };
+
+        new Razorpay(options).open();
+      });
+  }
+
+  // Monthly/Yearly Toggle Script
+
+  const toggle = document.getElementById("pricing-toggle");
+  const monthlyText = document.getElementById("monthly-text");
+  const yearlyText = document.getElementById("yearly-text");
+
+  toggle.addEventListener("change", () => {
+    const yearly = toggle.checked;
+    document
+      .querySelectorAll(".monthly-price")
+      .forEach((el) => (el.style.display = yearly ? "none" : "inline"));
+    document
+      .querySelectorAll(".yearly-price")
+      .forEach((el) => el.classList.toggle("d-none"));
+    document
+      .querySelectorAll(".plan-period")
+      .forEach((p) => (p.textContent = yearly ? "/year" : "/month"));
+    document
+      .querySelectorAll(".yearly-savings")
+      .forEach((el) => el.classList.toggle("d-none", !yearly));
+    monthlyText.classList.toggle("active");
+    yearlyText.classList.toggle("active");
+  });
+</script>
+
+{% endblock %}

@@ -146,19 +146,16 @@ MEDIA_URL = '/media/'
 # Email Settings
 
 # Admin email to receive contact form messages
-ADMIN_EMAIL = "hello.tripgenie@gmail.com"
+ADMIN_EMAIL = "your_admin_email"
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
-EMAIL_HOST_USER = "hello.tripgenie@gmail.com"
-EMAIL_HOST_PASSWORD = "rrqo uagi grof kmmz"
+EMAIL_HOST_USER = "your_admin_email"
+EMAIL_HOST_PASSWORD = "your_host_password"
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-
-# OpenAI API key
-OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "your_openai_api_key")
 
 # Groq API key
 GROQ_API_KEY = "your_groq_api_key" 
@@ -168,3 +165,7 @@ OPENWEATHER_API_KEY = "your_weather_api_key"
 
 # Currency Converter 
 EXCHANGE_API_URL = "https://api.exchangerate-api.com/v4/latest/"
+
+# Razorpay Credentials
+RAZORPAY_ID = 'your_razorpay_id'
+RAZORPAY_SECRET = 'your_razorpay_secret'

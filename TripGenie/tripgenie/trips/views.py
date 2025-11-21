@@ -6,7 +6,6 @@ from django.http import JsonResponse, HttpResponseBadRequest
 from django.views.decorators.http import require_POST, require_http_methods
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
-from openai import OpenAI
 from groq import Groq
 from .models import Trip, Wishlist, Itinerary, ItineraryDay, Activity
 from django.contrib.auth.decorators import login_required
