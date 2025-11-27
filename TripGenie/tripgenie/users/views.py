@@ -11,6 +11,7 @@ from django.contrib.auth.password_validation import validate_password
 import random
 import logging
 from django.contrib.auth.decorators import login_required
+from datetime import date
 
 
 logger = logging.getLogger(__name__)
@@ -184,14 +185,41 @@ def edit_profile(request):
     profile, _ = UserProfile.objects.get_or_create(user=request.user)
 
     if request.method == 'POST':
-        request.user.first_name = request.POST.get('first_name')
-        request.user.last_name = request.POST.get('last_name')
-        request.user.save()
+        new_username = request.POST.get('username').strip()
+        new_first = request.POST.get('first_name').strip()
+        new_last = request.POST.get('last_name').strip()
+        new_email = request.POST.get('email').strip().lower()
 
-        if request.FILES.get('profile_picture'):
-            profile.profile_picture = request.FILES['profile_picture']
+        # Username cooldown
+        if profile.username_cooldown and new_username != request.user.username:
+            messages.error(request, f"You can change your username after {profile.username_cooldown} more days.")
+            return redirect('edit_profile')
+
+        # Username exists
+        if new_username != request.user.username:
+            if User.objects.filter(username=new_username).exists():
+                messages.error(request, "This username is already taken.")
+                return redirect('edit_profile')
+
+        # Email exists
+        if new_email != request.user.email:
+            if User.objects.filter(email=new_email).exists():
+                messages.error(request, "This email is already registered.")
+                return redirect('edit_profile')
+
+        # Save all fields
+        if new_username != request.user.username:
+            request.user.username = new_username
+            profile.username_changed_at = date.today()  # Start cooldown
+
+        request.user.first_name = new_first
+        request.user.last_name = new_last
+        request.user.email = new_email
+
+        request.user.save()
         profile.save()
 
+        messages.success(request, "Profile updated successfully!")
         return redirect('profile')
 
     return render(request, 'edit_profile.html', {

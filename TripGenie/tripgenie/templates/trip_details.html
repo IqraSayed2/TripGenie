@@ -1,4 +1,5 @@
 {% extends "base.html" %} 
+{% load membership_tags %} 
 {% block title %}{{ trip.name }} Details{% endblock title %} 
 {% block content %}
 
@@ -127,26 +128,38 @@
 
         <!-- Right Column -->
         <div class="col-lg-4 d-flex flex-column gap-5">
-          <!-- Save Button -->
+          <!-- Save / Export Section -->
           <div class="p-4 rounded-3 shadow-lg sticky-lg trip-save-container">
             <p class="ready fw-medium mb-3">Ready to start planning?</p>
-            {% if is_saved %} {% if saved_itinerary_id %}
+
+            {% if is_saved %} {# Trip already saved → show export button #} 
+            {% if user|is_premium %}
+            <!-- PREMIUM USER → Export PDF allowed -->
+            {% if saved_itinerary_id %}
             <a
               href="{% url 'export_trip_pdf' saved_itinerary_id %}"
               class="btn btn-lg w-100 text-white fw-bold trip-save-btn"
-              role="button"
             >
               <i class="fa-solid fa-file-export"></i> Export PDF
             </a>
-            {% else %} {# Fallback: go to itinerary page where user can export #}
+            {% else %}
             <a
               href="{% url 'itinerary' %}"
               class="btn btn-lg w-100 text-white fw-bold trip-save-btn"
-              role="button"
             >
               <i class="fa-solid fa-file-export"></i> Export PDF
             </a>
-            {% endif %} {% else %}
+            {% endif %} 
+            {% else %}
+            <!-- FREE USER → Lock Export PDF -->
+            <a
+              href="{% url 'membership' %}"
+              class="btn btn-lg w-100 text-white fw-bold trip-save-btn"
+            >
+              🔒 Upgrade to Export PDF
+            </a>
+            {% endif %} 
+            {% else %} {# Trip NOT saved → show Save button #}
             <button
               id="saveTripBtn"
               class="btn btn-lg w-100 text-white fw-bold trip-save-btn"
@@ -270,7 +283,8 @@
                   <i class="fas fa-map-marker-alt"></i> View on Map
                 </a>
               </div>
-              {% endfor %} {% else %}
+              {% endfor %} 
+              {% else %}
               <p class="recdetail">No hotel details available.</p>
               {% endif %}
             </div>
@@ -284,7 +298,8 @@
               <h4 class="h5 fw-bold mb-3 HeaderRecommender">
                 🍽️ Recommended Restaurants
               </h4>
-              {% if trip.restaurants %} {% for rest in trip.restaurants %}
+              {% if trip.restaurants %} 
+              {% for rest in trip.restaurants %}
               <div
                 class="mb-3 p-3 rounded"
                 style="background-color: rgba(255, 255, 255, 0.05)"
@@ -360,7 +375,23 @@
 
       const data = await response.json();
 
-      if (response.ok && data.status === "ok") {
+      if (data.status === "limit_reached") {
+        // Free user at limit → show JavaScript alert popup with upgrade offer
+        if (saveButton) {
+          saveButton.disabled = false;
+          saveButton.textContent = "Save this Trip to my Itinerary";
+        }
+        if (messageBox) {
+          messageBox.style.display = "none";
+        }
+        // Show alert with upgrade message
+        const message = data.message || "Free plan users can save only 3 trips. Upgrade your membership for unlimited itinerary saves.";
+        alert("🔒 " + message);
+        // Optionally redirect to membership page
+        if (confirm("Would you like to upgrade your membership now?")) {
+          window.location.href = data.redirect || "/membership/";
+        }
+      } else if (response.ok && data.status === "ok") {
         if (messageBox) {
           messageBox.className = "alert alert-success text-center";
           messageBox.textContent =

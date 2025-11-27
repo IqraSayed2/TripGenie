@@ -1,5 +1,6 @@
 {% extends "base.html" %} 
 {% load static %} 
+{% load membership_tags %} 
 {% block title %}My Itineraries{% endblock %} 
 {% block content %}
 
@@ -11,106 +12,130 @@
       View and manage your saved travel plans.
     </p>
   </div>
+
   <div class="d-flex justify-content-end mb-4">
-  <button id="newTripBtn" class="btn rounded-pill" style="background-color: #20d0d4; color: white;">
-    <i class="fa-solid fa-plus"></i> New Trip
-  </button>
+    {% if itineraries %}
+    <button
+      id="newTripBtn"
+      class="btn rounded-pill"
+      style="background-color: #20d0d4; color: white"
+    >
+      <i class="fa-solid fa-plus"></i> New Trip
+    </button>
+    {% endif %}
   </div>
 
   {% if itineraries %}
   <!-- List of Itineraries -->
   <div class="row g-4">
     {% for itinerary in itineraries reversed %}
-<div class="col-lg-4 col-md-6 col-sm-12">
-  <div class="rec-destination-card">
-    <div class="rec-card-image">
-      <img src="{{ itinerary.trip.image.url|default:'/static/images/default.jpg' }}" alt="{{ itinerary.trip.name }}">
+    <div class="col-lg-4 col-md-6 col-sm-12">
+      <div class="rec-destination-card">
+        <div class="rec-card-image">
+          <img
+            src="{{ itinerary.trip.image.url|default:'/static/images/default.jpg' }}"
+            alt="{{ itinerary.trip.name }}"
+          />
 
-      {% if itinerary.trip.trending %}
-      <div class="trending-badge">
-        <i class="fas fa-fire"></i> Trending
-      </div>
-      {% elif itinerary.trip.discount %}
-      <div class="discount-badge">
-        {{ itinerary.trip.discount }}
-      </div>
-      {% endif %}
-
-      <div class="rating-badge">
-        <i class="fas fa-star"></i> {{ itinerary.trip.rating|default:"4.5" }}
-      </div>
-
-      <div class="position-absolute bottom-0 start-0 m-3 bg-dark text-white px-2 py-1 rounded" style="font-size: 12px">
-        {{ itinerary.match_score|default:"90" }}%
-      </div>
-    </div>
-
-    <div class="rec-card-content">
-      <div class="d-flex justify-content-between align-items-start mb-2">
-        <h3 class="rec-destination-title">{{ itinerary.trip.name }}</h3>
-        <span class="price">
-          {% if itinerary.trip.estimated_cost %}
-            ₹{{ itinerary.trip.estimated_cost|floatformat:2 }}
-          {% else %}
-            Price N/A
+          {% if itinerary.trip.trending %}
+          <div class="trending-badge"><i class="fas fa-fire"></i> Trending</div>
+          {% elif itinerary.trip.discount %}
+          <div class="discount-badge">{{ itinerary.trip.discount }}</div>
           {% endif %}
-        </span>
-      </div>
 
-      <div class="location">
-        <i class="fas fa-map-marker-alt"></i> {{ itinerary.trip.country }}
-      </div>
+          <div class="rating-badge">
+            <i class="fas fa-star"></i> {{ itinerary.trip.rating|default:"4.5" }}
+          </div>
 
-      <div class="duration">
-        <i class="far fa-clock"></i> {{ itinerary.total_days|default:"—" }} days
-      </div>
+          <div
+            class="position-absolute bottom-0 start-0 m-3 bg-dark text-white px-2 py-1 rounded"
+            style="font-size: 12px"
+          >
+            {{ itinerary.match_score|default:"90" }}%
+          </div>
+        </div>
 
-      <p class="description">
-        {{ itinerary.trip.description|default:"No description available"|truncatechars:120 }}
-      </p>
+        <div class="rec-card-content">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <h3 class="rec-destination-title">{{ itinerary.trip.name }}</h3>
+            <span class="price">
+              {% if itinerary.trip.estimated_cost %} ₹{{ itinerary.trip.estimated_cost|floatformat:2 }} {% else %} Price N/A {% endif %}
+            </span>
+          </div>
 
-      {% if itinerary.trip.highlights %}
-<div class="highlights">
-  <div class="highlights-title">Highlights:</div>
-  <div class="highlight-tags">
-    {% for highlight in itinerary.trip.highlights %}
-      <span class="highlight-tag">{{ highlight }}</span>
-    {% endfor %}
-  </div>
-</div>
-{% endif %}
+          <div class="location">
+            <i class="fas fa-map-marker-alt"></i> {{ itinerary.trip.country }}
+          </div>
 
-      <div class="best-time">
-        <i class="far fa-calendar"></i> Best: {{ itinerary.trip.best_time|default:"All year" }}
-      </div>
+          <div class="duration">
+            <i class="far fa-clock"></i> {{ itinerary.total_days|default:"—" }}
+            days
+          </div>
 
-      <div class="ai-match">
-        <i class="fas fa-robot"></i> {{ itinerary.match_score|default:"90" }}% AI Match
-      </div>
+          <p class="description">
+            {{ itinerary.trip.description|default:"No description available"|truncatechars:120 }}
+          </p>
 
-      <button class="plan-btn">
-        <a href="{% url 'trip_details' itinerary.trip.slug %}" style="text-decoration: none; color: white;">
-        View This Trip <i class="fas fa-arrow-right"></i>
-        </a>
-      </button>
+          {% if itinerary.trip.highlights %}
+          <div class="highlights">
+            <div class="highlights-title">Highlights:</div>
+            <div class="highlight-tags">
+              {% for highlight in itinerary.trip.highlights %}
+              <span class="highlight-tag">{{ highlight }}</span>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
 
-      <div class="d-flex justify-content-between mt-3">
-        <button
-          class="btn btn-outline-info btn-sm rounded-pill exportBtn"
-          data-id="{{ itinerary.id }}"
-        >
-          <i class="fa-solid fa-file-export"></i> Export PDF
-        </button>
-        <button
-          class="btn btn-outline-danger btn-sm rounded-pill deleteBtn"
-          data-id="{{ itinerary.trip.id }}"
-        >
-          <i class="fa-solid fa-trash"></i> Delete
-        </button>
+          <div class="best-time">
+            <i class="far fa-calendar"></i> Best: {{ itinerary.trip.best_time|default:"All year" }}
+          </div>
+
+          <div class="ai-match">
+            <i class="fas fa-robot"></i> {{ itinerary.match_score|default:"90" }}% AI Match
+          </div>
+
+          <button class="plan-btn">
+            <a
+              href="{% url 'trip_details' itinerary.trip.slug %}"
+              style="text-decoration: none; color: white"
+            >
+              View This Trip <i class="fas fa-arrow-right"></i>
+            </a>
+          </button>
+
+          <div class="d-flex justify-content-between mt-3">
+            {% load membership_tags %} 
+            {% if user|is_premium %}
+            <!-- PREMIUM USER — normal export button -->
+            <button
+              class="btn btn-outline-info btn-sm rounded-pill exportBtn"
+              data-id="{{ itinerary.id }}"
+            >
+              <i class="fa-solid fa-file-export"></i> Export PDF
+            </button>
+
+            {% else %}
+            <!-- FREE USER — locked & redirects to membership -->
+            <a
+              href="{% url 'membership' %}"
+              class="btn btn-outline-info btn-sm rounded-pill exportBtn"
+              style="text-decoration: none"
+            >
+              🔒 Upgrade to Export PDF
+            </a>
+            {% endif %}
+
+            <button
+              class="btn btn-outline-danger btn-sm rounded-pill deleteBtn"
+              data-id="{{ itinerary.trip.id }}"
+            >
+              <i class="fa-solid fa-trash"></i> Delete
+            </button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
     {% endfor %}
   </div>
@@ -251,7 +276,8 @@
         // Give immediate UI feedback
         btn.disabled = true;
         const prevHtml = btn.innerHTML;
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Exporting...';
+        btn.innerHTML =
+          '<i class="fa-solid fa-spinner fa-spin"></i> Exporting...';
 
         // Navigate to the export endpoint which returns the PDF
         // This will trigger the browser download.
@@ -289,7 +315,10 @@
             });
             if (resp.ok) {
               // Remove the card column from the UI (cards use col-lg-4)
-              const col = btn.closest(".col-lg-4") || btn.closest(".col-md-6") || btn.closest(".col-sm-12");
+              const col =
+                btn.closest(".col-lg-4") ||
+                btn.closest(".col-md-6") ||
+                btn.closest(".col-sm-12");
               if (col) col.remove();
               // If no more trip cards, refresh so the empty state appears
               if (document.querySelectorAll(".col-lg-4").length === 0) {

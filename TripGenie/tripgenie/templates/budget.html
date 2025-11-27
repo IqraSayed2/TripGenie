@@ -1,6 +1,7 @@
 {% extends "base.html" %} 
 {% load static %} 
 {% load budget_filters %} 
+{% load membership_tags %} 
 {% block title %}Budget Planner{% endblock %} 
 {% block content %}
 
@@ -28,10 +29,8 @@
           <label class="form-label mb-2">Select Trip</label>
           <select name="trip_name" id="tripSelect" class="budget-trip-select">
             <option value="">-- Choose a saved trip --</option>
-            {% for trip in saved_trips %}
-            {# Use the trip title as the option value so the URL shows ?trip_name=... #}
-            <option value="{{ trip.title }}" {% if selected_trip and selected_trip.id == trip.id %} selected {% endif %}>{{ trip.title }} - {{ trip.destination }}</option>
-            {% endfor %}
+            {% for trip in saved_trips %} {# Use the trip title as the option value so the URL shows ?trip_name=... #} 
+            <option value="{{ trip.title }}" {% if selected_trip and selected_trip.id == trip.id %} selected {% endif %}>{{ trip.title }} - {{ trip.destination }} {% endfor %} </option>
           </select>
         </div>
         <button type="submit" class="budget-viewbtn">
@@ -138,11 +137,25 @@
           </button>
 
           <!-- Export Report -->
-            <button type="submit" class="budget-action-btn budget-btn-export">
-          <a href="{% url 'export_budget_pdf' budget.id %}" target="_blank" class="d-inline">
-            <i class="fas fa-download"></i> Export Report
+          {% if user|is_premium %}
+          <!-- PREMIUM USER -->
+          <a
+            href="{% url 'export_budget_pdf' budget.id %}"
+            target="_blank"
+            class="btn budget-action-btn budget-btn-export d-inline-flex align-items-center"
+          >
+            <i class="fas fa-download"></i>&nbsp; Export Report
           </a>
-          </button>
+
+          {% else %}
+          <!-- FREE USER — LOCKED BUTTON -->
+          <a
+            href="{% url 'membership' %}"
+            class="btn budget-action-btn budget-btn-export d-inline-flex align-items-center"
+          >
+            🔒 Upgrade to Export Report
+          </a>
+          {% endif %}
         </div>
       </div>
 
@@ -220,18 +233,15 @@
                     <small class="text-secondary">
                       {% if percent > 90 %}
                       <span class="text-danger"
-                        ><i class="fa-solid fa-triangle-exclamation"></i> 
-                        {{ percent|floatformat:0 }}% used</span
+                        ><i class="fa-solid fa-triangle-exclamation"></i> {{ percent|floatformat:0 }}% used</span
                       >
                       {% elif percent > 60 %}
                       <span class="text-warning"
-                        ><i class="fa-solid fa-circle-exclamation"></i> 
-                        {{ percent|floatformat:0 }}% used</span
+                        ><i class="fa-solid fa-circle-exclamation"></i> {{ percent|floatformat:0 }}% used</span
                       >
                       {% else %}
                       <span class="text-success"
-                        ><i class="fa-solid fa-check-circle"></i> 
-                        {{ percent|floatformat:0 }}% used</span
+                        ><i class="fa-solid fa-check-circle"></i> {{ percent|floatformat:0 }}% used</span
                       >
                       {% endif %}
                     </small>
@@ -284,7 +294,8 @@
                       aria-valuenow="{{ percent|floatformat:2 }}"
                       aria-valuemin="0"
                       aria-valuemax="100"
-           0        ></div>
+                      0
+                    ></div>
                   </div>
                 </div>
                 {% endwith %}
@@ -307,27 +318,25 @@
         </div>
 
         <div id="recentExpensesList">
-        {% if expenses %} 
-        {% for e in expenses %}
-        <div class="budget-expense-item">
-          <div class="budget-expense-icon {{ e.category|lower }}">
-            <i class="fas fa-wallet"></i>
-          </div>
-          <div class="budget-expense-details">
-            <div class="budget-expense-name">{{ e.title }}</div>
-            <div class="budget-expense-meta">
-              {{ e.category }} • {{ e.date }}
+          {% if expenses %} {% for e in expenses %}
+          <div class="budget-expense-item">
+            <div class="budget-expense-icon {{ e.category|lower }}">
+              <i class="fas fa-wallet"></i>
+            </div>
+            <div class="budget-expense-details">
+              <div class="budget-expense-name">{{ e.title }}</div>
+              <div class="budget-expense-meta">
+                {{ e.category }} • {{ e.date }}
+              </div>
+            </div>
+            <div class="budget-expense-amount-section">
+              <div class="budget-expense-amount">₹{{ e.amount }}</div>
             </div>
           </div>
-          <div class="budget-expense-amount-section">
-            <div class="budget-expense-amount">₹{{ e.amount }}</div>
-          </div>
+          {% endfor %} {% else %}
+          <p class="noexpencetext text-center">No expenses added yet.</p>
+          {% endif %}
         </div>
-        {% endfor %} 
-        {% else %}
-        <p class="noexpencetext text-center">No expenses added yet.</p>
-        {% endif %}
-      </div>
       </div>
     </div>
   </div>

@@ -415,7 +415,7 @@
             .json()
             .catch(() => ({ error: resp.statusText }));
           console.error("API Error:", err); // Debug log
-          throw new Error(err.error || JSON.stringify(err));
+          throw new Error(err.message || err.error || resp.statusText);
         }
 
         const data = await resp.json();

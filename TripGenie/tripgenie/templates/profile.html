@@ -1,42 +1,105 @@
-{% extends "base.html" %}
-{% block title %}Profile{% endblock %}
-
+{% extends "base.html" %} 
+{% load static %} 
+{% block title %}Profile{% endblock %} 
 {% block content %}
-<div class="container py-5">
-  {% if messages %}
-    {% for message in messages %}
-      <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+<div class="profile-body">
+  <div class="profile-container">
+    <div class="profile-header">
+      <div>
+        <h2 class="profileh2">My Profile</h2>
+        <p class="profile-manage-info">Manage your personal information</p>
       </div>
-    {% endfor %}
-  {% endif %}
+      <a href="{% url 'edit_profile' %}" class="profile-edit-button">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path
+            d="M19.7 4.3c-.4-.4-1-.4-1.4 0l-12 12c-.2.2-.3.4-.3.7v3h3c.3 0 .5-.1.7-.3l12-12c.4-.4.4-1 0-1.4l-2.3-2.3zm-11 15h-1.7v-1.7l10-10 1.7 1.7-10 10z"
+          />
+        </svg>
+        Edit Profile
+      </a>
+    </div>
 
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card shadow-sm">
-        <div class="card-body text-center">
-          {% if profile.profile_picture %}
-            <img src="{{ profile.profile_picture.url }}" alt="Profile Picture"
-                 class="rounded-circle mb-3" style="width:120px;height:120px;object-fit:cover;">
-          {% else %}
-            <div class="rounded-circle bg-secondary mb-3" style="width:120px;height:120px;line-height:120px;">
-              <span class="text-white" style="font-size:24px;">
-                {{ user.first_name|default:user.username|slice:":1"|upper }}
-              </span>
-            </div>
-          {% endif %}
+    <div class="profile-avatar">
+      {% if profile.profile_picture %}
+      <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" />
+      {% else %} {{ user.username|slice:":2"|upper }} {% endif %}
+    </div>
 
-          <h3 class="mb-1">{{ user.first_name }} {{ user.last_name }}</h3>
-          <p class="text-muted mb-2">{{ user.email }}</p>
+    <div class="profile-name">{{ user.first_name }} {{ user.last_name }}</div>
+    <div class="profile-username">@{{ user.username }}</div>
 
-          <p class="mb-3">Phone: <strong>{{ profile.phone|default:"-" }}</strong></p>
+    <div class="profile-details">
+      <div class="profile-input-group">
+        <label class="profile-input-label">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path
+              d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+            />
+          </svg>
+          Username
+        </label>
+        <input
+          type="text"
+          class="profile-input-field"
+          value="{{ user.username }}"
+          readonly
+        />
+      </div>
 
-          <a href="{% url 'edit_profile' %}" class="btn btn-primary me-2">Edit Profile</a>
-          <a href="{% url 'logout' %}" class="btn btn-outline-danger">Logout</a>
+      <div class="profile-input-row">
+        <div class="profile-input-group">
+          <label class="profile-input-label">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path
+                d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+              />
+            </svg>
+            First Name
+          </label>
+          <input
+            type="text"
+            class="profile-input-field"
+            value="{{ user.first_name }}"
+            readonly
+          />
         </div>
+        <div class="profile-input-group">
+          <label class="profile-input-label">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path
+                d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+              />
+            </svg>
+            Last Name
+          </label>
+          <input
+            type="text"
+            class="profile-input-field"
+            value="{{ user.last_name }}"
+            readonly
+          />
+        </div>
+      </div>
+
+      <div class="profile-input-group">
+        <label class="profile-input-label">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path
+              d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
+            />
+          </svg>
+          Email Address
+        </label>
+        <input
+          type="email"
+          class="profile-input-field"
+          value="{{ user.email }}"
+          readonly
+        />
       </div>
     </div>
   </div>
 </div>
+
 {% endblock %}

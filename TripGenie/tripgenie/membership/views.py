@@ -117,7 +117,7 @@ def payment_success(request):
                     subject="TripGenie Membership Activated",
                     message=(
                         f"Hi {user.username},\n\nYour membership '{plan.name}' has been successfully activated." \
-                        f"\nAmount Paid: ₹{(pay.amount or 0)/100:.2f}\nValid Till: {membership.valid_till}\n\nHappy Traveling!\nTripGenie"
+                        f"\nAmount Paid: ₹{(pay.amount or 0)/100}\nValid Till: {membership.valid_till}\n\nHappy Traveling!\nTripGenie"
                     )
                 )
         except Exception:

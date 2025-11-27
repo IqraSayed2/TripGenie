@@ -11,6 +11,8 @@ from django.template.loader import get_template
 from xhtml2pdf import pisa
 from io import BytesIO
 from django.utils.text import slugify
+from membership.decorators import premium_required
+
 
 # mapping from possible AI breakdown keys (or trip detail keys) to your categories
 AI_KEY_TO_CATEGORY = {
@@ -315,6 +317,7 @@ def api_get_recent_expenses(request, trip_id):
     return JsonResponse({"status": "ok", "expenses": expense_list})
 
 
+@premium_required
 @login_required
 def export_budget_pdf(request, budget_id):
     # Budget doesn't have a direct `user` field; it belongs to an Itinerary.

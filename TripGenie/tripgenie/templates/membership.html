@@ -140,6 +140,11 @@
           description: data.plan_name,
           order_id: data.order_id,
 
+          "prefill": {
+          "email": "{{ request.user.email }}",
+          "contact": ""  // leave blank since you don’t collect phone
+          },
+
           handler: function (response) {
             // include selected billing period so server knows monthly vs yearly
             let selectedPeriod = yearly ? "yearly" : "monthly";

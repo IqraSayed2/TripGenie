@@ -39,18 +39,18 @@ class MembershipPayment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        # Show stored amount (stored in paise) as rupees for readability
+        # Show stored amount as an integer value (no float formatting)
         try:
-            amt = f"₹{(self.amount / 100):.2f}" if self.amount is not None else "-"
+            amt = f"₹{int(self.amount)}" if self.amount is not None else "-"
         except Exception:
             amt = "-"
         return f"{self.user} - {self.plan} - {amt} - {self.status}"
 
     @property
-    def amount_in_rupees(self):
-        """Return the stored amount (paise) as rupees (float)."""
+    def amount_display(self):
+        """Return the stored amount for display (integer, no decimals)."""
         try:
-            return (self.amount or 0) / 100.0
+            return int(self.amount or 0)
         except Exception:
-            return None
+            return 0
 

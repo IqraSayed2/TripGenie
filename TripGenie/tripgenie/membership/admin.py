@@ -46,12 +46,11 @@ class UserMembershipAdmin(admin.ModelAdmin):
 
 @admin.register(MembershipPayment)
 class PaymentAdmin(admin.ModelAdmin):
-    list_display = ("user", "plan", "amount_in_rupees", "status", "created_at")
+    list_display = ("user", "plan", "amount_display", "status", "created_at")
     search_fields = ("user__username", "order_id", "payment_id")
-
-    def amount_in_rupees(self, obj):
+    def amount_display(self, obj):
         try:
-            return f"₹{(obj.amount or 0)/100:.2f}"
+            return f"₹{int(obj.amount or 0)}"
         except Exception:
             return "-"
-    amount_in_rupees.short_description = "Amount (₹)"
+    amount_display.short_description = "Amount"

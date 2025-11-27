@@ -7,14 +7,18 @@ from django.views.decorators.http import require_POST, require_http_methods
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from groq import Groq
-from .models import Trip, Wishlist, Itinerary, ItineraryDay, Activity
+from .models import Trip, Itinerary, ItineraryDay, Activity, DailyUsage
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.signals import user_logged_out
+from django.contrib import messages
 from django.dispatch import receiver
 from budget.models import Budget, Expense
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 from io import BytesIO
+from membership.decorators import premium_required
+from membership.utils import get_user_membership
+from datetime import date
 
 
 @receiver(user_logged_out)
@@ -74,10 +78,31 @@ def recommendations(request):
 @login_required(login_url='/login')
 @require_POST
 def generate_recommendations(request):
-    import re, ast, json
     try:
         payload = json.loads(request.body.decode("utf-8"))
-        
+
+        # --- DAILY LIMIT CHECK (FREE USERS ONLY) ---
+        membership = get_user_membership(request.user)
+
+        usage, _ = DailyUsage.objects.get_or_create(
+            user=request.user,
+            date=date.today()
+        )
+
+        # Free users → max 3/day
+        if membership is None or membership.plan.monthly_price == 0:
+            if usage.count >= 3:
+                return JsonResponse({
+                    "status": "limit_reached",
+                    "message": "You have reached your daily limit of 3 AI recommendations.\n\nUpgrade to Premium for unlimited access!"
+            }, status=403)
+
+        # If allowed, increase count BEFORE generating trips
+        usage.count += 1
+        usage.save()
+        # ---------------------------------------------
+
+
         prompt = f"""
             You are TripGenie, an AI travel planner that designs *complete, realistic* trip packages.
 
@@ -148,8 +173,11 @@ def generate_recommendations(request):
                 ],
             }}
 
-            📋 Rules:
+            📋 **CRITICAL RULES** - Must follow exactly:
             - Always generate one unique itinerary per trip (no duplicate days).
+            - **EVERY trip MUST have AT LEAST 3 hotels in the "hotels" array. Generate exactly 3 or more hotels.**
+            - **EVERY trip MUST have AT LEAST 3 restaurants in the "restaurants" array. Generate exactly 3 or more restaurants.**
+            - **EVERY trip MUST have AT LEAST 3 transport options in the "local_transport" array. Generate exactly 3 or more transport options.**
             - Ensure total cost ≈ sum of cost_breakdown values.
             - Match traveler type (family-friendly, romantic, group-oriented, etc.).
             - Use INR for all costs.
@@ -391,6 +419,84 @@ def generate_recommendations(request):
             seen_names.add(name)
             trip['name'] = name
 
+        # --- Validate and pad hotel/restaurant/transport lists to minimum 3 items ---
+        print("\n" + "="*60)
+        print("[PADDING VALIDATION]")
+        print("="*60)
+        for trip in valid_destinations:
+            trip_name = trip.get('name', 'Unknown')
+            
+            # Ensure hotels array exists and has at least 3 items
+            hotels = trip.get('hotels') or []
+            if not isinstance(hotels, list):
+                hotels = []
+            if len(hotels) < 3:
+                print(f"⚠️ {trip_name}: hotels={len(hotels)}, padding to 3")
+                # Pad with placeholder hotels
+                while len(hotels) < 3:
+                    hotel_num = len(hotels) + 1
+                    hotels.append({
+                        "name": f"Local Hotel {hotel_num}",
+                        "location": trip.get('country', 'Central Area'),
+                        "price_per_night": 5000 + (hotel_num * 1000),
+                        "rating": 4.0 + (hotel_num * 0.2)
+                    })
+            trip['hotels'] = hotels
+            
+            # Ensure restaurants array exists and has at least 3 items
+            restaurants = trip.get('restaurants') or []
+            if not isinstance(restaurants, list):
+                restaurants = []
+            if len(restaurants) < 3:
+                print(f"⚠️ {trip_name}: restaurants={len(restaurants)}, padding to 3")
+                # Pad with placeholder restaurants
+                while len(restaurants) < 3:
+                    rest_num = len(restaurants) + 1
+                    cuisines = ["Local", "International", "Fusion"]
+                    restaurants.append({
+                        "name": f"{cuisines[rest_num-1]} Restaurant {rest_num}",
+                        "cuisine": cuisines[rest_num-1],
+                        "location": trip.get('country', 'City Center'),
+                        "avg_cost": 800 + (rest_num * 300)
+                    })
+            trip['restaurants'] = restaurants
+            
+            # Ensure local_transport array exists and has at least 3 items
+            local_transport = trip.get('local_transport') or []
+            if not isinstance(local_transport, list):
+                local_transport = []
+            if len(local_transport) < 3:
+                print(f"⚠️ {trip_name}: local_transport={len(local_transport)}, padding to 3")
+                # Pad with placeholder transport options
+                transport_types = [
+                    {"type": "Airport Transfer", "mode": "Car", "cost": 2000},
+                    {"type": "Local Taxi / Uber", "mode": "Car", "cost": 1500},
+                    {"type": "City Bus / Public Transport", "mode": "Bus", "cost": 500}
+                ]
+                while len(local_transport) < 3:
+                    t_idx = len(local_transport)
+                    if t_idx < len(transport_types):
+                        local_transport.append({
+                            "type": transport_types[t_idx]["type"],
+                            "provider": f"Local Provider {t_idx+1}",
+                            "cost": transport_types[t_idx]["cost"],
+                            "mode": transport_types[t_idx]["mode"]
+                        })
+                    else:
+                        local_transport.append({
+                            "type": f"Transport Option {t_idx+1}",
+                            "provider": "Local Service",
+                            "cost": 1000,
+                            "mode": "Various"
+                        })
+            trip['local_transport'] = local_transport
+            
+            h_count = len(trip.get('hotels', []))
+            r_count = len(trip.get('restaurants', []))
+            lt_count = len(trip.get('local_transport', []))
+            print(f"✅ {trip_name}: hotels={h_count}, restaurants={r_count}, local_transport={lt_count}")
+        print("="*60 + "\n")
+
         # --- Image fallback: Prefer direct image links; optionally use Google CSE if configured ---
         def fetch_google_image(query):
             """Try Google Custom Search Image API if configured, otherwise return a google images search URL or a placeholder.
@@ -503,6 +609,17 @@ def generate_recommendations(request):
         for t in filtered:
             if '_numeric_price' in t:
                 del t['_numeric_price']
+
+        # DEBUG: Log hotel/restaurant/transport counts before storing in session
+        print("\n" + "="*60)
+        print("[RECOMMENDATION COUNT DEBUG]")
+        print("="*60)
+        for i, trip in enumerate(filtered, 1):
+            h_count = len(trip.get('hotels', []))
+            r_count = len(trip.get('restaurants', []))
+            lt_count = len(trip.get('local_transport', []))
+            print(f"Trip {i} '{trip.get('name')}': hotels={h_count}, restaurants={r_count}, local_transport={lt_count}")
+        print("="*60 + "\n")
 
         request.session["ai_trips"] = filtered
         return JsonResponse({"destinations": filtered})
@@ -703,6 +820,25 @@ def save_trip_to_itinerary(request):
     data = json.loads(request.body.decode("utf-8"))
     trip_id = data.get("trip_id")
     
+    # 🔒 MEMBERSHIP RESTRICTION HERE
+    membership = get_user_membership(request.user)
+
+    # Free users = no membership or plan price = 0
+    is_free_user = (
+        membership is None or
+        membership.plan is None or 
+        membership.plan.monthly_price == 0
+    )
+
+    if is_free_user:
+        saved_count = Itinerary.objects.filter(user=request.user).count()
+        if saved_count >= 3:
+            return JsonResponse({
+                "status": "limit_reached",
+                "message": "Free plan users can save only 3 trips. Upgrade your membership for unlimited itinerary saves.",
+                "redirect": "/membership/"
+            }, status=403)
+
     # Get trip data from session
     trips_data = request.session.get('ai_trips', [])
     try:
@@ -832,6 +968,7 @@ def save_trip_to_itinerary(request):
     })
 
 
+@premium_required
 @login_required(login_url='/login')
 def export_trip_pdf(request, trip_id):
     itinerary = get_object_or_404(Itinerary, id=trip_id, user=request.user)
