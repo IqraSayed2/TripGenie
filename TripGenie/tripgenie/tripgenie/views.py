@@ -3,9 +3,12 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from review.models import Review
+
 
 def home(request):
-    return render(request,"index.html")
+    reviews = Review.objects.order_by('-created_at')[:3]
+    return render(request, "index.html", {"reviews": reviews})
 
 
 def faqs(request):

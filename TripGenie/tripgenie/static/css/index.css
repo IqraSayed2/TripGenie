@@ -341,6 +341,16 @@ body {
   transform: translateY(-2px);
 }
 
+.btn-outline-primary a:hover{
+  color: white;
+}
+
+.btn-outline-primary a{
+  color: #20d0d4;
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
 /* Hero Section */
 .hero-section {
   min-height: 80vh;

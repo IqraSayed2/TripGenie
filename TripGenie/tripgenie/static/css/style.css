@@ -4618,3 +4618,31 @@ input:checked + .membership-slider:before {
 .profile-cancel-button:hover {
   transform: translateY(-2px);
 }
+
+/* =================================================== REVIEW ======================================== */
+
+.review-form {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 32px;
+  padding: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.light-theme .review-form {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.form-control,
+.form-select {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  color: inherit;
+}
+
+.light-theme .form-control,
+.light-theme .form-select {
+  border: 1px solid #212529b2;
+}

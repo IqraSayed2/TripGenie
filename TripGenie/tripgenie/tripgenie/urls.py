@@ -32,6 +32,7 @@ urlpatterns = [
     path('tools/', include('traveltools.urls')),
     path('assistant/', include('assistant.urls')),
     path("membership/", include("membership.urls")),
+    path("", include('review.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

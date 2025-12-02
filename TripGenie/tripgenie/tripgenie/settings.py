@@ -123,7 +123,7 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
+# Static files (CSS, JavaScript, Images)z
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
@@ -151,8 +151,8 @@ ADMIN_EMAIL = "your_admin_email"
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
-EMAIL_HOST_USER = "your_host_email"
-EMAIL_HOST_PASSWORD = "your_password"
+EMAIL_HOST_USER = "your_host_user"
+EMAIL_HOST_PASSWORD = "your_host_password"
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
@@ -167,5 +167,5 @@ OPENWEATHER_API_KEY = "your_weather_api_key"
 EXCHANGE_API_URL = "https://api.exchangerate-api.com/v4/latest/"
 
 # Razorpay Credentials
-RAZORPAY_ID = 'your_rzaorpay_id'
+RAZORPAY_ID = 'your_razorpay_id'
 RAZORPAY_SECRET = 'your_razorpay_secret'

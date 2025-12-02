@@ -104,7 +104,7 @@
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
-                background: #20d0d4;
+                background: linear-gradient(45deg, #00bcd4, #20b2aa, #ff9800);
                 color: #fff;
                 border-radius: 50%;
                 font-weight: bold;
@@ -167,10 +167,17 @@
             </p>
             <div class="btn-group-hero fade-in">
               <button class="btn btn-primary">
-                <i class="fas fa-plane"></i> Start Planning your Trip
+                <a
+                  href="{% url 'recommendations' %}"
+                  style="text-decoration: none; color: white"
+                >
+                  <i class="fas fa-plane"></i> Start Planning your Trip
+                </a>
               </button>
               <button class="btn btn-outline-primary">
-                <i class="fas fa-info-circle"></i> Learn More
+                <a href="{% url 'about' %}">
+                  <i class="fas fa-info-circle"></i> Learn More
+                </a>
               </button>
             </div>
           </div>
@@ -402,29 +409,10 @@
                 class="td-card-image"
               />
               <div class="td-card-meta">
-                <span class="td-discount-badge">20% OFF</span>
                 <div class="td-rating">
                   <span class="td-rating-star">&#9733;</span>4.9
                 </div>
               </div>
-              <button class="td-like-btn">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="td-like-icon"
-                >
-                  <path
-                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
-                  ></path>
-                </svg>
-              </button>
               <div class="td-card-content">
                 <h3 class="td-card-title">Santorini</h3>
                 <p class="td-card-location">
@@ -453,24 +441,8 @@
                   <span class="td-tag">Romantic</span>
                 </div>
                 <div class="td-card-info-row">
-                  <div class="td-price">From <span>$2,500</span></div>
+                  <div class="td-price">From <span>₹95,000</span></div>
                   <div class="td-duration">7 days</div>
-                  <a href="#" class="td-explore-link">
-                    Explore
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                  </a>
                 </div>
               </div>
             </div>
@@ -483,29 +455,10 @@
                 class="td-card-image"
               />
               <div class="td-card-meta">
-                <span class="td-discount-badge">15% OFF</span>
                 <div class="td-rating">
                   <span class="td-rating-star">&#9733;</span>4.8
                 </div>
               </div>
-              <button class="td-like-btn">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="td-like-icon"
-                >
-                  <path
-                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
-                  ></path>
-                </svg>
-              </button>
               <div class="td-card-content">
                 <h3 class="td-card-title">Kyoto</h3>
                 <p class="td-card-location">
@@ -534,24 +487,8 @@
                   <span class="td-tag">Cultural</span>
                 </div>
                 <div class="td-card-info-row">
-                  <div class="td-price">From <span>$3,200</span></div>
+                  <div class="td-price">From <span>₹98,000</span></div>
                   <div class="td-duration">10 days</div>
-                  <a href="#" class="td-explore-link">
-                    Explore
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                  </a>
                 </div>
               </div>
             </div>
@@ -564,29 +501,10 @@
                 class="td-card-image"
               />
               <div class="td-card-meta">
-                <span class="td-discount-badge">25% OFF</span>
                 <div class="td-rating">
                   <span class="td-rating-star">&#9733;</span>4.9
                 </div>
               </div>
-              <button class="td-like-btn">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="td-like-icon"
-                >
-                  <path
-                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
-                  ></path>
-                </svg>
-              </button>
               <div class="td-card-content">
                 <h3 class="td-card-title">Maldives</h3>
                 <p class="td-card-location">
@@ -615,30 +533,14 @@
                   <span class="td-tag">Luxury</span>
                 </div>
                 <div class="td-card-info-row">
-                  <div class="td-price">From <span>$4,500</span></div>
+                  <div class="td-price">From <span>₹93,000</span></div>
                   <div class="td-duration">5 days</div>
-                  <a href="#" class="td-explore-link">
-                    Explore
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                  </a>
                 </div>
               </div>
             </div>
           </div>
           <div class="td-view-all-btn-container">
-            <a href="#" class="td-view-all-btn">
+            <a href="{% url 'recommendations' %}" class="td-view-all-btn">
               View All Destinations
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -671,70 +573,40 @@
           </p>
 
           <div class="tripgenie-reviews-container">
+            {% for r in reviews %}
             <div class="tripgenie-review-card">
               <div class="tripgenie-rating-stars">
-                <span class="tripgenie-star-icon" style="--i: 0">★</span>
-                <span class="tripgenie-star-icon" style="--i: 1">★</span>
-                <span class="tripgenie-star-icon" style="--i: 2">★</span>
-                <span class="tripgenie-star-icon" style="--i: 3">★</span>
-                <span class="tripgenie-star-icon" style="--i: 4">★</span>
+                {% for star in "12345"|slice:":r.rating"|make_list %}
+                <span class="tripgenie-star-icon">★</span>
+                {% endfor %}
               </div>
-              <p class="tripgenie-review-content">
-                "TripGenie transformed our European vacation into an
-                unforgettable adventure. The AI recommendations were spot-on!"
-              </p>
-              <div class="tripgenie-customer-info">
-                <div class="tripgenie-profile-circle">SJ</div>
-                <div class="tripgenie-customer-details">
-                  <div class="tripgenie-customer-name">Sarah Johnson</div>
-                  <div class="tripgenie-customer-location">New York, USA</div>
-                </div>
-              </div>
-            </div>
 
-            <div class="tripgenie-review-card">
-              <div class="tripgenie-rating-stars">
-                <span class="tripgenie-star-icon" style="--i: 0">★</span>
-                <span class="tripgenie-star-icon" style="--i: 1">★</span>
-                <span class="tripgenie-star-icon" style="--i: 2">★</span>
-                <span class="tripgenie-star-icon" style="--i: 3">★</span>
-                <span class="tripgenie-star-icon" style="--i: 4">★</span>
-              </div>
-              <p class="tripgenie-review-content">
-                "The budget planning feature saved me over $1,000 on my Asia
-                trip. Incredible value and smart suggestions!"
-              </p>
-              <div class="tripgenie-customer-info">
-                <div class="tripgenie-profile-circle">MR</div>
-                <div class="tripgenie-customer-details">
-                  <div class="tripgenie-customer-name">Marco Rodriguez</div>
-                  <div class="tripgenie-customer-location">Madrid, Spain</div>
-                </div>
-              </div>
-            </div>
+              <p class="tripgenie-review-content">"{{ r.comment }}"</p>
 
-            <div class="tripgenie-review-card">
-              <div class="tripgenie-rating-stars">
-                <span class="tripgenie-star-icon" style="--i: 0">★</span>
-                <span class="tripgenie-star-icon" style="--i: 1">★</span>
-                <span class="tripgenie-star-icon" style="--i: 2">★</span>
-                <span class="tripgenie-star-icon" style="--i: 3">★</span>
-                <span class="tripgenie-star-icon" style="--i: 4">★</span>
-              </div>
-              <p class="tripgenie-review-content">
-                "As a solo female traveler, TripGenie's safety insights and
-                local recommendations gave me confidence to explore."
-              </p>
               <div class="tripgenie-customer-info">
-                <div class="tripgenie-profile-circle">EC</div>
+                <div class="tripgenie-profile-circle">{{ r.initials }}</div>
                 <div class="tripgenie-customer-details">
-                  <div class="tripgenie-customer-name">Emma Chen</div>
+                  <div class="tripgenie-customer-name">{{ r.name }}</div>
                   <div class="tripgenie-customer-location">
-                    Sydney, Australia
+                    {{ r.location }}
                   </div>
                 </div>
               </div>
             </div>
+            {% empty %}
+            <p class="text-center recdetail">
+              No reviews yet - be the first to add one!
+            </p>
+            {% endfor %}
+          </div>
+
+          <div class="text-center mt-4">
+            <a
+              href="{% url 'add_review' %}"
+              class="btn btn-primary rounded-pill"
+            >
+              <i class="fa-solid fa-plus"></i> Add Your Review
+            </a>
           </div>
         </div>
       </div>

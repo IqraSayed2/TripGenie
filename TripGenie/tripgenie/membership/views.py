@@ -7,7 +7,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.timezone import now
 from datetime import timedelta
 from .models import UserMembership, MembershipPayment
+from django.contrib.auth.decorators import login_required
 
+
+@login_required(login_url='/login')
 def membership_page(request):
     plans = MembershipPlan.objects.all()
     user_plan = None
@@ -38,6 +41,7 @@ def membership_page(request):
     })
 
 
+@login_required(login_url='/login')
 def create_order(request, plan_id):
     if request.method == "POST":
         plan = get_object_or_404(MembershipPlan, id=plan_id)
@@ -69,6 +73,7 @@ def create_order(request, plan_id):
     
 
 
+@login_required(login_url='/login')
 @csrf_exempt 
 def payment_success(request):
     if request.method != "POST":
@@ -127,7 +132,7 @@ def payment_success(request):
     # Respond with a JSON redirect used by JS handler
     return JsonResponse({"redirect": "/membership/payment-status/?status=success"})
 
-
+@login_required(login_url='/login')
 def payment_status(request):
     status = request.GET.get("status")
     return render(request, "payment_status.html", {"status": status})
