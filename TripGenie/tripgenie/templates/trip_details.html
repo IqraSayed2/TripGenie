@@ -38,22 +38,12 @@
 
   <!-- Dynamic Trip Details Card -->
   <div id="trip-card" class="card trip-detail-card border-0">
-    <!-- Hero Image Section -->
-    <div class="trip-hero-section">
-      <img
-        src="{{ trip.image }}"
-        alt="{{ trip.name }}"
-        class="card-img-top"
-        id="trip-image"
-      />
-      <div class="trip-hero-overlay"></div>
-      <div class="position-absolute bottom-0 start-0 p-4 p-md-5">
+    <div class="detail-card-body p-4 p-md-5">
+      <div class="mb-4">
         <h2 class="trip-detail-name display-5 fw-bold mb-1">{{ trip.name }}</h2>
         <p class="trip-detail-country fw-semibold">{{ trip.country }}</p>
       </div>
-    </div>
 
-    <div class="detail-card-body p-4 p-md-5">
       <div class="row g-5">
         <!-- Left Column -->
         <div class="col-lg-8">
@@ -332,7 +322,7 @@
             {% if trip.local_transport %}
             <ul class="list-unstyled">
               {% for t in trip.local_transport %}
-              <li class="mb-2 recdetail">• {{ t.type }} — ₹{{ t.cost }}</li>
+              <li class="mb-2 recdetail">• {{ t.type }} - ₹{{ t.cost }}</li>
               {% endfor %}
             </ul>
             {% else %}

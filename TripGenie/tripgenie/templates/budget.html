@@ -378,7 +378,7 @@
             type="text"
             id="cat_name"
             name="category"
-            class="form-control"
+            class="form-control border border-grey text-black"
             readonly
           />
         </div>
@@ -391,7 +391,7 @@
             step="1"
             id="cat_budget"
             name="budgeted_amount"
-            class="form-control"
+            class="form-control border border-grey text-black"
             required
           />
         </div>
@@ -417,7 +417,7 @@
   <div class="modal-dialog">
     <form id="addExpenseForm" class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addExpenseModalLabel">Add Expense</h5>
+        <h5 class="modal-title" id="addExpenseModalLabel" style="color: black;">Add Expense</h5>
         <button
           type="button"
           class="btn-close"
@@ -440,7 +440,7 @@
             type="text"
             id="expense_title"
             name="title"
-            class="form-control"
+            class="form-control border border-grey text-black"
             required
           />
         </div>
@@ -448,7 +448,7 @@
           <label for="expense_category" class="form-label" style="color: black"
             >Category</label
           >
-          <select id="expense_category" name="category" class="form-control">
+          <select id="expense_category" name="category" class="form-control border border-grey text-black">
             {% for c in categories %}
             <option value="{{ c }}" style="color: black">{{ c }}</option>
             {% endfor %}
@@ -463,7 +463,7 @@
             step="1"
             id="expense_amount"
             name="amount"
-            class="form-control"
+            class="form-control border border-grey text-black"
             required
           />
         </div>
@@ -475,7 +475,7 @@
             type="date"
             id="expense_date"
             name="date"
-            class="form-control"
+            class="form-control border border-grey text-black"
           />
         </div>
       </div>

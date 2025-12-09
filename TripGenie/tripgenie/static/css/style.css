@@ -969,35 +969,7 @@
   object-fit: cover;
 }
 
-.trending-badge {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
-  color: white;
-  padding: 4px 12px;
-  border-radius: 15px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.discount-badge {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  background: linear-gradient(45deg, #00b894, #00cec9);
-  color: white;
-  padding: 4px 12px;
-  border-radius: 15px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
 .rating-badge {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: rgba(0, 0, 0, 0.6);
   color: white;
   padding: 4px 8px;
   border-radius: 12px;
@@ -1005,33 +977,11 @@
   display: flex;
   align-items: center;
   gap: 4px;
+  justify-content: flex-end;
 }
 
 .light-theme .rating-badge {
-  background: rgba(255, 255, 255, 0.652);
   color: rgba(0, 0, 0, 0.633);
-}
-
-.like-btn {
-  position: absolute;
-  bottom: 12px;
-  right: 12px;
-  background: rgba(255, 255, 255, 0.9);
-  border: none;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #666;
-  transition: all 0.3s ease;
-}
-
-.like-btn:hover {
-  background: white;
-  color: #ff6b6b;
-  transform: scale(1.1);
 }
 
 .rec-card-content {
@@ -1059,7 +1009,7 @@
   color: #20b2aa;
 }
 
-.location {
+.rec-location {
   font-size: 14px;
   color: rgba(255, 255, 255, 0.8);
   margin-bottom: 8px;
@@ -1068,7 +1018,7 @@
   gap: 4px;
 }
 
-.light-theme .location {
+.light-theme .rec-location {
   color: rgba(0, 0, 0, 0.633);
 }
 

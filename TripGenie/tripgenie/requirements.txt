@@ -1,0 +1,14 @@
+Django==5.1.6
+django-cors-headers==4.7.0
+django-extensions==3.2.3
+django-filter==25.1
+django-widget-tweaks==1.5.0
+djangorestframework==3.16.1
+groq==0.32.0
+python-dotenv==1.1.1
+Pillow==11.3.0
+requests==2.32.5
+razorpay==2.0.0
+twilio==9.7.2
+mysqlclient==2.2.7
+xhtml2pdf==0.2.17

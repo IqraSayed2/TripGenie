@@ -31,45 +31,24 @@
     {% for itinerary in itineraries reversed %}
     <div class="col-lg-4 col-md-6 col-sm-12">
       <div class="rec-destination-card">
-        <div class="rec-card-image">
-          <img
-            src="{{ itinerary.trip.image.url|default:'/static/images/default.jpg' }}"
-            alt="{{ itinerary.trip.name }}"
-          />
-
-          {% if itinerary.trip.trending %}
-          <div class="trending-badge"><i class="fas fa-fire"></i> Trending</div>
-          {% elif itinerary.trip.discount %}
-          <div class="discount-badge">{{ itinerary.trip.discount }}</div>
-          {% endif %}
-
-          <div class="rating-badge">
-            <i class="fas fa-star"></i> {{ itinerary.trip.rating|default:"4.5" }}
-          </div>
-
-          <div
-            class="position-absolute bottom-0 start-0 m-3 bg-dark text-white px-2 py-1 rounded"
-            style="font-size: 12px"
-          >
-            {{ itinerary.match_score|default:"90" }}%
-          </div>
-        </div>
-
         <div class="rec-card-content">
-          <div class="d-flex justify-content-between align-items-start mb-2">
-            <h3 class="rec-destination-title">{{ itinerary.trip.name }}</h3>
-            <span class="price">
-              {% if itinerary.trip.estimated_cost %} ₹{{ itinerary.trip.estimated_cost|floatformat:2 }} {% else %} Price N/A {% endif %}
-            </span>
-          </div>
-
-          <div class="location">
-            <i class="fas fa-map-marker-alt"></i> {{ itinerary.trip.country }}
+          <div class="d-flex justify-content-between align-items-start mb-1">
+            <div>
+              <h3 class="rec-destination-title">{{ itinerary.trip.name }}</h3>
+              <div class="rec-location"><i class="fas fa-map-marker-alt"></i> {{ itinerary.trip.country }}</div>
+            </div>
+            <div class="text-end">
+              <span class="price d-block mb-2">
+                {% if itinerary.trip.estimated_cost %} ₹{{ itinerary.trip.estimated_cost|floatformat:2 }} {% else %} Price N/A {% endif %}
+              </span>
+              <div class="rating-badge">
+                <i class="fas fa-star"></i> {{ itinerary.trip.rating|default:"4.5" }}
+              </div>
+            </div>
           </div>
 
           <div class="duration">
-            <i class="far fa-clock"></i> {{ itinerary.total_days|default:"—" }}
-            days
+            <i class="far fa-clock"></i> {{ itinerary.total_days|default:"—" }} days
           </div>
 
           <p class="description">

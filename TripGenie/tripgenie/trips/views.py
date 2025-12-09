@@ -497,54 +497,6 @@ def generate_recommendations(request):
             print(f"✅ {trip_name}: hotels={h_count}, restaurants={r_count}, local_transport={lt_count}")
         print("="*60 + "\n")
 
-        # --- Image fallback: Prefer direct image links; optionally use Google CSE if configured ---
-        def fetch_google_image(query):
-            """Try Google Custom Search Image API if configured, otherwise return a google images search URL or a placeholder.
-
-            Requires settings.GOOGLE_CSE_API_KEY and settings.GOOGLE_CSE_CX to perform a real image lookup.
-            """
-            api_key = getattr(settings, 'GOOGLE_CSE_API_KEY', None)
-            cx = getattr(settings, 'GOOGLE_CSE_CX', None)
-            safe_query = quote_plus(query or '')
-
-            # If API keys are present, try the Custom Search API
-            if api_key and cx:
-                try:
-                    url = (
-                        f"https://www.googleapis.com/customsearch/v1?key={api_key}&cx={cx}"
-                        f"&q={safe_query}&searchType=image&num=1"
-                    )
-                    resp = requests.get(url, timeout=5)
-                    if resp.status_code == 200:
-                        data = resp.json()
-                        items = data.get('items') or []
-                        if items:
-                            link = items[0].get('link')
-                            if link:
-                                return link
-                except Exception as e:
-                    print(f"⚠️ Google CSE lookup failed: {e}")
-
-            # Fallback: return a Google Images search page (not a direct image) so user can open it
-            if safe_query:
-                return f"https://www.google.com/search?tbm=isch&q={safe_query}"
-
-            # Last resort: a generic placeholder image (loremflickr)
-            return f"https://loremflickr.com/600/400/travel"
-
-        # Apply image fallback for trips that didn't include an image
-        for trip in valid_destinations:
-            img = trip.get('image') or ''
-            # If empty or non-useful, try to fetch via google or use query
-            if not img or str(img).strip() == '':
-                # Prefer an explicit google_query if provided by the model
-                gq = trip.get('google_query') or trip.get('name') or trip.get('country') or ''
-                try:
-                    img_url = fetch_google_image(gq)
-                    trip['image'] = img_url
-                except Exception as e:
-                    print(f"⚠️ Image fallback failed for '{trip.get('name')}': {e}")
-
         # Parse numeric price for each trip and store temporarily for filtering
         for trip in valid_destinations:
             price_raw = trip.get('price', 0)
@@ -610,15 +562,19 @@ def generate_recommendations(request):
             if '_numeric_price' in t:
                 del t['_numeric_price']
 
-        # DEBUG: Log hotel/restaurant/transport counts before storing in session
+        # DEBUG: Log hotel/restaurant/transport counts and images before storing in session
         print("\n" + "="*60)
-        print("[RECOMMENDATION COUNT DEBUG]")
+        print("[FINAL RECOMMENDATIONS DEBUG]")
         print("="*60)
         for i, trip in enumerate(filtered, 1):
             h_count = len(trip.get('hotels', []))
             r_count = len(trip.get('restaurants', []))
             lt_count = len(trip.get('local_transport', []))
-            print(f"Trip {i} '{trip.get('name')}': hotels={h_count}, restaurants={r_count}, local_transport={lt_count}")
+            image_url = trip.get('image', 'NO IMAGE')
+            print(f"\nTrip {i} '{trip.get('name')}':")
+            print(f"  Country: {trip.get('country')}")
+            print(f"  Image: {image_url[:100]}...")
+            print(f"  Hotels: {h_count}, Restaurants: {r_count}, Transport: {lt_count}")
         print("="*60 + "\n")
 
         request.session["ai_trips"] = filtered

@@ -222,7 +222,7 @@
     // Function to render recommendations
     function renderDestinations(destinations) {
       resultsContainer.innerHTML = "";
-      destinations.forEach((dest) => {
+      destinations.forEach((dest, index) => {
         // build card markup (keeps same classes to reuse CSS)
         const col = document.createElement("div");
         col.className = "col-lg-4 col-md-6";
@@ -230,8 +230,7 @@
         // safe fallback values
         const name = dest.name || "Unknown";
         const country = dest.country || "";
-        const image =
-          dest.image || "https://via.placeholder.com/800x400?text=No+Image";
+        const imageUrl = dest.image || "https://via.placeholder.com/800x400?text=No+Image";
         const price = dest.price || "-";
         const durationDays = dest.duration_days || 0;
         const description = dest.description || "";
@@ -240,32 +239,24 @@
         const rating = dest.rating !== undefined ? dest.rating : 4.5;
         const match_score = dest.match_score || 80;
 
+        console.log(`Trip ${index + 1}: ${name} - Image: ${imageUrl.substring(0, 80)}...`);
+
         col.innerHTML = `
         <div class="rec-destination-card">
-          <div class="rec-card-image">
-            <img src="${image}" alt="${name}">
-            <div class="${dest.discount ? "discount-badge" : "trending-badge"}">
-              ${
-                dest.trending
-                  ? '<i class="fas fa-fire"></i> Trending'
-                  : dest.discount
-                  ? dest.discount
-                  : ""
-              }
-            </div>
-            <div class="rating-badge">
-              <i class="fas fa-star"></i> ${rating}
-            </div>
-            <div class="position-absolute bottom-0 start-0 m-3 bg-dark text-white px-2 py-1 rounded" style="font-size: 12px">
-              ${match_score}%
-            </div>
-          </div>
           <div class="rec-card-content">
-            <div class="d-flex justify-content-between align-items-start mb-2">
-              <h3 class="rec-destination-title">${name}</h3>
-              <span class="price">${price}</span>
+            <div class="d-flex justify-content-between align-items-start mb-1">
+              <div>
+                <h3 class="rec-destination-title">${name}</h3>
+                <div class="rec-location"><i class="fas fa-map-marker-alt"></i> ${country}</div>
+              </div>
+              <div class="text-end">
+                <span class="price d-block mb-2">${price}</span>
+                <div class="rating-badge">
+                  <i class="fas fa-star"></i> ${rating}
+                </div>
+              </div>
             </div>
-            <div class="location"><i class="fas fa-map-marker-alt"></i> ${country}</div>
+                     
             <div class="duration"><i class="far fa-clock"></i> ${durationDays} days</div>
             <p class="description">${description}</p>
             <div class="highlights">
@@ -287,6 +278,7 @@
           </div>
         </div>
       `;
+
         resultsContainer.appendChild(col);
       });
 
