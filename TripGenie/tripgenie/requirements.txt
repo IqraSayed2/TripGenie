@@ -12,3 +12,4 @@ razorpay==2.0.0
 twilio==9.7.2
 mysqlclient==2.2.7
 xhtml2pdf==0.2.17
+ 
