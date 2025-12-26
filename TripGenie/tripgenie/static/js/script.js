@@ -68,48 +68,21 @@ document.querySelectorAll(".form-input").forEach((input) => {
 //=================================== FAQS =============================================
 
 document.addEventListener("DOMContentLoaded", function () {
-  const categoryButtons = document.querySelectorAll(".faq-category-btn");
-  const faqContentSections = document.querySelectorAll(".faq-category-content");
-
-  // Function to show/hide content based on category
-  function showCategory(category) {
-    faqContentSections.forEach((section) => {
-      if (section.getAttribute("data-category") === category) {
-        section.classList.remove("d-none");
-      } else {
-        section.classList.add("d-none");
-      }
-    });
-  }
-
-  // Add event listeners to buttons
-  categoryButtons.forEach((button) => {
-    button.addEventListener("click", function () {
-      // Remove active class from all buttons
-      categoryButtons.forEach((btn) => btn.classList.remove("active"));
-      // Add active class to the clicked button
-      this.classList.add("active");
-      // Show the corresponding FAQ content
-      const category = this.getAttribute("data-filter");
-      showCategory(category);
-    });
-  });
-
-  // Handle search bar functionality (optional, basic filtering)
+  // Handle search bar functionality
   const searchBar = document.querySelector(".faq-search-bar");
   searchBar.addEventListener("input", function () {
     const query = this.value.toLowerCase();
-    const allAccordionItems = document.querySelectorAll(".accordion-item");
+    const allFaqItems = document.querySelectorAll(".faq-item");
 
-    allAccordionItems.forEach((item) => {
-      const headerText = item
-        .querySelector(".accordion-header")
+    allFaqItems.forEach((item) => {
+      const questionText = item
+        .querySelector(".faq-question")
         .textContent.toLowerCase();
-      const bodyText = item.querySelector(".accordion-body")
-        ? item.querySelector(".accordion-body").textContent.toLowerCase()
+      const answerText = item.querySelector(".faq-answer")
+        ? item.querySelector(".faq-answer").textContent.toLowerCase()
         : "";
 
-      if (headerText.includes(query) || bodyText.includes(query)) {
+      if (questionText.includes(query) || answerText.includes(query)) {
         item.style.display = "block"; // Show item
       } else {
         item.style.display = "none"; // Hide item

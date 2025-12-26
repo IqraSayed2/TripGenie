@@ -28,21 +28,12 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
 
     <script>
-      // Apply theme class early to avoid a flash of the wrong theme.
+      // Apply light theme class early.
       (function () {
         try {
-          const saved = localStorage.getItem("theme");
           const doc = document.documentElement;
-          if (saved === "dark") doc.classList.add("dark-theme");
-          else if (saved === "light") doc.classList.add("light-theme");
-          else if (doc.classList.contains("dark"))
-            doc.classList.add("dark-theme");
-          else if (
-            window.matchMedia &&
-            window.matchMedia("(prefers-color-scheme: dark)").matches
-          )
-            doc.classList.add("dark-theme");
-          else doc.classList.add("light-theme");
+          doc.classList.add("light-theme");
+          localStorage.setItem("theme", "light");
         } catch (e) {}
       })();
     </script>

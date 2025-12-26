@@ -1,29 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const themeToggle = document.getElementById("themeToggle");
   const body = document.body;
 
-  // Load saved theme
-  if (localStorage.getItem("theme") === "light") {
-    body.classList.remove("dark-theme");
-    body.classList.add("light-theme");
-    themeToggle.checked = false;
-  } else {
-    body.classList.add("dark-theme");
-    body.classList.remove("light-theme");
-    themeToggle.checked = true;
-  }
-
-  themeToggle.addEventListener("change", () => {
-    if (themeToggle.checked) {
-      body.classList.add("dark-theme");
-      body.classList.remove("light-theme");
-      localStorage.setItem("theme", "dark");
-    } else {
-      body.classList.remove("dark-theme");
-      body.classList.add("light-theme");
-      localStorage.setItem("theme", "light");
-    }
-  });
+  // Always set light theme
+  body.classList.add("light-theme");
+  localStorage.setItem("theme", "light");
 });
 
 // Language and Currency Selection
@@ -77,22 +57,6 @@ function updateSelector() {
   ).textContent = `${langText} | ${selectedCurrency}`;
 }
 
-function setTheme(theme) {
-  if (theme === "dark") {
-    body.classList.remove("light-theme");
-    body.classList.add("dark-theme");
-    icon.classList.remove("fa-sun");
-    icon.classList.add("fa-moon");
-    themeToggle.title = "Switch to light theme";
-  } else {
-    body.classList.remove("dark-theme");
-    body.classList.add("light-theme");
-    icon.classList.remove("fa-moon");
-    icon.classList.add("fa-sun");
-    themeToggle.title = "Switch to dark theme";
-  }
-}
-
 // Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   anchor.addEventListener("click", function (e) {
@@ -111,9 +75,7 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
 window.addEventListener("scroll", function () {
   const navbar = document.querySelector(".navbar");
   if (window.scrollY > 100) {
-    navbar.style.background = body.classList.contains("dark-theme")
-      ? "rgba(15, 23, 42, 0.95)"
-      : "rgba(255, 255, 255, 0.95)";
+    navbar.style.background = "rgba(255, 255, 255, 0.95)";
   } else {
     navbar.style.background = "transparent";
   }
@@ -128,22 +90,6 @@ document.querySelectorAll(".btn").forEach((btn) => {
   btn.addEventListener("mouseleave", function () {
     this.style.transform = "translateY(0)";
   });
-});
-
-// Parallax effect for bubbles
-window.addEventListener("mousemove", function (e) {
-  if (body.classList.contains("dark-theme")) {
-    const bubbles = document.querySelectorAll(".bubble");
-    const x = e.clientX / window.innerWidth;
-    const y = e.clientY / window.innerHeight;
-
-    bubbles.forEach((bubble, index) => {
-      const speed = (index + 1) * 0.5;
-      const xOffset = (x - 0.5) * speed * 50;
-      const yOffset = (y - 0.5) * speed * 50;
-      bubble.style.transform += ` translate(${xOffset}px, ${yOffset}px)`;
-    });
-  }
 });
 
 //reviews ===============================================
