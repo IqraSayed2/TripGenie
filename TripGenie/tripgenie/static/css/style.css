@@ -2422,7 +2422,7 @@
 }
 
 .contact-form-email-link {
-  color: #20d0d4;
+  color: #1a7d7f;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s ease, text-decoration 0.2s ease;
@@ -2430,7 +2430,7 @@
 }
 
 .contact-form-email-link:hover {
-  color: #20d0d4;
+  color: #1a7d7f;
   text-decoration: underline;
 }
 
@@ -2447,7 +2447,7 @@
 }
 
 .contact-form-green-text {
-  color: #20d0d4;
+  color: #1a7d7f;
 }
 
 /* Responsive Design */
